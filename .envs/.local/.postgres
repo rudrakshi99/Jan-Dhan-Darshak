@@ -1,0 +1,9 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST = postgres
+POSTGRES_PORT = 5432
+POSTGRES_DB = jan_dhan_darshak
+# POSTGRES_USER=postgres
+# POSTGRES_PASSWORD=helloworld
+POSTGRES_USER = RjyXzLiOtzxDLtjhqZIflnbGicGDujfB
+POSTGRES_PASSWORD = gBmS09LPJBuKlZQ0sVUePAFbzMERMvekTd36YbWx1qruOpec6QwPaBaFBCZHwoHi
