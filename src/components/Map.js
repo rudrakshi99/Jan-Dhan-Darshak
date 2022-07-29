@@ -1,12 +1,57 @@
-import React from "react";
-import { View, Text } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, Dimensions } from "react-native";
+import MapView from "react-native-maps";
+import * as Location from "expo-location";
 
 const Map = () => {
+    const [location, setLocation] = useState({
+        latitude: 26.862185,
+        longitude: 80.911271,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01,
+    });
+    useEffect(() => {
+        (async () => {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== "granted") {
+                setErrorMsg("Permission to access location was denied");
+                return;
+            }
+            let location = await Location.getCurrentPositionAsync({});
+            location.coords.latitudeDelta = 0.01;
+            location.coords.longitudeDelta = 0.01;
+            setLocation(location.coords);
+        })();
+    }, []);
     return (
-        <View>
-            <Text>Map Box</Text>
+        <View style={styles.container}>
+            <MapView
+                style={styles.map}
+                initialRegion={location}
+                showsUserLocation={true}
+                showsMyLocationButton={true}
+                followsUserLocation={true}
+                showsCompass={true}
+                scrollEnabled={true}
+                zoomEnabled={true}
+                pitchEnabled={true}
+                rotateEnabled={true}
+            ></MapView>
         </View>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: "#fff",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    map: {
+        width: Dimensions.get("window").width,
+        height: Dimensions.get("window").height,
+    },
+});
 
 export default Map;

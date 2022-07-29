@@ -10,7 +10,7 @@ const Splash = ({ navigation }) => {
         }, 3000);
     }, []);
     return (
-        <View style={styles.container}>
+        <View style={styles.container && styles.splash}>
             <StatusBar hidden />
             <Text style={styles.logo}>Jan Dhan Darshak</Text>
         </View>
