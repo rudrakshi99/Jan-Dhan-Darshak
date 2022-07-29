@@ -1,3 +1,4 @@
+import { Button } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Provider } from "react-redux";
@@ -17,15 +18,23 @@ export default function App() {
                     <Stack.Screen
                         name="Splash"
                         component={Splash}
-                        screenOptions={{
+                        options={{
                             headerShown: false,
                         }}
                     />
                     <Stack.Screen
                         name="Home"
                         component={Home}
-                        screenOptions={{
+                        options={{
                             headerShown: true,
+                            title: "Jan Dhan Darshak",
+                            headerBackButtonMenuEnabled: true,
+                            headerRight: () => (
+                                <Button
+                                    title="Q"
+                                    onPress={() => console.log("clicked")}
+                                />
+                            ),
                         }}
                     />
                 </Stack.Navigator>

@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
 const styles = StyleSheet.create({
     container: {
@@ -8,9 +8,25 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     logo: {
-        color: "#000",
-        fontSize: 20,
+        color: "#fff",
+        fontSize: 40,
         fontWeight: "bold",
+    },
+    splash: {
+        backgroundColor: "#2C3539",
+        color: "#000",
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    tabsContainer: {
+        backgroundColor: "#fff",
+        height: 60,
+        width: Dimensions.get("window").width,
+        paddingHorizontal: 20,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
     },
 });
 
