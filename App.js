@@ -1,8 +1,8 @@
-import { Button } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Provider } from "react-redux";
 import store from "./src/redux/store";
+import "react-native-gesture-handler";
 
 //Screens
 import Home from "./src/pages/Home";
@@ -26,15 +26,7 @@ export default function App() {
                         name="Home"
                         component={Home}
                         options={{
-                            headerShown: true,
-                            title: "Jan Dhan Darshak",
-                            headerBackButtonMenuEnabled: true,
-                            headerRight: () => (
-                                <Button
-                                    title="Q"
-                                    onPress={() => console.log("clicked")}
-                                />
-                            ),
+                            headerShown: false,
                         }}
                     />
                 </Stack.Navigator>
