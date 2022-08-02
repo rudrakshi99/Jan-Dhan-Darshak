@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
 import MapView from "react-native-maps";
 import * as Location from "expo-location";
+import { useRoute } from "@react-navigation/native";
 
 const Map = () => {
+    const route = useRoute();
     const [location, setLocation] = useState({
         latitude: 26.862185,
         longitude: 80.911271,
@@ -24,7 +26,14 @@ const Map = () => {
         })();
     }, []);
     return (
-        <View style={styles.container}>
+        <View
+            style={{
+                flex: route.name === "Home" ? 3 : 4,
+                backgroundColor: "#fff",
+                alignItems: "center",
+                justifyContent: "center",
+            }}
+        >
             <MapView
                 style={styles.map}
                 initialRegion={location}
@@ -42,15 +51,9 @@ const Map = () => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#fff",
-        alignItems: "center",
-        justifyContent: "center",
-    },
     map: {
         width: Dimensions.get("window").width,
-        height: Dimensions.get("window").height,
+        flex: 1,
     },
 });
 
