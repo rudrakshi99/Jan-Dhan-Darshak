@@ -10,7 +10,7 @@ const Disclaimer = () => {
             <View style={styles.container}>
             <View style={styles.innerContainer}>
                 <TouchableOpacity onPress={navigation.goBack}>
-                    <ArrowNarrowLeftIcon style={styles.iconHeader} size={30} color="black" />
+                    <ArrowNarrowLeftIcon style={styles.iconHeader} size={30} color="#101010" />
                 </TouchableOpacity>
                 <Text style={styles.heading}>Disclaimer</Text>
                 <Text></Text>
@@ -38,28 +38,30 @@ const styles = StyleSheet.create({
         marginTop: 28,
         marginBottom: 20,
         border: '1px solid black',
-        position: 'relative'
+        position: 'relative',  
     },
     innerContainer: {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginBottom: 26,
+        marginBottom: 36,
     },
     heading: {
         fontSize: 26,
         fontWeight: '600',
+        color: '#101010',
         marginLeft: -16
     },
     textBox: {
-        height: '82%'
+        height: '79%',
+        marginBottom: 6
     },
     para: {
         fontSize: 17,
         fontWeight: '600',
         lineHeight: 24,
-        
+        color: '#101010',
         letterSpacing: 0,
         lineHeight: 24.4,
         textAlign: 'justify'
@@ -75,7 +77,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         height: 50,
         width: '100%',
-        backgroundColor: '#000',
+        backgroundColor: '#292C31',
         borderRadius: 5
     },
     button: {

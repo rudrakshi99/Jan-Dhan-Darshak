@@ -5,34 +5,35 @@ import { ArrowNarrowLeftIcon } from "react-native-heroicons/outline";
 
 const About = () => {
     const navigation = useNavigation();
+
     return (
         <ScrollView>
             <View style={styles.container}>
-            <View style={styles.innerContainer}>
-                <TouchableOpacity onPress={navigation.goBack}>
-                    <ArrowNarrowLeftIcon style={styles.iconHeader} size={30} color="black" />
-                </TouchableOpacity>
-                <Text style={styles.heading}>About Us</Text>
-                <Text></Text>
-            </View>
+                <View style={styles.innerContainer}>
+                    <TouchableOpacity onPress={navigation.goBack}>
+                        <ArrowNarrowLeftIcon style={styles.iconHeader} size={30} color="#101010" />
+                    </TouchableOpacity>
+                    <Text style={styles.heading}>About Us</Text>
+                    <Text></Text>
+                </View>
 
-            <View style={styles.imageBox}>
-                <Image
-                    style={styles.imageLogo}
-                    source={require('../../assets/images/aboutLogo.png')}
-                    resizeMode="cover"
-                />
-            </View>
+                <View style={styles.imageBox}>
+                    <Image
+                        style={styles.imageLogo}
+                        source={require('../../assets/images/aboutLogo.png')}
+                        resizeMode="cover"
+                    />
+                </View>
 
-            <View style={styles.textBox}>
-                <Text style={styles.para}>The Jan Dhan Darshak mobile application provides an interface for citizen to view the Banking Infrastructures in India consisting of Bank Branches, ATMs and Bank Mitra locations. the data is collated by Department of Financial Services from Scheduled Commercial Banks both in Public and Private Sector. </Text>
-            </View>
+                <View style={styles.textBox}>
+                    <Text style={styles.para}>The Jan Dhan Darshak mobile application provides an interface for citizen to view the Banking Infrastructures in India consisting of Bank Branches, ATMs and Bank Mitra locations. the data is collated by Department of Financial Services from Scheduled Commercial Banks both in Public and Private Sector. </Text>
+                </View>
 
-            <View style={styles.topBorder}>
-                <TouchableOpacity style={styles.buttonBox}>
-                    <Text style={styles.button}>Confirm Language</Text>
-                </TouchableOpacity>
-            </View>
+                <View style={styles.topBorder}>
+                    <TouchableOpacity style={styles.buttonBox}>
+                        <Text style={styles.button}>Confirm Language</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
 
         </ScrollView>
@@ -46,7 +47,8 @@ const styles = StyleSheet.create({
         marginTop: 28,
         marginBottom: 20,
         border: '1px solid black',
-        position: 'relative'
+        position: 'relative',
+        height: '70%'
     },
     innerContainer: {
         display: 'flex',
@@ -60,6 +62,7 @@ const styles = StyleSheet.create({
     heading: {
         fontSize: 26,
         fontWeight: '600',
+        color: '#101010',
         marginLeft: -16
     },
     imageBox: {
@@ -79,6 +82,7 @@ const styles = StyleSheet.create({
         fontSize: 17,
         fontWeight: '600',
         lineHeight: 24,
+        color: '#101010',
         paddingBottom: 120,
         borderBottomColor: '#E0E0E0',
         borderBottomWidth: 3,
@@ -95,7 +99,7 @@ const styles = StyleSheet.create({
         bottom: 13,
         height: 50,
         width: '100%',
-        backgroundColor: '#000',
+        backgroundColor: '#292C31',
         borderRadius: 5
     },
     button: {
