@@ -101,6 +101,18 @@ const Home = ({ navigation }) => {
                     ),
                 }}
             />
+            <Drawer.Screen
+                name="Help"
+                component={Help}
+                options={{
+                    headerShown: false,
+                    drawerIcon: () => (
+                        <Image
+                            source={require("../assets/icons/missingbank.png")}
+                        />
+                    ),
+                }}
+            />
         </Drawer.Navigator>
     );
 };

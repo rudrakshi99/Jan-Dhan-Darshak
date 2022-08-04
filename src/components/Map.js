@@ -7,7 +7,7 @@ import { useRoute } from "@react-navigation/native";
 const Map = () => {
     const route = useRoute();
     const [location, setLocation] = useState({
-        latitude: 26.862185,
+        latitude: 30.862185,
         longitude: 80.911271,
         latitudeDelta: 0.01,
         longitudeDelta: 0.01,
