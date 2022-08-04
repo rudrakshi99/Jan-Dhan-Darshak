@@ -7,7 +7,7 @@ import { useRoute } from "@react-navigation/native";
 const Map = () => {
     const route = useRoute();
     const [location, setLocation] = useState({
-        latitude: 26.862185,
+        latitude: 30.862185,
         longitude: 80.911271,
         latitudeDelta: 0.01,
         longitudeDelta: 0.01,
@@ -28,7 +28,7 @@ const Map = () => {
     return (
         <View
             style={{
-                flex: route.name === "Home" ? 3 : 4,
+                flex: route.name === "Find" ? 3 : 4,
                 backgroundColor: "#fff",
                 alignItems: "center",
                 justifyContent: "center",

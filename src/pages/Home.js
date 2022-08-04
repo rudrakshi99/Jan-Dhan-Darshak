@@ -24,10 +24,10 @@ const Home = ({ navigation }) => {
     return (
         <Drawer.Navigator
             drawerContent={(props) => <CustomMenu {...props} />}
-            initialRouteName="Home"
+            initialRouteName="Find"
         >
             <Drawer.Screen
-                name="Home"
+                name="Find"
                 component={MapBox}
                 options={{
                     headerShown: false,
@@ -110,6 +110,18 @@ const Home = ({ navigation }) => {
                     drawerIcon: () => (
                         <Image
                             source={require("../assets/icons/disclaimer.png")}
+                        />
+                    ),
+                }}
+            />
+            <Drawer.Screen
+                name="Help"
+                component={Help}
+                options={{
+                    headerShown: false,
+                    drawerIcon: () => (
+                        <Image
+                            source={require("../assets/icons/missingbank.png")}
                         />
                     ),
                 }}
