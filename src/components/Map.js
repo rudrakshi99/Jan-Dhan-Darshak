@@ -28,7 +28,7 @@ const Map = () => {
     return (
         <View
             style={{
-                flex: route.name === "Home" ? 3 : 4,
+                flex: route.name === "Find" ? 3 : 4,
                 backgroundColor: "#fff",
                 alignItems: "center",
                 justifyContent: "center",

@@ -32,7 +32,7 @@ const Header = ({ title, subtitle, showFilters }) => {
                 <TouchableOpacity
                     style={styles.back}
                     onPress={() => {
-                        if (route.name === "Home") {
+                        if (route.name === "Find") {
                             //Open Drawer Navigation
                             navigation.openDrawer();
                         } else {
@@ -40,7 +40,7 @@ const Header = ({ title, subtitle, showFilters }) => {
                         }
                     }}
                 >
-                    {route.name !== "Home" ? (
+                    {route.name !== "Find" ? (
                         <Svg
                             width={35}
                             height={25}
@@ -71,7 +71,7 @@ const Header = ({ title, subtitle, showFilters }) => {
                         </Svg>
                     )}
                 </TouchableOpacity>
-                {route.name === "Home" && (
+                {route.name === "Find" && (
                     <Svg
                         width={21}
                         height={28}
@@ -89,7 +89,7 @@ const Header = ({ title, subtitle, showFilters }) => {
                     <Text style={styles.subtitle}>{subtitle}</Text>
                 </View>
             </View>
-            {route.name === "Home" ? (
+            {route.name === "Find" ? (
                 <View style={styles.filterWrapper}>
                     <TextInput
                         value={search}
@@ -99,7 +99,7 @@ const Header = ({ title, subtitle, showFilters }) => {
                     />
                 </View>
             ) : null}
-            {route.name === "Home" ? (
+            {route.name === "Find" ? (
                 <View style={styles.filterButtonGroup}>
                     <TouchableOpacity style={styles.filterButton}>
                         <Text style={styles.filterButtonText}>Relevance</Text>

@@ -23,10 +23,10 @@ const Home = ({ navigation }) => {
     return (
         <Drawer.Navigator
             drawerContent={(props) => <CustomMenu {...props} />}
-            initialRouteName="Home"
+            initialRouteName="Find"
         >
             <Drawer.Screen
-                name="Home"
+                name="Find"
                 component={MapBox}
                 options={{
                     headerShown: false,
