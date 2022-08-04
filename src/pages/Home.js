@@ -15,6 +15,7 @@ import SavedLocations from "../components/Modals/SavedLocations";
 import TrackRequest from "../components/Modals/TrackRequest";
 import MissingBankSuggestion from "../components/Modals/MissingBankSuggestion";
 import Help from "../components/Modals/Help";
+import BankFeedback from "../components/Modals/BankFeedback";
 
 const Drawer = createDrawerNavigator();
 
@@ -76,6 +77,18 @@ const Home = ({ navigation }) => {
                     headerShown: false,
                     drawerIcon: () => (
                         <Image source={require("../assets/icons/icon.png")} />
+                    ),
+                }}
+            />
+            <Drawer.Screen
+                name="Feedback"
+                component={BankFeedback}
+                options={{
+                    headerShown: false,
+                    drawerIcon: () => (
+                        <Image
+                            source={require("../assets/icons/disclaimer.png")}
+                        />
                     ),
                 }}
             />
