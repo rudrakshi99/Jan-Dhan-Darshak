@@ -35,16 +35,15 @@ const AuthModal = ({ show, setShow }) => {
         WebBrowser.warmUpAsync();
         if (response?.type === "success") {
             const auth = response.authentication.accessToken;
-            const storageValue = JSON.stringify(auth);
-            if (Platform.OS !== "web") {
-                // Securely store the auth on your device
-                SecureStore.setItemAsync(MY_SECURE_AUTH_STATE_KEY, auth);
-            }
+            console.log(auth);
+            // Securely store the auth on your device
+            SecureStore.setItemAsync(MY_SECURE_AUTH_STATE_KEY, auth);
+            setShow(false);
         }
         return () => {
             WebBrowser.coolDownAsync();
         };
-    }, [response]);
+    }, []);
 
     return (
         <Modal

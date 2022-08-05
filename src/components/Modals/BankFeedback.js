@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import {
     StyleSheet,
     Text,
@@ -18,9 +18,10 @@ import { MY_SECURE_AUTH_STATE_KEY } from "@env";
 
 const BankFeedback = () => {
     const navigation = useNavigation();
-
+    const focused = useIsFocused();
     const [show, setShow] = useState(true);
     const [user, setUser] = useState();
+    const [token, setToken] = useState("");
 
     useEffect(() => {
         async function getValueFor() {
@@ -28,31 +29,34 @@ const BankFeedback = () => {
                 let result = await SecureStore.getItemAsync(
                     MY_SECURE_AUTH_STATE_KEY
                 );
-                //Access Token
-                let config = {
-                    headers: {
-                        Authorization: "Bearer " + result,
-                    },
-                };
-                const userData = await axios.get(
-                    "https://www.googleapis.com/oauth2/v1/userinfo?alt=json",
-                    config
-                );
-                setUser(userData.data);
-                setUsername(userData.data.name);
-                if (result === null) {
-                    setShow(true);
-                } else {
+                setToken(result);
+                console.log(result);
+                if (result) {
                     setShow(false);
+                    //Access Token
+                    let config = {
+                        headers: {
+                            Authorization: "Bearer " + result,
+                        },
+                    };
+                    console.log(config);
+                    const userData = await axios.get(
+                        "https://www.googleapis.com/oauth2/v1/userinfo?alt=json",
+                        config
+                    );
+                    setUser(userData.data);
+                    console.log(userData.data);
+                } else {
+                    setShow(true);
                 }
             } catch (err) {
                 console.log(err);
             }
         }
         getValueFor();
-    }, []);
+    }, [focused]);
 
-    [feedback, setFeedbackInfo] = useState({
+    const [feedback, setFeedbackInfo] = useState({
         NameOfThePoint: "",
         location: "",
         username: "",
@@ -65,8 +69,12 @@ const BankFeedback = () => {
     const [mobile, setMobile] = useState("");
     const [comments, setComments] = useState("");
 
+    async function logout() {
+        const res = await SecureStore.deleteItemAsync(MY_SECURE_AUTH_STATE_KEY);
+        console.log(res);
+    }
+
     const handleChange = () => {
-        console.log(feedback);
         setFeedbackInfo({
             NameOfThePoint: NameOfThePoint,
             location: location,
@@ -74,7 +82,6 @@ const BankFeedback = () => {
             username: username,
             comments: comments,
         });
-        console.log(feedback);
     };
     return (
         <View style={styles.container}>
@@ -142,7 +149,9 @@ const BankFeedback = () => {
                         ></InputField>
                     </ScrollView>
                     <TouchableOpacity
-                        onPress={handleChange}
+                        onPress={() => {
+                            logout();
+                        }}
                         style={styles.buttonBox}
                     >
                         <Text style={styles.button}>Submit</Text>

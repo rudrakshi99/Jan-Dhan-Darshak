@@ -28,6 +28,10 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
     },
+    buttonText: {
+        color: "#626262",
+        fontSize: 12,
+    },
 });
 
 export default styles;
