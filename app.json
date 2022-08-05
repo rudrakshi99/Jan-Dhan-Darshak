@@ -2,6 +2,7 @@
   "expo": {
     "name": "Jan-Dhan-Darshak",
     "slug": "Jan-Dhan-Darshak",
+    "scheme" : "jandhandarshak",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
+import { useIsFocused } from "@react-navigation/native";
 import MapView from "react-native-maps";
 import * as Location from "expo-location";
 import { useRoute } from "@react-navigation/native";
 
 const Map = () => {
     const route = useRoute();
+    const focused = useIsFocused();
     const [location, setLocation] = useState({
-        latitude: 30.862185,
-        longitude: 80.911271,
+        latitude: 28.862185,
+        longitude: 81.911271,
         latitudeDelta: 0.01,
         longitudeDelta: 0.01,
     });
@@ -16,15 +18,17 @@ const Map = () => {
         (async () => {
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== "granted") {
+                console.log("Permission to access location was denied");
                 setErrorMsg("Permission to access location was denied");
                 return;
             }
-            let location = await Location.getCurrentPositionAsync({});
+            const location = await Location.getCurrentPositionAsync({});
+            console.log(location);
             location.coords.latitudeDelta = 0.01;
             location.coords.longitudeDelta = 0.01;
             setLocation(location.coords);
         })();
-    }, []);
+    }, [focused]);
     return (
         <View
             style={{
@@ -38,6 +42,7 @@ const Map = () => {
                 style={styles.map}
                 initialRegion={location}
                 showsUserLocation={true}
+                region={location}
                 showsMyLocationButton={true}
                 followsUserLocation={true}
                 showsCompass={true}
