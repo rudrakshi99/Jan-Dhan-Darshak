@@ -16,7 +16,7 @@ import { BASE_URL, API_KEY } from "@env";
 const MissingBankSuggestion = () => {
     const focused = useIsFocused();
     const [address, setAddress] = useState(
-        "229/47, Yahiyaganj, Lucknow, Uttar Pradesh 226003, India"
+        "B-47 Sector C, Aliganj, Lucknow, Uttar Pradesh, India"
     );
     useEffect(() => {
         async function getGeocodedAddress() {
