@@ -6,6 +6,8 @@ from pathlib import Path
 import environ
 
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 # jan_dhan_darshak/
 APPS_DIR = ROOT_DIR / "jan_dhan_darshak"
 env = environ.Env()
@@ -40,10 +42,18 @@ LOCALE_PATHS = [str(ROOT_DIR / "locale")]
 # DATABASES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
-DATABASES = {"default": env.db("DATABASE_URL")}
+# DATABASES = {"default": env.db("DATABASE_URL")}
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
+}
+
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 # https://docs.djangoproject.com/en/stable/ref/settings/#std:setting-DEFAULT_AUTO_FIELD
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
 
 # URLS
 # ------------------------------------------------------------------------------
@@ -70,7 +80,7 @@ THIRD_PARTY_APPS = [
     "crispy_bootstrap5",
     "allauth",
     "allauth.account",
-    "allauth.socialaccount",
+    #  "allauth.socialaccount",
     "django_celery_beat",
     "rest_framework",
     "rest_framework.authtoken",
@@ -80,6 +90,8 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "jan_dhan_darshak.users",
+    "jan_dhan_darshak.feedback",
+    "jan_dhan_darshak.core",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
