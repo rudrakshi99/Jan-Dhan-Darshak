@@ -2,8 +2,7 @@ import uuid
 from random import randint
 from django.contrib.auth.models import AbstractUser
 from django.db.models import CharField, BooleanField, UUIDField
-from django.forms import EmailField
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -19,7 +18,8 @@ class User(AbstractUser):
     uuid = UUIDField(default=uuid.uuid4, editable=False, db_index=True)
     name = CharField(_("Name of User"), blank=True, max_length=255)
     first_name = None  # type: ignore
-    last_name = None  # type: ignore    phone_number = CharField(max_length=10, null=True, unique=True)
+    last_name = None  # type: ignore
+    phone_number = CharField(max_length=10, unique=True)
     is_verified = BooleanField(default=False)
     twilio_user_id = CharField(max_length=9, blank=True, null=True)
 
@@ -39,4 +39,4 @@ class User(AbstractUser):
             str: URL for user detail.
 
         """
-        return reverse("users:detail", kwargs={"username": self.username})
+        return reverse_lazy("users:detail", kwargs={"username": self.username})

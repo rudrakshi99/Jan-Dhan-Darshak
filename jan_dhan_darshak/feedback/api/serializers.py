@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from jan_dhan_darshak.feedback.models import DeveloperFeedback
+from jan_dhan_darshak.feedback.models import DeveloperFeedback, FinancialPointFeedback
 from jan_dhan_darshak.core.validators import validator_mobile_number
+from jan_dhan_darshak.users.api.serializers import UserSerializer
 
 
 class DeveloperFeedbackSerializer(serializers.ModelSerializer):
@@ -22,3 +23,26 @@ class DeveloperFeedbackSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Message is required.")
 
         return value
+
+
+class FinancialPointFeedbackCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DeveloperFeedback
+        fields = "__all__"
+        read_only_fields = ["created_at"]
+
+    def create(self, validated_data):
+        return FinancialPointFeedback.objects.create(**validated_data)
+
+
+class FinancialPointFeedbackListSerializer(serializers.ModelSerializer):
+
+    user = UserSerializer()
+
+    class Meta:
+        model = FinancialPointFeedback
+        fields = "__all__"
+        read_only_fields = ["created_at"]
+
+    def create(self, validated_data):
+        return FinancialPointFeedback.objects.create(**validated_data)

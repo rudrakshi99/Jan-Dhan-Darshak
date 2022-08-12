@@ -41,3 +41,4 @@ argon2-cffi-bindings==21.2.0
 djangorestframework-simplejwt==5.2.0
 twilio==7.12.1
 authy==2.2.6
+django-filter==22.1

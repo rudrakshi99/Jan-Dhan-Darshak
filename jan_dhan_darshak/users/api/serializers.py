@@ -21,7 +21,6 @@ class UserSerializer(serializers.ModelSerializer):
             "uuid",
             "name",
             "email",
-            "address",
             "phone_number",
         ]
 
