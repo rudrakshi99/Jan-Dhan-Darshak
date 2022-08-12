@@ -38,3 +38,6 @@ django-coverage-plugin==2.0.3  # https://github.com/nedbat/django_coverage_plugi
 pytest-django==4.5.2  # https://github.com/pytest-dev/pytest-django
 psycopg2-binary==2.9.3 
 argon2-cffi-bindings==21.2.0
+djangorestframework-simplejwt==5.2.0
+twilio==7.12.1
+authy==2.2.6
