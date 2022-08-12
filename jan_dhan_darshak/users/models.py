@@ -1,8 +1,11 @@
 import uuid
+from random import randint
 from django.contrib.auth.models import AbstractUser
-from django.db.models import CharField, TextChoices, UUIDField
+from django.db.models import CharField, BooleanField, UUIDField
+from django.forms import EmailField
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from rest_framework_simplejwt.tokens import RefreshToken
 
 
 class User(AbstractUser):
@@ -12,23 +15,23 @@ class User(AbstractUser):
     check forms.SignupForm and forms.SocialSignupForms accordingly.
     """
 
-    class UserType(TextChoices):
-        ADMIN = "AD", _("ADMIN")
-        CUSTOMER = "CU", _("CUSTOMER")
-        SALES_PERSON = "SP", _("SALES PERSON")
-
     #: First and last name do not cover name patterns around the globe
     uuid = UUIDField(default=uuid.uuid4, editable=False, db_index=True)
     name = CharField(_("Name of User"), blank=True, max_length=255)
     first_name = None  # type: ignore
-    last_name = None  # type: ignore
-    user_type = CharField(
-        max_length=20,
-        choices=UserType.choices,
-        default=UserType.CUSTOMER,
-    )
-    phone_number = CharField(max_length=10, null=True, unique=True)
-    
+    last_name = None  # type: ignore    phone_number = CharField(max_length=10, null=True, unique=True)
+    is_verified = BooleanField(default=False)
+    twilio_user_id = CharField(max_length=9, blank=True, null=True)
+
+    class Meta:
+        verbose_name = _("User")
+        verbose_name_plural = _("Users")
+        ordering = ["-date_joined"]
+
+    def tokens(self):
+        refresh = RefreshToken.for_user(self)
+        return {"refresh": str(refresh), "access": str(refresh.access_token)}
+
     def get_absolute_url(self):
         """Get url for user's detail view.
 

@@ -1,14 +1,12 @@
 from django.urls import path
 
-from jan_dhan_darshak.users.views import (
-    user_detail_view,
-    user_redirect_view,
-    user_update_view,
-)
+from jan_dhan_darshak.users.api.views import VerifyOtpViewset
 
 app_name = "users"
 urlpatterns = [
-    path("~redirect/", view=user_redirect_view, name="redirect"),
-    path("~update/", view=user_update_view, name="update"),
-    path("<str:username>/", view=user_detail_view, name="detail"),
+    path(
+        "verify_otp/",
+        view=VerifyOtpViewset.as_view({"post": "verify_otp"}),
+        name="verify_otp",
+    ),
 ]
