@@ -86,12 +86,14 @@ THIRD_PARTY_APPS = [
     "rest_framework.authtoken",
     "corsheaders",
     "drf_spectacular",
+    "import_export",
 ]
 
 LOCAL_APPS = [
     "jan_dhan_darshak.users",
     "jan_dhan_darshak.feedback",
     "jan_dhan_darshak.core",
+    "jan_dhan_darshak.financial_point"
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
