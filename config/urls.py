@@ -18,6 +18,7 @@ urlpatterns = [
     # User management
     path("users/", include("jan_dhan_darshak.users.urls", namespace="users")),
     path("feedback/", include("jan_dhan_darshak.feedback.urls", namespace="feedback")),
+    path("suggestions/", include("jan_dhan_darshak.missing_suggestions.urls", namespace="missing_suggestions")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
@@ -64,3 +65,6 @@ if settings.DEBUG:
         import debug_toolbar
 
         urlpatterns = [path("__debug__/", include(debug_toolbar.urls))] + urlpatterns
+
+
+

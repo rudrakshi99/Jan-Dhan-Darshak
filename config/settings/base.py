@@ -95,6 +95,7 @@ LOCAL_APPS = [
     "jan_dhan_darshak.users",
     "jan_dhan_darshak.feedback",
     "jan_dhan_darshak.core",
+    "jan_dhan_darshak.missing_suggestions",
     "jan_dhan_darshak.financial_point"
     # Your stuff: custom apps go here
 ]
@@ -276,10 +277,10 @@ LOGGING = {
 if USE_TZ:
     # https://docs.celeryq.dev/en/stable/userguide/configuration.html#std:setting-timezone
     CELERY_TIMEZONE = TIME_ZONE
-# https://docs.celeryq.dev/en/stable/userguide/configuration.html#std:setting-broker_url
-CELERY_BROKER_URL = env("CELERY_BROKER_URL")
-# https://docs.celeryq.dev/en/stable/userguide/configuration.html#std:setting-result_backend
-CELERY_RESULT_BACKEND = CELERY_BROKER_URL
+# # https://docs.celeryq.dev/en/stable/userguide/configuration.html#std:setting-broker_url
+# CELERY_BROKER_URL = env("CELERY_BROKER_URL")
+# # https://docs.celeryq.dev/en/stable/userguide/configuration.html#std:setting-result_backend
+# CELERY_RESULT_BACKEND = CELERY_BROKER_URL
 # https://docs.celeryq.dev/en/stable/userguide/configuration.html#std:setting-accept_content
 CELERY_ACCEPT_CONTENT = ["json"]
 # https://docs.celeryq.dev/en/stable/userguide/configuration.html#std:setting-task_serializer
