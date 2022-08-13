@@ -80,16 +80,17 @@ class groupTrack(APIView):
 #get all suggestions by location
 
 class MapSuggestions(APIView):
-    permission_classes=[IsAuthenticated]
+    # permission_classes=[IsAuthenticated]
     def post(self,request):
         try:
             latitude=request.data['latitude']
             longitude=request.data['longitude']
-            data=MissingSuggestions.objects.filter(latitude=latitude,longitude=longitude)
-            serializer=MissingSuggestionsSerializer(data=data,many=True)
+            data=MissingSuggestions.objects.filter(latitude__range=(latitude-0.3,latitude+0.3),longitude__range=(longitude-0.3,longitude+0.3))
+            serializer=MissingSuggestionsSerializer(data,many=True)
             return Response(
                 response_payload(success=True, data=serializer.data, msg="custom suggestions."),status=status.HTTP_200_OK,)
         
         except Exception as e:
             return Response(
-                response_payload(success=False, msg= f"Suggestion not found "),status=status.HTTP_400_BAD_REQUEST,)
+                response_payload(success=False, msg= "Suggestion not found "),status=status.HTTP_400_BAD_REQUEST,)
+
