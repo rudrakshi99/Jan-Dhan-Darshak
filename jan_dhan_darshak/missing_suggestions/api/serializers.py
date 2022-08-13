@@ -1,15 +1,17 @@
 from rest_framework import serializers
 from jan_dhan_darshak.missing_suggestions.models import MissingSuggestions
-from jan_dhan_darshak.users.api.serializers import UserSerializer
-from jan_dhan_darshak.users.models import User
+import datetime
 class MissingSuggestionsSerializer(serializers.ModelSerializer):
     suggestion_status=serializers.CharField(source='get_suggestion_status_display',read_only=True)
-    # User=UserSerializer()
+    
     class Meta:
         model=MissingSuggestions
         # fields='__all__'
         exclude=['created_at','updated_at']
-        # depth=1
+  
+
+
+
 
 
 # {

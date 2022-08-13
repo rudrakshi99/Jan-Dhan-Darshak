@@ -9,17 +9,26 @@ from rest_framework.response import Response
 from rest_framework import status
 from jan_dhan_darshak.missing_suggestions.models import MissingSuggestions
 from .serializers import MissingSuggestionsSerializer
+import datetime
 # Create your views here.
 
 #Create suggestions 
 class missingSuggestion(APIView):
     permission_classes=[IsAuthenticated]
     def post(self,request):
-        
         try:
-            # data=request.data
             data=request.data
-            print(data)
+            User=request.data['User']
+            print(User)
+            suggestions=MissingSuggestions.objects.filter(User=User)
+           
+            if len(suggestions)>0:
+                last_suggestion_created_at=suggestions[len(suggestions)-1].created_at
+                
+                if last_suggestion_created_at.date()==datetime.date.today():
+                    return Response(response_payload(success=False, msg="You can suggest only once in a day"), status.HTTP_400_BAD_REQUEST)
+           
+
             serializer= MissingSuggestionsSerializer(data=data)
             if serializer.is_valid():
                 serializer.save()
@@ -66,3 +75,21 @@ class groupTrack(APIView):
         except Exception as e:
             return Response(
                 response_payload(success=False, msg= f"Suggestion not found for User Id- {request.data['User']}"),status=status.HTTP_400_BAD_REQUEST,)
+
+
+#get all suggestions by location
+
+class MapSuggestions(APIView):
+    permission_classes=[IsAuthenticated]
+    def post(self,request):
+        try:
+            latitude=request.data['latitude']
+            longitude=request.data['longitude']
+            data=MissingSuggestions.objects.filter(latitude=latitude,longitude=longitude)
+            serializer=MissingSuggestionsSerializer(data=data,many=True)
+            return Response(
+                response_payload(success=True, data=serializer.data, msg="custom suggestions."),status=status.HTTP_200_OK,)
+        
+        except Exception as e:
+            return Response(
+                response_payload(success=False, msg= f"Suggestion not found "),status=status.HTTP_400_BAD_REQUEST,)
