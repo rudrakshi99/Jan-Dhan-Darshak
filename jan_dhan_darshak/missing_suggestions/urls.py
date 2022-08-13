@@ -6,5 +6,5 @@ app_name = "missing_suggestions"
 urlpatterns = [
     path('', missingSuggestion.as_view(), name='missingSuggestion'),
     path('track/', trackSuggestion.as_view(), name='missingSuggestion'),
-    path('mailtrack/', groupTrack.as_view(), name='groupMissingSuggestion'),
+    path('usertrack/', groupTrack.as_view(), name='groupMissingSuggestion'),
 ]
