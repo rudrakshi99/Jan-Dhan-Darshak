@@ -11,15 +11,7 @@ from jan_dhan_darshak.missing_suggestions.models import MissingSuggestions
 from .serializers import MissingSuggestionsSerializer
 # Create your views here.
 
-#Create suggestions and get all suggestions
-# Request Body:{
-#         "User":1,
-#         "pointName":"asd",
-#         "address": "dasd",
-#         "otherdetails":"asd",
-#         "latitude": 12.1211222,
-#         "longitude": 121.1232123
-#           }
+#Create suggestions 
 class missingSuggestion(APIView):
     permission_classes=[IsAuthenticated]
     def post(self,request):
@@ -40,9 +32,7 @@ class missingSuggestion(APIView):
                 response_payload(success=False, data=str(e), msg="error while creating!"),status=status.HTTP_400_BAD_REQUEST,)
 
 #Get suggestion by id
-    # Request Body: {
-    #     "uid": "0cd45845-8a85-4221-a5cf-2419566b0801"
-    # }
+  
 class trackSuggestion(APIView):
     
     permission_classes=[IsAuthenticated]
@@ -61,9 +51,7 @@ class trackSuggestion(APIView):
 
 
 #get all suggestions by user id
-# Request Body: {
-#     "User":1
-# }
+
 class groupTrack(APIView):
     permission_classes=[IsAuthenticated]
     def post(self,request):
