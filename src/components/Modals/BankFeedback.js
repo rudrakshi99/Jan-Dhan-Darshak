@@ -85,8 +85,8 @@ const BankFeedback = () => {
     };
     return (
         <View style={styles.container}>
-            {show ? <AuthModal show={show} setShow={setShow} /> : null}
-            {user ? (
+            {/* {show ? <AuthModal show={show} setShow={setShow} /> : null} */}
+            {/* {user ? ( */}
                 <View>
                     <View style={styles.innerContainer}>
                         <TouchableOpacity onPress={navigation.goBack}>
@@ -157,7 +157,7 @@ const BankFeedback = () => {
                         <Text style={styles.button}>Submit</Text>
                     </TouchableOpacity>
                 </View>
-            ) : null}
+            {/* ) : null} */}
         </View>
     );
 };
