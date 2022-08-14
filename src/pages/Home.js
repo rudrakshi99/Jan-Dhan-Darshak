@@ -15,6 +15,7 @@ import SavedLocations from "../components/Modals/SavedLocations";
 import TrackRequest from "../components/Modals/TrackRequest";
 import MissingBankSuggestion from "../components/Modals/MissingBankSuggestion";
 import Help from "../components/Modals/Help";
+import Login from "../components/Modals/Login";
 import BankFeedback from "../components/Modals/BankFeedback";
 
 const Drawer = createDrawerNavigator();
@@ -26,6 +27,16 @@ const Home = ({ navigation }) => {
             drawerContent={(props) => <CustomMenu {...props} />}
             initialRouteName="Find"
         >
+            <Drawer.Screen
+                name="Login"
+                component={Login}
+                options={{
+                    headerShown: false,
+                    drawerIcon: () => (
+                        <Image source={require("../assets/icons/icon.png")} />
+                    ),
+                }}
+            />
             <Drawer.Screen
                 name="Find"
                 component={MapBox}
