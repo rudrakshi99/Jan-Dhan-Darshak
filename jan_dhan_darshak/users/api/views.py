@@ -14,7 +14,6 @@ from .serializers import (
 )
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import AuthenticationFailed
-
 from jan_dhan_darshak.core.utils import response_payload
 
 User = get_user_model()
@@ -81,7 +80,6 @@ class UserViewSet(viewsets.ModelViewSet):
 class UserLoginViewset(viewsets.ViewSet):
     queryset = User.objects.all()
     serializer_class = UserSignUpSerializer
-
     def create(self, request, *args, **kwargs):
         try:
             user = User.objects.get(

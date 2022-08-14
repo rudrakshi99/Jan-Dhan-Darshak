@@ -96,7 +96,8 @@ LOCAL_APPS = [
     "jan_dhan_darshak.feedback",
     "jan_dhan_darshak.core",
     "jan_dhan_darshak.missing_suggestions",
-    "jan_dhan_darshak.financial_point"
+    "jan_dhan_darshak.financial_point",
+    "jan_dhan_darshak.saved_locations",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -369,4 +370,4 @@ SIMPLE_JWT = {
 }
 
 
-TWILIO = {"API_KEY": env.str("TWILIO_API_KEY", None)}
+TWILIO = {"API_KEY": env.str("TWILIO_API_KEY","f254ed32e243b0ed570f1227c849f0a7")}

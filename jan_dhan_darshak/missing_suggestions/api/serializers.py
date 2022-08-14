@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from jan_dhan_darshak.missing_suggestions.models import MissingSuggestions
-import datetime
 class MissingSuggestionsSerializer(serializers.ModelSerializer):
     suggestion_status=serializers.CharField(source='get_suggestion_status_display',read_only=True)
     

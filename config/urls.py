@@ -18,6 +18,7 @@ urlpatterns = [
     # User management
     path("users/", include("jan_dhan_darshak.users.urls", namespace="users")),
     path("feedback/", include("jan_dhan_darshak.feedback.urls", namespace="feedback")),
+    path("savedlocations/", include("jan_dhan_darshak.saved_locations.urls", namespace="saved_locations")),
     path("suggestions/", include("jan_dhan_darshak.missing_suggestions.urls", namespace="missing_suggestions")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
