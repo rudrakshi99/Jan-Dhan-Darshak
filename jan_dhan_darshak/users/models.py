@@ -28,6 +28,21 @@ class User(AbstractUser):
         verbose_name_plural = _("Users")
         ordering = ["-date_joined"]
 
+    def save(self, *args, **kwargs):
+        if not self.username:
+            username = self.name.lower()
+            is_valid = False
+
+            while not is_valid:
+                try:
+                    User.objects.get(username=username)
+                    username += str(randint(0, 9))
+                except User.DoesNotExist:
+                    is_valid = True
+            self.username = username
+
+        super().save(*args, **kwargs)
+
     def tokens(self):
         refresh = RefreshToken.for_user(self)
         return {"refresh": str(refresh), "access": str(refresh.access_token)}

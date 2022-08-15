@@ -16,6 +16,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import AuthenticationFailed
 from jan_dhan_darshak.core.utils import response_payload
 
+
 User = get_user_model()
 
 
@@ -80,6 +81,7 @@ class UserViewSet(viewsets.ModelViewSet):
 class UserLoginViewset(viewsets.ViewSet):
     queryset = User.objects.all()
     serializer_class = UserSignUpSerializer
+
     def create(self, request, *args, **kwargs):
         try:
             user = User.objects.get(
@@ -93,14 +95,14 @@ class UserLoginViewset(viewsets.ViewSet):
             raise e
 
         twilio_handler = TwilioHandler()
-        twilio_user_id = twilio_handler.create_or_get_user(
-            email=user.email if user.email else "test@test.com",
-            phone_number=user.phone_number,
-        )
-        twilio_handler.send_otp(twilio_user_id)
+        # twilio_user_id = twilio_handler.create_or_get_user(
+        #     email=user.email if user.email else "test@test.com",
+        #     phone_number=user.phone_number,
+        # )
+        twilio_handler.send_otp(user.phone_number)
 
-        user.twilio_user_id = twilio_user_id
-        user.save()
+        # user.twilio_user_id = twilio_user_id
+        # user.save()
 
         return Response(
             response_payload(
@@ -130,7 +132,7 @@ class UserLoginViewset(viewsets.ViewSet):
 
         twilio_handler = TwilioHandler()
         otp_verified = twilio_handler.verify_otp(
-            auth_id=user.twilio_user_id, otp=validated_data.get("otp")
+            phone_number=user.phone_number, otp=validated_data.get("otp")
         )
 
         if otp_verified:
@@ -143,8 +145,11 @@ class UserLoginViewset(viewsets.ViewSet):
                     msg="Otp has been Verified",
                 )
             )
-
         else:
-            raise AuthenticationFailed(
-                response_payload(success=False, msg="Incorrect Otp, Try Again")
+            return Response(
+                response_payload(
+                    success=False,
+                    msg="Incorrect Otp, Try Again",
+                ),
+                status.HTTP_400_BAD_REQUEST,
             )

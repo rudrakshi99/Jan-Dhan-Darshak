@@ -370,4 +370,8 @@ SIMPLE_JWT = {
 }
 
 
-TWILIO = {"API_KEY": env.str("TWILIO_API_KEY", None)}
+TWILIO = {
+    "API_KEY": env.str("TWILIO_API_KEY", None),
+    "ACCOUNT_SID": env.str("TWILIO_ACCOUNT_SID", None),
+    "AUTH_TOKEN": env.str("TWILIO_AUTH_TOKEN", None),
+}

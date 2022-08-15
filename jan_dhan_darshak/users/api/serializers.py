@@ -259,7 +259,7 @@ class UserSignUpSerializer(serializers.ModelSerializer):
 
 class VerifyOTPSerializer(serializers.Serializer):
     otp = serializers.IntegerField(required=True, write_only=True)
-    phone_number = serializers.IntegerField(
+    phone_number = serializers.CharField(
         required=True, validators=[validator_mobile_number]
     )
 
