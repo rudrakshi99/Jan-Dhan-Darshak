@@ -55,7 +55,7 @@ const Map = ({ markers }) => {
 				rotateEnabled={true}
 			>
 				{data !== [] ? (
-					data.map((item, i) => {
+					markers.map((item, i) => {
 						return (
 							<Marker
 								key={i}
