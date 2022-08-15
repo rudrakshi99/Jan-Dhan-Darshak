@@ -45,26 +45,33 @@ class FinancialPointFeedbackCreateView(generics.CreateAPIView):
     queryset = FinancialPointFeedback.objects.all()
     serializer_class = FinancialPointFeedbackCreateSerializer
 
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        validated_data = serializer.validated_data
-        feedback_form = serializer.create(validated_data)
+        try:
+            serializer = self.serializer_class(
+                data=request.data, context={"request": request}
+            )
+            serializer.is_valid(raise_exception=True)
+            validated_data = serializer.validated_data
+            feedback_form = serializer.create(validated_data)
 
-        feedback_form = FinancialPointFeedbackCreateSerializer(feedback_form).data
+            feedback_form = FinancialPointFeedbackCreateSerializer(feedback_form).data
 
-        return Response(
-            response_payload(
-                success=True, data=feedback_form, msg="Thanks for the feedback."
-            ),
-            status=status.HTTP_200_OK,
-        )
+            return Response(
+                response_payload(
+                    success=True, data=feedback_form, msg="Thanks for the feedback."
+                ),
+                status=status.HTTP_200_OK,
+            )
+        except Exception as e:
+            return Response(
+                response_payload(success=False, msg=f"{e}"),
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
 
 class FinancialPointFeedbackListView(generics.ListAPIView):
-
     queryset = FinancialPointFeedback.objects.all()
     serializer_class = FinancialPointFeedbackListSerializer
     filter_backends = [SearchFilter, OrderingFilter, filters.DjangoFilterBackend]

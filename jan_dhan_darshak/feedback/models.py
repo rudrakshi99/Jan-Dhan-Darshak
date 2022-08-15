@@ -56,7 +56,7 @@ class FinancialPointFeedback(models.Model):
     financial_type = models.CharField(choices=FINANCIAL_TYPE, max_length=20)
     financial_point_name = models.CharField(max_length=200)
     unique_id_type = models.CharField(choices=ID_TYPE, max_length=20)
-    unique_id = models.CharField(max_length=100, unique=True)
+    unique_id = models.CharField(max_length=100)
     message = models.TextField(blank=True)
     audio_message = models.FileField(upload_to=user_directory_path, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

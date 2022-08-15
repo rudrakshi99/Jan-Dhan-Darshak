@@ -27,12 +27,14 @@ class DeveloperFeedbackSerializer(serializers.ModelSerializer):
 
 class FinancialPointFeedbackCreateSerializer(serializers.ModelSerializer):
     class Meta:
-        model = DeveloperFeedback
-        fields = "__all__"
+        model = FinancialPointFeedback
+        exclude = ["user"]
         read_only_fields = ["created_at"]
 
     def create(self, validated_data):
-        return FinancialPointFeedback.objects.create(**validated_data)
+        return FinancialPointFeedback.objects.create(
+            user=self.context["request"].user, **validated_data
+        )
 
 
 class FinancialPointFeedbackListSerializer(serializers.ModelSerializer):
@@ -43,6 +45,3 @@ class FinancialPointFeedbackListSerializer(serializers.ModelSerializer):
         model = FinancialPointFeedback
         fields = "__all__"
         read_only_fields = ["created_at"]
-
-    def create(self, validated_data):
-        return FinancialPointFeedback.objects.create(**validated_data)
