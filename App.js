@@ -11,6 +11,7 @@ LogBox.ignoreLogs(["EventEmitter.removeListener"]);
 //Screens
 import Home from "./src/pages/Home";
 import Splash from "./src/pages/Splash";
+import OtpScreen from "./src/pages/OtpScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +31,13 @@ export default function App() {
                         <Stack.Screen
                             name="Home"
                             component={Home}
+                            options={{
+                                headerShown: false,
+                            }}
+                        />
+                        <Stack.Screen
+                            name="OTP"
+                            component={OtpScreen}
                             options={{
                                 headerShown: false,
                             }}
