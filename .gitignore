@@ -281,3 +281,6 @@ jan_dhan_darshak/media/
 
 #Jupyter Notebook
 Jupyter Notebook
+
+
+config/db.sqlite3
