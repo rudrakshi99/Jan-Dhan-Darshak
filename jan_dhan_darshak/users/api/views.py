@@ -139,7 +139,7 @@ class UserLoginViewset(viewsets.ViewSet):
             return Response(
                 response_payload(
                     success=True,
-                    data={"user": UserSerializer(user).data, "tokens": user.tokens},
+                    data={"user": UserSerializer(user).data, "tokens": user.tokens()},
                     msg="Otp has been Verified",
                 )
             )
