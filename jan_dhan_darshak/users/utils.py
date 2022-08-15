@@ -52,7 +52,7 @@ class TwilioHandler:
         # api_key = TWILIO["API_KEY"]
         account_sid = TWILIO["ACCOUNT_SID"]
         auth_token = TWILIO["AUTH_TOKEN"]
-        self.service_id = "VAe4022cd5058b280e816e903529b0c7aa"
+        self.service_id = TWILIO["SERVICE_ID"]
         self.client = Client(account_sid, auth_token)
 
     def send_otp(self, phone_number):
