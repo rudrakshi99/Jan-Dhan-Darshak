@@ -374,4 +374,5 @@ TWILIO = {
     "API_KEY": env.str("TWILIO_API_KEY", None),
     "ACCOUNT_SID": env.str("TWILIO_ACCOUNT_SID", None),
     "AUTH_TOKEN": env.str("TWILIO_AUTH_TOKEN", None),
+    "SERVICE_ID": env.str("TWILIO_SERVICE_ID", None),
 }
