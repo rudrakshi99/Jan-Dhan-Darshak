@@ -10,6 +10,25 @@ from rest_framework import status
 class SavedLocationsView(APIView):
     permission_classes = [IsAuthenticated]
 
+    def get(self, request):
+        try:
+            User = request.GET.get("User")
+            data = SavedLocation.objects.filter(User=User)
+            serializer = SavedLocationListSerializer(data, many=True)
+            return Response(
+                response_payload(
+                    success=True,
+                    data=serializer.data,
+                    msg="All saved locations by user",
+                ),
+                status=status.HTTP_200_OK,
+            )
+        except Exception:
+            return Response(
+                response_payload(success=False, msg="Error While Getting!"),
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
     def post(self, request):
 
         try:
@@ -41,36 +60,18 @@ class SavedLocationsView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-    def delete(self, request, User, place_id):
-
-        place_id = str(place_id)
-        data = SavedLocation.objects.filter(User=User, place_id=place_id)
-
-        data.delete()
-
-        return Response(
-            response_payload(success=True, msg="Removed successfully!"),
-            status=status.HTTP_200_OK,
-        )
-
-
-class GetSavedLocationsView(APIView):
-    # permission_classes=[IsAuthenticated]
-    def post(self, request):
+    def delete(self, request, **kwargs):
         try:
-            User = request.data["User"]
-            data = SavedLocation.objects.filter(User=User)
-            serializer = SavedLocationListSerializer(data, many=True)
+            User = request.GET.get("User")
+            place_id = request.GET.get("place_id")
+            data = SavedLocation.objects.filter(User=User, place_id=place_id)
+            data.delete()
             return Response(
-                response_payload(
-                    success=True,
-                    data=serializer.data,
-                    msg="All saved locations by user",
-                ),
+                response_payload(success=True, msg="Removed successfully!"),
                 status=status.HTTP_200_OK,
             )
         except Exception:
             return Response(
-                response_payload(success=False, msg="Error While Creating!"),
+                response_payload(success=False, msg="Error While Deleting!"),
                 status=status.HTTP_400_BAD_REQUEST,
             )
