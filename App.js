@@ -12,39 +12,55 @@ LogBox.ignoreLogs(["EventEmitter.removeListener"]);
 import Home from "./src/pages/Home";
 import Splash from "./src/pages/Splash";
 import OtpScreen from "./src/pages/OtpScreen";
+import Directions from "./src/pages/Directions";
+import Navigation from "./src/pages/Navigation";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-    return (
-        <Provider store={store}>
-            <NavigationContainer>
-                <TailwindProvider>
-                    <Stack.Navigator initialRouteName="Splash">
-                        <Stack.Screen
-                            name="Splash"
-                            component={Splash}
-                            options={{
-                                headerShown: false,
-                            }}
-                        />
-                        <Stack.Screen
-                            name="Home"
-                            component={Home}
-                            options={{
-                                headerShown: false,
-                            }}
-                        />
-                        <Stack.Screen
-                            name="OTP"
-                            component={OtpScreen}
-                            options={{
-                                headerShown: false,
-                            }}
-                        />
-                    </Stack.Navigator>
-                </TailwindProvider>
-            </NavigationContainer>
-        </Provider>
-    );
+	return (
+		<Provider store={store}>
+			<NavigationContainer>
+				<TailwindProvider>
+					<Stack.Navigator initialRouteName="Splash">
+						<Stack.Screen
+							name="Splash"
+							component={Splash}
+							options={{
+								headerShown: false,
+							}}
+						/>
+						<Stack.Screen
+							name="Home"
+							component={Home}
+							options={{
+								headerShown: false,
+							}}
+						/>
+						<Stack.Screen
+							name="OTP"
+							component={OtpScreen}
+							options={{
+								headerShown: false,
+							}}
+						/>
+						<Stack.Screen
+							name="Directions"
+							component={Directions}
+							options={{
+								headerShown: false,
+							}}
+						/>
+						<Stack.Screen
+							name="Navigate"
+							component={Navigation}
+							options={{
+								headerShown: false,
+							}}
+						/>
+					</Stack.Navigator>
+				</TailwindProvider>
+			</NavigationContainer>
+		</Provider>
+	);
 }

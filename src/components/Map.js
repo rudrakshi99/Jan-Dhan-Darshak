@@ -5,7 +5,7 @@ import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { useRoute } from "@react-navigation/native";
 
-const Map = ({ markers }) => {
+const Map = ({ markers, missingBank }) => {
 	const route = useRoute();
 	const focused = useIsFocused();
 	const [data, setData] = useState([]);
@@ -53,9 +53,13 @@ const Map = ({ markers }) => {
 				zoomEnabled={true}
 				pitchEnabled={true}
 				rotateEnabled={true}
+				showsTraffic={true}
 			>
-				{data !== [] ? (
-					data.map((item, i) => {
+				{missingBank ? (
+					<Marker name="Unknow Location" coordinate={location} />
+				) : null}
+				{data != [] && !missingBank ? (
+					markers?.map((item, i) => {
 						return (
 							<Marker
 								key={i}

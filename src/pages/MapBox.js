@@ -70,6 +70,10 @@ const MapBox = () => {
 		}
 		getLocation();
 		getResults();
+		return () => {
+			setResults([]);
+			setLocation({}); // This worked for me
+		};
 	}, [type, focused]);
 
 	return (

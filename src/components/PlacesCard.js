@@ -10,9 +10,11 @@ import {
 import { API_KEY, BASE_URL } from "@env";
 import axios from "axios";
 import DetailModal from "./DetailModal";
+import { useNavigation } from "@react-navigation/native";
 
 const PlaceCard = ({ item, location }) => {
 	const [show, setShow] = useState(false);
+	const navigation = useNavigation();
 	const [data, setData] = useState([]);
 	function getDistance(lat2, lon2) {
 		let lat1 = location.latitude;
@@ -95,7 +97,17 @@ const PlaceCard = ({ item, location }) => {
 				</View>
 			</View>
 			<View style={{ backgroundColor: "#FFFFFF", flexDirection: "row" }}>
-				<TouchableOpacity style={styles.directionButton}>
+				<TouchableOpacity
+					style={styles.directionButton}
+					onPress={() => {
+						navigation.navigate("Directions", {
+							latitude: item.geometry.location.lat,
+							longitude: item.geometry.location.lng,
+							place_id: item.place_id,
+							name: item.name,
+						});
+					}}
+				>
 					<Image source={require("../assets/icons/direction.png")} />
 					<Text
 						style={{ color: "#fff", marginLeft: 10, fontSize: 15 }}
