@@ -11,7 +11,7 @@ LogBox.ignoreLogs(["EventEmitter.removeListener"]);
 //Screens
 import Home from "./src/pages/Home";
 import Splash from "./src/pages/Splash";
-import OtpScreen from "./src/pages/OtpScreen";
+import Otp from './src/components/Modals/Otp'
 import Directions from "./src/pages/Directions";
 import Navigation from "./src/pages/Navigation";
 
@@ -39,7 +39,7 @@ export default function App() {
 						/>
 						<Stack.Screen
 							name="OTP"
-							component={OtpScreen}
+							component={Otp}
 							options={{
 								headerShown: false,
 							}}

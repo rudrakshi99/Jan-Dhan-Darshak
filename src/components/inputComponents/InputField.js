@@ -3,9 +3,7 @@ import React, { useEffect, useState } from "react";
 import { MicrophoneIcon } from "react-native-heroicons/outline";
 import { Audio } from 'expo-av';
 
-const InputField = ({ multi, inputname, onChangeText, name, placeholder }) => {
-    const [recording, setRecording] = useState();
-    const [uri, setUri] = useState('');
+const InputField = ({ multi, inputname, onChangeText, name, placeholder, recording, setRecording, uri, setUri }) => {
     // const [sound, setSound] = useState();
 
     const startRecording = async () => {

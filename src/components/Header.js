@@ -12,11 +12,15 @@ import { useRoute } from "@react-navigation/native";
 import Svg, { Path } from "react-native-svg";
 
 import { useFonts } from "expo-font";
+import { useSelector } from "react-redux";
 
 const Header = ({ title, subtitle, showFilters }) => {
     const navigation = useNavigation();
     const route = useRoute();
     const [search, setSearch] = useState("");
+
+    const { user } = useSelector(state => state.auth || {});
+    console.log(user, 'user ');
 
     const [loaded] = useFonts({
         InterBold: require("../assets/fonts/Inter-Bold.otf"),

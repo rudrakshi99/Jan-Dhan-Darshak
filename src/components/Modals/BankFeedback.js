@@ -15,6 +15,7 @@ import InputField from "../inputComponents/InputField";
 import AuthModal from "../AuthModal";
 
 import { MY_SECURE_AUTH_STATE_KEY } from "@env";
+import { createFeedback } from "../../https/feedback";
 
 const BankFeedback = () => {
     const navigation = useNavigation();
@@ -22,6 +23,9 @@ const BankFeedback = () => {
     const [show, setShow] = useState(true);
     const [user, setUser] = useState();
     const [token, setToken] = useState("");
+
+    const [recording, setRecording] = useState();
+    const [uri, setUri] = useState('');
 
     useEffect(() => {
         async function getValueFor() {
@@ -83,6 +87,20 @@ const BankFeedback = () => {
             comments: comments,
         });
     };
+
+    const handleSubmit = async () => {
+        try {
+            const accessToken = await SecureStore.getItemAsync('accessToken');
+            const data = await createFeedback({ accessToken, financial_type: 'Bank', financial_point_name: NameOfThePoint, unique_id_type: 'IFSC', message: comments, audio_message: uri, unique_id: '2233' });
+
+            if(data.success === true) {
+
+            }
+        } catch(err) {
+            console.log(err?.response?.data);
+        }
+    }
+
     return (
         <View style={styles.container}>
             {/* {show ? <AuthModal show={show} setShow={setShow} /> : null} */}
@@ -140,6 +158,7 @@ const BankFeedback = () => {
                         ></InputField>
                         <InputField
                             multi={true}
+                            recording={recording} setRecording={setRecording} uri={uri} setUri={setUri}
                             inputname="Comments"
                             name={feedback.comments}
                             onChangeText={(e) => {
@@ -150,7 +169,8 @@ const BankFeedback = () => {
                     </ScrollView>
                     <TouchableOpacity
                         onPress={() => {
-                            logout();
+                            // logout();
+                            handleSubmit()
                         }}
                         style={styles.buttonBox}
                     >

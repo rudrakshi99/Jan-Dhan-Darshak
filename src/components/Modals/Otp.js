@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { XIcon } from 'react-native-heroicons/outline'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import { verifyOtp } from '../https/auth'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import * as SecureStore from 'expo-secure-store';
+import { verifyOtp } from '../../https/auth'
 
 const OtpScreen = () => {
     const navigation = useNavigation();
@@ -14,25 +14,26 @@ const OtpScreen = () => {
 
     const { params: { phone }} = useRoute();
 
-    // const { email, hash } = useSelector(state => state.auth.otp);
-
     const handleOtp = async () => {
-        // if(!otp || !email || !hash) {
-        //     return;
-        // }
+        if( !otp || !phone ) {
+            return;
+        }
+        try {
+            const data= await verifyOtp({ otp, phone_number: phone });
+            console.log(data, 'data');
+            if(data?.success === true) {
+                await SecureStore.setItemAsync('accessToken', data.data.tokens.access);
+                await SecureStore.setItemAsync('refreshToken', data.data.tokens.refresh);
+                await SecureStore.setItemAsync('name', data.data.user.name);
 
-        // try {
-        //     const data= await verifyOtp({ email, otp, hash });
-        //     console.log(data, 'data');
-        //     await SecureStore.setItemAsync('accessToken', data.accessToken);
-        //     await SecureStore.setItemAsync('refreshToken', data.refreshToken);
-
-        //     console.log(await SecureStore.getItemAsync('accessToken'), 'added');
-        //     dispatch(setAuth(data));
-        //     navigation.navigate('Home');
-        // } catch(err) {
-        //     console.log(err);
-        // }
+                console.log(await SecureStore.getItemAsync('accessToken'), 'added');
+                console.log(data.data, 'user object');
+                dispatch(setAuth(data.data));
+                navigation.navigate('Find');
+            }
+        } catch(err) {
+            console.log(err?.response?.data);
+        }
 
     }
 
@@ -43,12 +44,12 @@ const OtpScreen = () => {
                     <XIcon color="green" className='z-50' size={30} />
                 </TouchableOpacity>
                 <View className='flex-1 flex-col items-center justify-center -mt-32 bg-white relative'>
-                    <TouchableOpacity onPress={() => navigation.navigate('Home')} className='absolute top-[14%] left-5 bg-[#00CCBB] rounded-full'>
+                    <TouchableOpacity onPress={() => navigation.navigate('Login')} className='absolute top-[14%] left-5 bg-[#00CCBB] rounded-full'>
                         <XIcon color="white" className='z-999' size={36} />
                     </TouchableOpacity>
 
                     <Image 
-                        source={require('../assets/images/logo.png')}
+                        source={require('../../assets/images/logo.png')}
                         resizeMode="contain"
                         className='h-32 w-60'
                     />

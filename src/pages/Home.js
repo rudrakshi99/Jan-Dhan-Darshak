@@ -17,17 +17,27 @@ import MissingBankSuggestion from "../components/Modals/MissingBankSuggestion";
 import Help from "../components/Modals/Help";
 import Login from "../components/Modals/Login";
 import BankFeedback from "../components/Modals/BankFeedback";
+import { useSelector } from "react-redux";
+import * as SecureStore from 'expo-secure-store';
 
 const Drawer = createDrawerNavigator();
 
 const Home = ({ navigation }) => {
     const [current, setCurrent] = useState("test");
+    const [customer, setCustomer] = useState("");
+    const { user } = useSelector(state => state.auth || {});
+    const getToken = async () => {
+        console.log(await SecureStore.getItemAsync('name'), "access token header");
+        setCustomer(await SecureStore.getItemAsync('name'));
+    }
+    getToken();
+
     return (
         <Drawer.Navigator
             drawerContent={(props) => <CustomMenu {...props} />}
             initialRouteName="Find"
         >
-            <Drawer.Screen
+            {!customer && <Drawer.Screen
                 name="Login"
                 component={Login}
                 options={{
@@ -36,7 +46,7 @@ const Home = ({ navigation }) => {
                         <Image source={require("../assets/icons/icon.png")} />
                     ),
                 }}
-            />
+            />}
             <Drawer.Screen
                 name="Find"
                 component={MapBox}
