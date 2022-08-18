@@ -3,28 +3,30 @@ import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from 'reac
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { XIcon } from 'react-native-heroicons/outline'
 import { useNavigation } from '@react-navigation/native'
-import { useDispatch } from 'react-redux'
-import { login } from '../../https/auth'
+import { sendOtp } from '../../https/auth'
 
 const LoginScreen = () => {
     const navigation = useNavigation();
-    const dispatch = useDispatch();
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
 
     const handleSubmit = async () => {
-        if( !phone ) {
+        if( !phone || !name ) {
             return;
         }
+        console.log(name, ' ', phone);
 
         try {
-            // const data = await login({ phone });
-            // console.log(data, 'data');
-            // dispatch(setOtp({ email: data.email, hash: data.hash }));
-            navigation.navigate('OTP', {
-                phone
-            });
+            const data = await sendOtp({ name, email, phone_number: phone });
+            console.log(data, 'data');
+            if(data?.success === true) {
+                navigation.navigate('OTP', {
+                    phone
+                });
+            }
         } catch(err) {
-            console.log(err);
+            console.log(err?.response?.data);
         }
     }
 
@@ -46,7 +48,11 @@ const LoginScreen = () => {
 
                     <View className='flex-col items-center justify-center space-y-6'>
                         
-                        <TextInput onChangeText={val => setPhone(val)} defaultValue={phone} placeholder='Enter your phone number' className='h-10 w-72 border border-gray-400 text-lg px-4 py-0' keyboardType='phone-pad' maxLength={50} />
+                        <TextInput onChangeText={val => setName(val)} defaultValue={name} placeholder='Enter your name' className='h-10 w-72 border border-gray-400 text-lg px-4 py-0' keyboardType='default' maxLength={50} />
+
+                        <TextInput onChangeText={val => setEmail(email)} defaultValue={email} placeholder='Enter your email address' className='h-10 w-72 border border-gray-400 text-lg px-4 py-0' keyboardType='email-address' maxLength={50} />
+
+                        <TextInput onChangeText={val => setPhone(val)} defaultValue={phone} placeholder='Enter your phone number' className='h-10 w-72 border border-gray-400 text-lg px-4 py-0' keyboardType='phone-pad' maxLength={10} />
 
                         <TouchableOpacity
                             onPress={handleSubmit}

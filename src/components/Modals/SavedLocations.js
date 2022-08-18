@@ -1,9 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
+import { getSavedLocations } from "../../https/Locations";
 import BankCard from "../subcomponents/BankCard";
 import HeaderCard from "../subcomponents/HeaderCard";
+import * as SecureStore from "expo-secure-store";
 
 const SavedLocations = () => {
+    const [savedLocations, setSavedLocations] = useState([]);
+
+    useEffect(() => {
+        const getLocations = async () => {
+            try {
+                const accessToken = await SecureStore.getItemAsync('accessToken');
+                const data = await getSavedLocations({ accessToken, id });
+                if(data?.success === true) {
+                    setSavedLocations(data.data);
+                }
+            } catch(err) {
+                console.log(err?.response?.data);
+            }
+        }
+        getLocations();
+    }, []);
+    
+
     return (
         <View style={styles.container}>
 

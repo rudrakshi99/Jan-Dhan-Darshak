@@ -16,6 +16,7 @@ import { API_KEY, BASE_URL } from "@env";
 
 import { useFonts } from "expo-font";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { useSelector } from "react-redux";
 
 const Header = ({
 	title,
@@ -28,6 +29,9 @@ const Header = ({
 	const navigation = useNavigation();
 	const route = useRoute();
 	const [search, setSearch] = useState("");
+	const { user } = useSelector((state) => state.auth || {});
+	console.log(user, "user ");
+
 	const [loaded] = useFonts({
 		InterBold: require("../assets/fonts/Inter-Bold.otf"),
 		InterRegular: require("../assets/fonts/Inter-Regular.otf"),
