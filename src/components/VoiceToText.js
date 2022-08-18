@@ -39,7 +39,7 @@ function VoiceToText() {
 	return (
 		<Modal
 			animationType="slide"
-			visible={true}
+			visible={false}
 			transparent={true}
 			onRequestClose={() => {
 				console.log("Modal Closed");

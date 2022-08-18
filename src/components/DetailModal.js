@@ -13,9 +13,12 @@ import {
 	Share,
 	Linking,
 } from "react-native";
+import * as SecureStore from "expo-secure-store";
 import { ArrowNarrowDownIcon, StarIcon } from "react-native-heroicons/outline";
 import { BASE_URL, API_KEY } from "@env";
 import { TabView, SceneMap } from "react-native-tab-view";
+import { createSavedLocation } from "../https/Locations";
+import { useNavigation } from "@react-navigation/native";
 
 // let item = {
 // 	address_components: [
@@ -274,6 +277,7 @@ import { TabView, SceneMap } from "react-native-tab-view";
 
 const DetailModal = ({ show, setShow, item }) => {
 	const [index, setIndex] = useState(0);
+	const navigation = useNavigation();
 	const [routes] = useState([
 		{ key: "first", title: "Overview" },
 		{ key: "second", title: "Reviews" },
@@ -296,6 +300,24 @@ const DetailModal = ({ show, setShow, item }) => {
 			}
 		} catch (error) {
 			alert(error.message);
+		}
+	}
+	async function handleSaveLocation(place_id) {
+		try {
+			const accessToken = await SecureStore.getItemAsync("accessToken");
+			if (!!accessToken) {
+				navigation.navigate("Login", {
+					to: "Detail",
+					place_id: place_id,
+				});
+			}
+			const result = await createSavedLocation({
+				accessToken: accessToken,
+				place_id: place_id,
+				User: 1,
+			});
+		} catch (err) {
+			console.log(err);
 		}
 	}
 
@@ -613,7 +635,12 @@ const DetailModal = ({ show, setShow, item }) => {
 								<Text style={styles.optionText}>Share</Text>
 							</View>
 							<View style={styles.buttonContainer}>
-								<TouchableOpacity style={[styles.optionButton]}>
+								<TouchableOpacity
+									style={[styles.optionButton]}
+									onPress={() =>
+										handleSaveLocation(item.place_id)
+									}
+								>
 									<Image
 										source={require("../assets/icons/save.png")}
 										style={styles.optionVector}
