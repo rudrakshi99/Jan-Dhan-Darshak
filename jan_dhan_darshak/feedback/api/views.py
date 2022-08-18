@@ -1,5 +1,6 @@
 from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from tomlkit import key
 from jan_dhan_darshak.core.utils import response_payload
 from jan_dhan_darshak.feedback.models import DeveloperFeedback, FinancialPointFeedback
 from jan_dhan_darshak.feedback.api.serializers import (
@@ -25,19 +26,27 @@ class DeveloperFeedbackView(generics.CreateAPIView):
     permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        validated_data = serializer.validated_data
-        feedback_form = serializer.create(validated_data)
+        try:
+            serializer = self.serializer_class(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            validated_data = serializer.validated_data
+            feedback_form = serializer.create(validated_data)
 
-        feedback_form = DeveloperFeedbackSerializer(feedback_form).data
+            feedback_form = DeveloperFeedbackSerializer(feedback_form).data
 
-        return Response(
-            response_payload(
-                success=True, data=feedback_form, msg="Thanks for the feedback."
-            ),
-            status=status.HTTP_200_OK,
-        )
+            return Response(
+                response_payload(
+                    success=True, data=feedback_form, msg="Thanks for the feedback."
+                ),
+                status=status.HTTP_200_OK,
+            )
+        except Exception as e:
+            error_key = list(e.__dict__["detail"].keys())[0]
+            message = e.__dict__["detail"][error_key][0]
+            return Response(
+                response_payload(success=False, msg=f"{message}"),
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
 
 class FinancialPointFeedbackCreateView(generics.CreateAPIView):
@@ -65,8 +74,10 @@ class FinancialPointFeedbackCreateView(generics.CreateAPIView):
                 status=status.HTTP_200_OK,
             )
         except Exception as e:
+            error_key = list(e.__dict__["detail"].keys())[0]
+            message = e.__dict__["detail"][error_key][0]
             return Response(
-                response_payload(success=False, msg=f"{e}"),
+                response_payload(success=False, msg=f"{message}"),
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
