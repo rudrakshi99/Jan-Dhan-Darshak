@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { MicrophoneIcon } from "react-native-heroicons/outline";
 import { Audio } from 'expo-av';
 
-const InputField = ({ multi, inputname, onChangeText, name, placeholder, recording, setRecording, uri, setUri }) => {
+const InputField = ({ multi, inputname, onChangeText, name, placeholder, recording, setRecording, uri, setUri, showMicro, help, keyboardType }) => {
     // const [sound, setSound] = useState();
 
     const startRecording = async () => {
@@ -66,12 +66,12 @@ const InputField = ({ multi, inputname, onChangeText, name, placeholder, recordi
                         onChangeText={onChangeText}
                         placeholder={placeholder}
                     ></TextInput>
-                    <MicrophoneIcon
+                    {showMicro && <MicrophoneIcon
                         onPress={() => recording ? stopRecording() : startRecording()}
                         style={styles.microIcon}
                         size={23}
                         color="#8E8E8E"
-                    />
+                    />}
                     {/* <Button
                         title="Play Audio"
                         onPress={() => playSound()}
@@ -79,8 +79,10 @@ const InputField = ({ multi, inputname, onChangeText, name, placeholder, recordi
                 </View>
             ) : (
                 <TextInput
-                    style={styles.inputFieldStyle}
+                    // style={!help ? styles.inputFieldStyle : styles.inputFieldStyleHelp}
+                    style={styles.inputFieldStyleHelp}
                     name={name}
+                    keyboardType={keyboardType}
                     onChangeText={onChangeText}
                     placeholder={placeholder}
                 ></TextInput>
@@ -107,6 +109,16 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         color: "#8E8E8E",
         paddingLeft: 20,
+    },
+    inputFieldStyleHelp: {
+        width: "100%",
+        height: 50,
+        backgroundColor: "#F1F1F1",
+        borderRadius: 4,
+        color: "#8E8E8E",
+        paddingLeft: 20,
+        borderWidth: 1,
+        borderRadius: 4,
     },
     commentFieldStyle: {
         flex: 1,

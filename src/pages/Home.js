@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Image } from "react-native";
 
 import { createDrawerNavigator } from "@react-navigation/drawer";
@@ -31,6 +31,23 @@ const Home = ({ navigation }) => {
         setCustomer(await SecureStore.getItemAsync('name'));
     }
     getToken();
+
+    // useEffect(() => {
+    //     const callFn = async () => {
+    //         const refreshToken = await SecureStore.getItemAsync('refreshToken');
+    //         console.log(refreshToken, 'refresh token');
+    //         if(!refreshToken) {
+    //             return;
+    //         }
+      
+    //         const { data } = await axios.post('http://192.168.207.154:5000/api/refresh', { refresh: refreshToken });
+    //         console.log(data);
+    //         await SecureStore.setItemAsync('accessToken', data.accessToken);
+    //         await SecureStore.setItemAsync('refreshToken', data.refreshToken);
+    //         dispatch(setAuth(data));
+    //     }
+    //     callFn();
+    // }, [])
 
     return (
         <Drawer.Navigator
