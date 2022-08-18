@@ -21,13 +21,16 @@ const OtpScreen = () => {
         try {
             const data= await verifyOtp({ otp, phone_number: phone });
             console.log(data, 'data');
+            
             if(data?.success === true) {
+                let userId=data.data.user.id
                 await SecureStore.setItemAsync('accessToken', data.data.tokens.access);
                 await SecureStore.setItemAsync('refreshToken', data.data.tokens.refresh);
                 await SecureStore.setItemAsync('name', data.data.user.name);
-
+                await SecureStore.setItemAsync('userId',`${userId}`);
                 console.log(await SecureStore.getItemAsync('accessToken'), 'added');
                 console.log(data.data, 'user object');
+
                 dispatch(setAuth(data.data));
                 navigation.navigate('Find');
             }

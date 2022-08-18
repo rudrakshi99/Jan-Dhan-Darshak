@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { MicrophoneIcon } from "react-native-heroicons/outline";
 import { Audio } from 'expo-av';
 
-const InputField = ({ multi, inputname, onChangeText, name, placeholder, recording, setRecording, uri, setUri, showMicro, help, keyboardType }) => {
+const InputField = ({ multi, inputname, onChangeText, name, placeholder, recording, setRecording, uri,value, setUri, showMicro, help, keyboardType }) => {
     // const [sound, setSound] = useState();
 
     const startRecording = async () => {
@@ -65,6 +65,7 @@ const InputField = ({ multi, inputname, onChangeText, name, placeholder, recordi
                         name={name}
                         onChangeText={onChangeText}
                         placeholder={placeholder}
+                        value={value}
                     ></TextInput>
                     {showMicro && <MicrophoneIcon
                         onPress={() => recording ? stopRecording() : startRecording()}
@@ -82,6 +83,7 @@ const InputField = ({ multi, inputname, onChangeText, name, placeholder, recordi
                     // style={!help ? styles.inputFieldStyle : styles.inputFieldStyleHelp}
                     style={styles.inputFieldStyleHelp}
                     name={name}
+                    value={value}
                     keyboardType={keyboardType}
                     onChangeText={onChangeText}
                     placeholder={placeholder}
