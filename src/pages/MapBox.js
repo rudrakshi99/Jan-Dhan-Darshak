@@ -37,7 +37,6 @@ const MapBox = () => {
 		latitude: 0,
 		longitude: 0,
 	});
-
 	function generateString() {
 		if (type.atm) return "atm";
 		if (type.bank) return "bank";
@@ -78,7 +77,13 @@ const MapBox = () => {
 
 	return (
 		<View style={style.container}>
-			<Header title="Location" subtitle="Current Address of the User" />
+			<Header
+				title="Location"
+				setResults={setResults}
+				subtitle="Current Address of the User"
+				location={location}
+				type={generateString}
+			/>
 			<Map markers={results} />
 			{results !== [] ? (
 				<FlatList
