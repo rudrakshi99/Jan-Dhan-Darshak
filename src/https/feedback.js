@@ -1,14 +1,9 @@
 import api from './api';
 
-export const createFeedback = async ({ accessToken, ...body }) => {
-    const config = {
-        headers: {
-            'content-type': 'application/json',
-            authorization: `Bearer ${accessToken}`,
-        }
-    }
-    const { data } = await api.post('/feedback/developer', body, config);
-    console.log(data, 'auth');
+export const createFeedback = async (body) => {
+    console.log(body, 'body feedback');
+    const { data } = await api.post('/feedback/developer', body);
+    console.log(data, 'feedback');
     return data;
 }
 
@@ -20,13 +15,14 @@ export const getFinancialPoints = async () => {
 
 
 export const createFinancialPoint = async ({ accessToken, ...body }) => {
+    console.log(body, 'financial point');
     const config = {
         headers: {
             'content-type': 'application/json',
             authorization: `Bearer ${accessToken}`,
         }
     }
-    const { data } = await api.post('/feedback/financial/', body, config);
-    console.log(data, 'auth');
+    const { data } = await api.post('/feedback/financial', body, config);
+    console.log(data, 'financial point');
     return data;
 }

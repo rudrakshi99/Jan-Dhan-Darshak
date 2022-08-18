@@ -23,10 +23,9 @@ const api = axios.create({
 //             originalRequest._isRetry = true;
     
 //             try {
-//                 const { data } = await axios.post('http://192.168.207.154:5000/api/refresh', { refreshTokenFromCookie: refreshToken });
+//                 const { data } = await axios.post(`${BACKEND_URL}/api/token/refresh/`, { refresh: refreshToken });
 //                 console.log(data, 'coming refresh');
 //                 await SecureStore.setItemAsync('accessToken', data.accessToken);
-//                 await SecureStore.setItemAsync('refreshToken', data.refreshToken);
 
 //                 originalRequest.headers['Authorization'] = 'Bearer ' + data.accessToken;
 
