@@ -251,7 +251,7 @@ class UserSerializer(serializers.ModelSerializer):
 class UserSignUpSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["name", "phone_number"]
+        fields = ["name", "phone_number", "email"]
 
     def create(self, validated_data):
         return User.objects.create(**validated_data, is_active=True)
@@ -262,7 +262,3 @@ class VerifyOTPSerializer(serializers.Serializer):
     phone_number = serializers.CharField(
         required=True, validators=[validator_mobile_number]
     )
-
-    # class Meta:
-    #     model = User
-    #     fields = ["phone_number", "otp"]

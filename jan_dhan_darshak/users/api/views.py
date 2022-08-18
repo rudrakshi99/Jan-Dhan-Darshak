@@ -83,11 +83,12 @@ class UserLoginViewset(viewsets.ViewSet):
     serializer_class = UserSignUpSerializer
 
     def create(self, request, *args, **kwargs):
+
         try:
-            user = User.objects.get(
-                phone_number=request.data.get("phone_number"), is_verified=False
-            )
+            # login
+            user = User.objects.get(phone_number=request.data.get("phone_number"))
         except User.DoesNotExist:
+            # signup
             serializer = self.serializer_class(data=request.data)
             serializer.is_valid(raise_exception=True)
             user = serializer.create(serializer.validated_data)
