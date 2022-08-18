@@ -31,7 +31,7 @@ const About = () => {
 
                 <View style={styles.topBorder}>
                     <TouchableOpacity style={styles.buttonBox}>
-                        <Text style={styles.button}>Confirm Language</Text>
+                        <Text style={styles.button}>Got it</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
         bottom: 13,
         height: 50,
         width: '100%',
-        backgroundColor: '#292C31',
+        backgroundColor: '#2C81E0',
         borderRadius: 5
     },
     button: {

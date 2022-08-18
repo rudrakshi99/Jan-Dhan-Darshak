@@ -50,7 +50,7 @@ const LoginScreen = () => {
                         
                         <TextInput onChangeText={val => setName(val)} defaultValue={name} placeholder='Enter your name' className='h-10 w-72 border border-gray-400 text-lg px-4 py-0' keyboardType='default' maxLength={50} />
 
-                        <TextInput onChangeText={val => setEmail(email)} defaultValue={email} placeholder='Enter your email address' className='h-10 w-72 border border-gray-400 text-lg px-4 py-0' keyboardType='email-address' maxLength={50} />
+                        <TextInput onChangeText={val => setEmail(val)} defaultValue={email} placeholder='Enter your email address' className='h-10 w-72 border border-gray-400 text-lg px-4 py-0' keyboardType='email-address' maxLength={50} />
 
                         <TextInput onChangeText={val => setPhone(val)} defaultValue={phone} placeholder='Enter your phone number' className='h-10 w-72 border border-gray-400 text-lg px-4 py-0' keyboardType='phone-pad' maxLength={10} />
 

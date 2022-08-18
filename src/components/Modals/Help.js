@@ -25,6 +25,7 @@ const Help = () => {
     const [topic, setTopic] = useState("");
     const [rating, setRating] = useState("5");
     const [response, setResponse] = useState('');
+    const [error, setError] = useState('');
 
     const ratingCompleted = (rating) => {
         console.log("Rating is: " + rating)
@@ -34,6 +35,7 @@ const Help = () => {
     const handleSubmit = async () => {
         try {
             if(!phone_number || !name || !email || (rating <= 4 && !message) || !topic || !rating) {
+                setError('All fields are required !');
                 return;
             }
             console.log(phone_number, " ", email, " ", message, " ", rating);
@@ -44,6 +46,7 @@ const Help = () => {
             }
         } catch(err) {
             console.log(err?.response?.data);
+            setError(err?.response?.data);
         }
     }
 
@@ -68,6 +71,7 @@ const Help = () => {
                     </View>
                     <View style={styles.divider}></View>
                     {!response ? <ScrollView style={styles.forms} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
+                    <Text style={styles.errorMsg}>{error}</Text>
                         <InputField
                             inputname="Phone number" keyboardType="phone-pad"
                             help={true}
@@ -176,6 +180,14 @@ const styles = StyleSheet.create({
     smallDesc: {
         color: "#101010",
     },
+    errorMsg: {
+        fontSize: 20,
+        fontWeight: 'normal',
+        color: '#9c342d',
+        marginLeft: 10,
+        marginTop: 8,
+        marginBottom: 8
+    },
     responseView: {
         display: 'flex',
         top: 200,
@@ -193,6 +205,9 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         paddingBottom: 10,
         marginLeft: 12
+    },
+    forms: {
+        marginTop: -10
     },
     borderGet: {
         borderWidth: 1,
@@ -217,7 +232,7 @@ const styles = StyleSheet.create({
         bottom: -70,
         height: 50,
         width: "100%",
-        backgroundColor: "#292C31",
+        backgroundColor: "#2C81E0",
         borderRadius: 5,
     },
     button: {

@@ -68,10 +68,15 @@ const BankFeedback = () => {
     const [mobile, setMobile] = useState("");
     const [comments, setComments] = useState("");
     const [unique_id, setUnique_id] = useState("");
+    const [error, setError] = useState("");
 
 
     const handleSubmit = async () => {
         try {
+            if(!financial_type || !NameOfThePoint || !unique_id_type || !comments || !unique_id) {
+                setError('All fields are required !');
+                return;
+            }
             const accessToken = await SecureStore.getItemAsync('accessToken');
             const data = await createFinancialPoint({ accessToken, financial_type, financial_point_name: NameOfThePoint, unique_id_type, message: comments, audio_message: uri, unique_id });
 
@@ -80,6 +85,7 @@ const BankFeedback = () => {
             }
         } catch(err) {
             console.log(err?.response?.data);
+            setError(err?.response?.data);
         }
     }
 
@@ -104,6 +110,7 @@ const BankFeedback = () => {
                     </View>
                     <View style={styles.divider}></View>
                     <ScrollView style={styles.forms} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
+                    <Text style={styles.errorMsg}>{error}</Text>
                         <Text style={styles.inputLabel}>Financial Type</Text>
                         <View style={styles.borderGet}>
                             <RNPickerSelect
@@ -227,6 +234,14 @@ const styles = StyleSheet.create({
     smallDesc: {
         color: "#101010",
     },
+    errorMsg: {
+        fontSize: 20,
+        fontWeight: 'normal',
+        color: '#9c342d',
+        marginLeft: 10,
+        marginTop: 8,
+        marginBottom: 8
+    },
     inputLabel: {
         color: "#8E8E8E",
         fontSize: 16,
@@ -250,7 +265,7 @@ const styles = StyleSheet.create({
         bottom: -70,
         height: 50,
         width: "100%",
-        backgroundColor: "#292C31",
+        backgroundColor: "#2C81E0",
         borderRadius: 5,
     },
     button: {
