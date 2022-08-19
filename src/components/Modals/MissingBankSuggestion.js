@@ -8,6 +8,8 @@ import {
     Alert,
     Modal,
     Pressable,
+    SafeAreaView,
+    ScrollView,
 } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
 import Map from "../Map";
@@ -39,32 +41,32 @@ const MissingBankSuggestion = () => {
     const [userId,setUserId]=useState("")
     const [accessToken,setAccessToken]=useState("")
     useEffect(() => {
-        async function getGeocodedAddress() {
-            const location = await Location.getCurrentPositionAsync({});
-            const { latitude, longitude } = location.coords;
-            setLocationObj({latitude:latitude,longitude:longitude});
-            const result = await axios.get(
-                `${BASE_URL}maps/api/geocode/json?latlng=${
-                    latitude + "," + longitude
-                }&key=${API_KEY}`
-            )
-            console.log(result.data.results[0].formatted_address);
-            setAddress(result.data.results[0].formatted_address);
-        }
-        async function getUserData(){
+        // async function getGeocodedAddress() {
+        //     const location = await Location.getCurrentPositionAsync({});
+        //     const { latitude, longitude } = location.coords;
+        //     setLocationObj({latitude:latitude,longitude:longitude});
+        //     const result = await axios.get(
+        //         `${BASE_URL}maps/api/geocode/json?latlng=${
+        //             latitude + "," + longitude
+        //         }&key=${API_KEY}`
+        //     )
+        //     console.log(result.data.results[0].formatted_address);
+        //     setAddress(result.data.results[0].formatted_address);
+        // }
+        // async function getUserData(){
        
-            setAccessToken(await SecureStore.getItemAsync('accessToken'));
-            setUserId(await SecureStore.getItemAsync('userId'))
-        }
-        getUserData();
-        getGeocodedAddress();
+        //     setAccessToken(await SecureStore.getItemAsync('accessToken'));
+        //     setUserId(await SecureStore.getItemAsync('userId'))
+        // }
+        // getUserData();
+        // getGeocodedAddress();
     }, [focused]);
     
    
     const handleFormChange = async() => {
       
         try {
-            console.log("start")
+           
             
             console.log(userId,accessToken)
 
@@ -128,7 +130,9 @@ const MissingBankSuggestion = () => {
                         heading="Suggestion"
                         text="Suggest Missing Bank or FInancial Points"
                     />
+                    <View style={styles.mapper}>
                     <Map />
+                    </View>
                     <View style={styles.bottomBox}>
                         <View style={styles.locationBox}>
                             <Text style={styles.locationText}>
@@ -155,19 +159,13 @@ const MissingBankSuggestion = () => {
                     </View>
                 </View>
             ) : (
+                <ScrollView>
                 <View>
-                    <View style={styles.innerContainer}>
+                    <View style={styles.mapper2}>
                         <Map />
                     </View>
-                    <TouchableOpacity
-                        style={styles.iconHeader}
-                        onPress={() => {
-                            setConfirmLocation(!confirmLocation);
-                        }}
-                    >
-                        <ArrowNarrowLeftIcon size={30} color="#101010" />
-                    </TouchableOpacity>
                     <View style={styles.missingform}>
+                        
                         <View style={styles.formTopText}>
                             <Text style={styles.missingformtext}>
                                 Fill the Details
@@ -218,23 +216,36 @@ const MissingBankSuggestion = () => {
                         >
                             <Text style={styles.button}>Confirm Location</Text>
                         </TouchableOpacity>
+                        
                     </View>
+                   
                 </View>
+                </ScrollView>
             )}
         </View>
     );
 };
 
 const styles = StyleSheet.create({
+    mapper:{
+        height:Dimensions.get('window').height*0.6,
+    },
+    mapper2:{
+        height:Dimensions.get('window').height*0.2,
+    },
     container: {
         flex: 1,
     },
     bottomBox: {
-        height: 180,
+        position: "absolute",
+        top:Dimensions.get('window').height*0.65,
         marginVertical: 26,
-        marginHorizontal: 20,
-        background: "#F9F9F9",
+        paddingHorizontal: 20,
+        backgroundColor: "#F9F9F9",
+        height: Dimensions.get('window').height*0.3,
+        width: Dimensions.get('window').width,
         boxShadow: "0px 0px 6px rgba(0, 0, 0, 0.12)",
+        
     },
     locationBox: {
         display: "flex",
@@ -271,6 +282,9 @@ const styles = StyleSheet.create({
     buttonBox: {
         position: "absolute",
         bottom: 0,
+        marginBottom: 25,
+        marginHorizontal:20,
+        width: Dimensions.get("window").width*0.8,
         height: 50,
         width: "100%",
         backgroundColor: "#292C31",
@@ -288,11 +302,7 @@ const styles = StyleSheet.create({
         width: Dimensions.get("window").width,
         flex: 1,
     },
-    iconHeader: {
-        marginTop: 15,
-        marginLeft: 15,
-        position: "absolute",
-    },
+    
     missingform: {
         width: "85%",
         marginHorizontal: "7.5%",
