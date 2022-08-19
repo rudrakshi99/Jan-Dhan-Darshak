@@ -376,3 +376,11 @@ TWILIO = {
     "AUTH_TOKEN": env.str("TWILIO_AUTH_TOKEN", None),
     "SERVICE_ID": env.str("TWILIO_SERVICE_ID", None),
 }
+
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = env.str("EMAIL_HOST_USER", None)
+EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD", None)
