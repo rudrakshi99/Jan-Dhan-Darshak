@@ -175,7 +175,7 @@ const Home = ({ navigation }) => {
                 options={{
                     headerShown: false,
                     drawerIcon: () => (
-                        <Icon name="logout" size={24} color="#2C81E0" />
+                        <Icon name="logout" size={24} color="#e35944" />
                     ),
                 }}
             />}

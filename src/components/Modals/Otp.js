@@ -17,6 +17,7 @@ import { verifyOtp } from "../../https/auth";
 import OTPInputView from "@twotalltotems/react-native-otp-input";
 import PhoneInput from "react-native-phone-number-input";
 import RNOtpVerify from 'react-native-otp-verify';
+import { flashMessage } from "../../lottie/flashMessage";
 // import Clipboard from '@react-native-community/clipboard';
 
 const OtpScreen = () => {
@@ -55,10 +56,12 @@ const OtpScreen = () => {
 	const handleOtp = async () => {
 		if (!otp || !phone) {
 			setError('All fields are required !');
+			flashMessage('All fields are required !', 'danger');
 			return;
 		}
 		if(otp.length !== 6) {
 			setError('OTP should be of six digit !');
+			flashMessage("OTP should be of six digit !", 'danger');
 			return;
 		}
 		try {
@@ -66,6 +69,7 @@ const OtpScreen = () => {
 			console.log(data, "data");
 
 			if (data?.success === true) {
+				flashMessage(data?.message, 'success');
 				let userId = data.data.user.id;
 				await SecureStore.setItemAsync(
 					"accessToken",
@@ -82,11 +86,13 @@ const OtpScreen = () => {
 					"added"
 				);
 				console.log(data.data, "user object");
-
+				setOTP('');
 				navigation.push("Home");
+				
 			}
 		} catch (err) {
 			console.log(err?.response?.data);
+			flashMessage(err?.response?.data, 'danger');
 			setError(err?.response?.data);
 		}
 	};
@@ -132,7 +138,7 @@ const OtpScreen = () => {
 					/> */}
 
 					{/* <TextInput onChangeText={val => setOTP(val)} defaultValue={otp} placeholder='Enter OTP' className='h-10 w-72 border border-gray-400 text-lg px-4 py-0' keyboardType='number-pad' maxLength={14} /> */}
-					<Text className='text-lg font-semibold text-[#e35944] mb-2'>{error}</Text>
+					<Text className='text-[16.5px] font-semibold text-[#e35944] mb-2'>{error}</Text>
 
 					<OTPInputView
 						style={{ width: "86%", height: 60 }}

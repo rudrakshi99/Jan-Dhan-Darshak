@@ -3,6 +3,8 @@ import React, { useEffect } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import * as SecureStore from 'expo-secure-store';
 import { XIcon } from "react-native-heroicons/outline";
+import { showMessage } from "react-native-flash-message";
+import { flashMessage } from "../../lottie/flashMessage";
 
 const Logout = () => {
     const navigation = useNavigation();
@@ -19,6 +21,7 @@ const Logout = () => {
     
 
     const handleLogout = async () => {
+        flashMessage("User logged out successfully", 'success');
         await SecureStore.setItemAsync('accessToken',"");
         await SecureStore.setItemAsync('name',"");
         await SecureStore.setItemAsync('refreshToken',"");

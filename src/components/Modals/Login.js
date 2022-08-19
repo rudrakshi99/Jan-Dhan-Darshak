@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native'
 import { sendOtp } from '../../https/auth'
 import * as SecureStore from 'expo-secure-store';
 import PhoneInput from "react-native-phone-number-input";
+import { flashMessage } from '../../lottie/flashMessage'
 
 const LoginScreen = () => {
     const navigation = useNavigation();
@@ -28,10 +29,12 @@ const LoginScreen = () => {
     const handleSubmit = async () => {
         if( !phone || !name ) {
             setError('All fields are required !');
+            flashMessage('All fields are required !', 'danger');
             return;
         }
         const checkValid = phoneInput.current?.isValidNumber(phone);
         if(!checkValid) {
+            flashMessage('Invalid phone number !', 'danger');
             setError('Invalid phone number !');
             return;
         }
@@ -41,11 +44,14 @@ const LoginScreen = () => {
             const data = await sendOtp({ name, email, phone_number: phone });
             console.log(data, 'data');
             if(data?.success === true) {
+                flashMessage(data?.message, 'success');
                 await SecureStore.setItemAsync('phone', phone);
+               
                 navigation.navigate('OTP');
             }
         } catch(err) {
             console.log(err?.response?.data);
+            flashMessage(err?.response?.data, 'danger');
             setError(err?.response?.data);
         }
     }
@@ -68,7 +74,7 @@ const LoginScreen = () => {
                     <Text className='text-center text-3xl text-gray-600 p-4 mb-6 font-bold'>Login</Text>
 
                     <View className='flex-col items-center justify-center space-y-6'>
-                        <Text className='text-lg font-semibold text-[#e35944] -mb-4'>{error}</Text>
+                        <Text className='text-[16.5px] font-semibold text-[#e35944] -mb-3'>{error}</Text>
                         
                         <TextInput onChangeText={val => setName(val)} defaultValue={name} placeholder='Enter your name' className='h-10 w-72 border border-gray-400 text-lg px-4 py-0' keyboardType='default' maxLength={50} />
                         <Text className='absolute top-4 right-12 text-[25px] text-[#cf304f]'>*</Text>
