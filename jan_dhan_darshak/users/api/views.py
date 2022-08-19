@@ -7,10 +7,7 @@ from rest_framework import viewsets
 from .serializers import (
     UserSignUpSerializer,
     VerifyOTPSerializer,
-    # VerifyOtpSerializer,
-    # LoginWithOtpSerializer,
     UserSerializer,
-    # UserSignupSerializer,
 )
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import AuthenticationFailed
@@ -29,55 +26,6 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return self.queryset.all()
 
-
-# class SignUpViewset(viewsets.ViewSet):
-#     queryset = User.objects.all()
-#     serializer_class = UserSignupSerializer
-
-#     @action(detail=False, methods=["post"])
-#     def signup(self, request, *args, **kwargs):
-#         serializer = UserSignupSerializer(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-#         validated_data = serializer.validated_data
-#         user = serializer.create(validated_data)
-#         user_data = UserSignupSerializer(user).data
-
-#         return Response(
-#             response_payload(success=True, data=user_data, msg="Otp Has been Sent"),
-#             status=status.HTTP_200_OK,
-#         )
-
-
-# class LoginOtpViewset(viewsets.ViewSet):
-#     queryset = User.objects.all()
-#     serializer_class = LoginWithOtpSerializer
-
-#     @action(detail=False, methods=["post"])
-#     def otp_login(self, request, *args, **kwargs):
-#         serializer = LoginWithOtpSerializer(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-#         return Response(
-#             response_payload(success=True, msg="OTP has been sent Successfully"),
-#             status=status.HTTP_200_OK,
-#         )
-
-
-# class VerifyOtpViewset(viewsets.ViewSet):
-#     queryset = User.objects.all()
-#     serializer_class = VerifyOtpSerializer
-
-#     @action(detail=False, methods=["post"])
-#     def verify_otp(self, request, *args, **kwargs):
-#         serializer = self.serializer_class(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-
-#         return Response(
-#             response_payload(
-#                 success=True, data=serializer.data, msg="Logged in Successfully"
-#             )
-#         )
-
-
 class UserLoginViewset(viewsets.ViewSet):
     queryset = User.objects.all()
     serializer_class = UserSignUpSerializer
@@ -93,18 +41,15 @@ class UserLoginViewset(viewsets.ViewSet):
             serializer.is_valid(raise_exception=True)
             user = serializer.create(serializer.validated_data)
         except Exception as e:
-            raise e
+            error_key = list(e.__dict__["detail"].keys())[0]
+            message = e.__dict__["detail"][error_key][0]
+            return Response(
+                response_payload(success=False, msg=f"{message}"),
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         twilio_handler = TwilioHandler()
-        # twilio_user_id = twilio_handler.create_or_get_user(
-        #     email=user.email if user.email else "test@test.com",
-        #     phone_number=user.phone_number,
-        # )
         twilio_handler.send_otp(user.phone_number)
-
-        # user.twilio_user_id = twilio_user_id
-        # user.save()
-
         return Response(
             response_payload(
                 success=True,
@@ -114,43 +59,58 @@ class UserLoginViewset(viewsets.ViewSet):
         )
 
     def verify(self, request, *args, **kwargs):
-        serializer = VerifyOTPSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        validated_data = serializer.validated_data
+        try:
+            serializer = VerifyOTPSerializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            validated_data = serializer.validated_data
 
-        user = User.objects.filter(phone_number=validated_data.get("phone_number"))
+            user = User.objects.filter(phone_number=validated_data.get("phone_number"))
 
-        if not user.exists():
-            raise AuthenticationFailed(
-                response_payload(success=False, msg="Invalid credentials, try again")
-            )
-
-        user = user.first()
-        if not user.is_active:
-            raise AuthenticationFailed(
-                response_payload(success=False, msg="Account disabled, contact admin")
-            )
-
-        twilio_handler = TwilioHandler()
-        otp_verified = twilio_handler.verify_otp(
-            phone_number=user.phone_number, otp=validated_data.get("otp")
-        )
-
-        if otp_verified:
-            user.is_verified = True
-            user.save()
-            return Response(
-                response_payload(
-                    success=True,
-                    data={"user": UserSerializer(user).data, "tokens": user.tokens()},
-                    msg="Otp has been Verified",
+            if not user.exists():
+                raise AuthenticationFailed(
+                    response_payload(
+                        success=False, msg="Invalid credentials, try again"
+                    )
                 )
+
+            user = user.first()
+            if not user.is_active:
+                raise AuthenticationFailed(
+                    response_payload(
+                        success=False, msg="Account disabled, contact admin"
+                    )
+                )
+
+            twilio_handler = TwilioHandler()
+            otp_verified = twilio_handler.verify_otp(
+                phone_number=user.phone_number, otp=validated_data.get("otp")
             )
-        else:
+
+            if otp_verified:
+                user.is_verified = True
+                user.save()
+                return Response(
+                    response_payload(
+                        success=True,
+                        data={
+                            "user": UserSerializer(user).data,
+                            "tokens": user.tokens(),
+                        },
+                        msg="Otp has been Verified",
+                    )
+                )
+            else:
+                return Response(
+                    response_payload(
+                        success=False,
+                        msg="Incorrect Otp, Try Again",
+                    ),
+                    status.HTTP_400_BAD_REQUEST,
+                )
+        except Exception as e:
+            error_key = list(e.__dict__["detail"].keys())[0]
+            message = e.__dict__["detail"][error_key][0]
             return Response(
-                response_payload(
-                    success=False,
-                    msg="Incorrect Otp, Try Again",
-                ),
-                status.HTTP_400_BAD_REQUEST,
+                response_payload(success=False, msg=f"{message}"),
+                status=status.HTTP_400_BAD_REQUEST,
             )
