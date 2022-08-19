@@ -48,6 +48,6 @@ def financial_point(sender, instance, created, **kwargs):
             send_mail(subject, message, email_from, recipient_list)
         except Exception as e:
             logger.error(
-                "Error on financial point signals: ",
+                "Error on financial point signals:"
                 f"Stacktrace : {traceback.format_exc()}",
             )
