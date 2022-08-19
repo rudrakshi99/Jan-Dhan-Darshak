@@ -291,6 +291,7 @@ function Directions() {
 									marginLeft: 10,
 								},
 							]}
+							onPress={() => navigation.goBack()}
 						>
 							<Text style={{ color: "#000", fontSize: 20 }}>
 								Go Back

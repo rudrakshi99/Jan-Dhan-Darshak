@@ -21,44 +21,63 @@ import {
     ArrowNarrowLeftIcon,
     CheckCircleIcon,
 } from "react-native-heroicons/outline";
-
+import { createSuggestion } from "../../https/suggestions";
+import * as SecureStore from "expo-secure-store";
 const MissingBankSuggestion = () => {
     const [confirmLocation, setConfirmLocation] = useState(false);
     const [location, setLocation] = useState("");
     const [name, setName] = useState("");
     const [details, setDetails] = useState("");
-    const [formDetails, setFormDetails] = useState({
-        name: "",
-        location: "",
-        details: "",
-    });
+
     const focused = useIsFocused();
     const [modalVisible, setModalVisible] = useState(false);
     const [address, setAddress] = useState(
         "B-47 Sector C, Aliganj, Lucknow, Uttar Pradesh, India"
     );
+    const [locationObj,setLocationObj]=useState({latitude:0.0000000,longitude:0.0000000})
     const navigation = useNavigation();
-
+    const [userId,setUserId]=useState("")
+    const [accessToken,setAccessToken]=useState("")
     useEffect(() => {
         async function getGeocodedAddress() {
             const location = await Location.getCurrentPositionAsync({});
             const { latitude, longitude } = location.coords;
-            // const result = await axios.get(
-            //     `${BASE_URL}maps/api/geocode/json?latlng=${
-            //         latitude + "," + longitude
-            //     }&key=${API_KEY}`
-            // )
-            // console.log(result.data.results[0].formatted_address);
-            // setAddress(result.data.results[0].formatted_address);
+            setLocationObj({latitude:latitude,longitude:longitude});
+            const result = await axios.get(
+                `${BASE_URL}maps/api/geocode/json?latlng=${
+                    latitude + "," + longitude
+                }&key=${API_KEY}`
+            )
+            console.log(result.data.results[0].formatted_address);
+            setAddress(result.data.results[0].formatted_address);
         }
+        async function getUserData(){
+       
+            setAccessToken(await SecureStore.getItemAsync('accessToken'));
+            setUserId(await SecureStore.getItemAsync('userId'))
+        }
+        getUserData();
         getGeocodedAddress();
     }, [focused]);
+    
+   
+    const handleFormChange = async() => {
+      
+        try {
+            console.log("start")
+            
+            console.log(userId,accessToken)
 
-    const handleFormChange = () => {
-        const newDetails = { name: name, location: location, details: details };
-        setFormDetails(newDetails);
-        // console.log(newDetails);
-        setModalVisible(true);
+            const data = await createSuggestion(accessToken, {User:parseInt(userId),pointName: name, address: address, otherdetails: details,latitude:locationObj.latitude,longitude:locationObj.longitude });
+            console.log(data,'data')
+            if(data?.success === true) {
+                setModalVisible(true);
+            }
+        } catch(err) {
+            console.log(err?.response?.data);
+        }
+        
+        
     };
     return (
         <View>
@@ -79,9 +98,9 @@ const MissingBankSuggestion = () => {
                             <Text style={styles.modalSubText}>
                                 Thank you for filling out the Form.
                             </Text>
-                            <Text style={styles.trackID}>
+                            {/* <Text style={styles.trackID}>
                                 Track ID: 4855682
-                            </Text>
+                            </Text> */}
                             <View style={styles.modalButtons}>
                                 <Pressable
                                     style={[styles.button, styles.trackButton]}
@@ -156,10 +175,16 @@ const MissingBankSuggestion = () => {
                             <Text style={styles.missingformtext}>Step 2/2</Text>
                         </View>
                         <View style={styles.selectPoint}>
+                            <TouchableOpacity
+                            onPress={()=>{
+                                setConfirmLocation(!confirmLocation)
+                            }}
+                            >
                             <Text style={styles.textSelectPoint}>
                                 Select a Financial Point{" "}
                                 <Text style={styles.downarrow}>⌄</Text>
                             </Text>
+                            </TouchableOpacity>
                         </View>
                         <InputField
                             onChangeText={(e) => {
@@ -171,10 +196,11 @@ const MissingBankSuggestion = () => {
                         />
                         <InputField
                             onChangeText={(e) => {
-                                setLocation(e);
+                                setAddress(e);
                             }}
                             inputname="Address"
                             name="address"
+                            value={address}
                             placeholder="Address of the Financial Point"
                         />
                         <InputField

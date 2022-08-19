@@ -27,7 +27,7 @@ const BankFeedback = () => {
 
 	const [recording, setRecording] = useState();
 	const [uri, setUri] = useState("");
-
+	const focused = useIsFocused();
 	const user = useSelector((state) => state.auth.user);
 
 	useEffect(() => {}, [focused]);
@@ -40,9 +40,20 @@ const BankFeedback = () => {
 	const [mobile, setMobile] = useState("");
 	const [comments, setComments] = useState("");
 	const [unique_id, setUnique_id] = useState("");
+	const [error, setError] = useState("");
 
 	const handleSubmit = async () => {
 		try {
+			if (
+				!financial_type ||
+				!NameOfThePoint ||
+				!unique_id_type ||
+				!comments ||
+				!unique_id
+			) {
+				setError("All fields are required !");
+				return;
+			}
 			const accessToken = await SecureStore.getItemAsync("accessToken");
 			const data = await createFinancialPoint({
 				accessToken,

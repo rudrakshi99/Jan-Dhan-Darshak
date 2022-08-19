@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Image } from "react-native";
+import { Image, Text, TouchableOpacity } from "react-native";
 
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
@@ -15,10 +15,11 @@ import SavedLocations from "../components/Modals/SavedLocations";
 import TrackRequest from "../components/Modals/TrackRequest";
 import MissingBankSuggestion from "../components/Modals/MissingBankSuggestion";
 import Help from "../components/Modals/Help";
-import Login from "../components/Modals/Login";
+import LoginScreen from "../components/Modals/Login";
 import BankFeedback from "../components/Modals/BankFeedback";
 import { useSelector } from "react-redux";
 import * as SecureStore from 'expo-secure-store';
+import Logout from "../components/Modals/Logout";
 
 const Drawer = createDrawerNavigator();
 
@@ -26,9 +27,15 @@ const Home = ({ navigation }) => {
     const [current, setCurrent] = useState("test");
     const [customer, setCustomer] = useState("");
     const { user } = useSelector(state => state.auth || {});
+    
     const getToken = async () => {
         console.log(await SecureStore.getItemAsync('name'), "access token header");
         setCustomer(await SecureStore.getItemAsync('name'));
+        console.log(await SecureStore.getItemAsync('userId'),"userId")
+        // await SecureStore.setItemAsync('accessToken',"")
+        // await SecureStore.setItemAsync('name',"")
+        // await SecureStore.setItemAsync('refreshToken',"")
+        // await SecureStore.setItemAsync('userId',"")
     }
     getToken();
 
@@ -56,14 +63,15 @@ const Home = ({ navigation }) => {
         >
             {!customer && <Drawer.Screen
                 name="Login"
-                component={Login}
+                component={LoginScreen}
                 options={{
                     headerShown: false,
                     drawerIcon: () => (
                         <Image source={require("../assets/icons/icon.png")} />
                     ),
                 }}
-            />}
+            />
+            }
             <Drawer.Screen
                 name="Find"
                 component={MapBox}
@@ -110,7 +118,7 @@ const Home = ({ navigation }) => {
             />
             <Drawer.Screen
                 name="Track Request/ Suggestion"
-                component={MapBox}
+                component={TrackRequest}
                 options={{
                     headerShown: false,
                     drawerIcon: () => (
@@ -164,6 +172,19 @@ const Home = ({ navigation }) => {
                     ),
                 }}
             />
+            {/* {customer && <Drawer.Screen
+                name="Logout"
+                component={Logout}
+                options={{
+                    headerShown: false,
+                    drawerIcon: () => (
+                        <Image
+                            source={require("../assets/icons/missingbank.png")}
+                        />
+                    ),
+                }}
+            />} */}
+            
         </Drawer.Navigator>
     );
 };

@@ -27,7 +27,7 @@ const api = axios.create({
 //                 console.log(data, 'coming refresh');
 //                 await SecureStore.setItemAsync('accessToken', data.accessToken);
 
-//                 originalRequest.headers['Authorization'] = 'Bearer ' + data.accessToken;
+//                 originalRequest.headers['Authorization'] = 'Bearer ' + data.access;
 
 //                 console.log('Refresh used setted');
 //                 return api.request(originalRequest);
