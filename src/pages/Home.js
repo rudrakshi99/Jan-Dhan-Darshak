@@ -17,7 +17,6 @@ import MissingBankSuggestion from "../components/Modals/MissingBankSuggestion";
 import Help from "../components/Modals/Help";
 import LoginScreen from "../components/Modals/Login";
 import BankFeedback from "../components/Modals/BankFeedback";
-import { useSelector } from "react-redux";
 import * as SecureStore from 'expo-secure-store';
 import Logout from "../components/Modals/Logout";
 import Icon from "react-native-vector-icons/AntDesign";
@@ -27,7 +26,6 @@ const Drawer = createDrawerNavigator();
 const Home = ({ navigation }) => {
     const [current, setCurrent] = useState("test");
     const [customer, setCustomer] = useState("");
-    const { user } = useSelector(state => state.auth || {});
     
     const getToken = async () => {
         console.log(await SecureStore.getItemAsync('name'), "access token header");
@@ -114,7 +112,7 @@ const Home = ({ navigation }) => {
                 }}
             />
             <Drawer.Screen
-                name="Track Request/ Suggestion"
+                name="Track Request"
                 component={TrackRequest}
                 options={{
                     headerShown: false,

@@ -306,14 +306,15 @@ const DetailModal = ({ show, setShow, item }) => {
 	}
 	async function handleSaveLocation(place_id) {
 		try {
-			if (!!user.token) {
+			const accessToken = await SecureStore.getItemAsync("accessToken");
+			if (!!accessToken) {
 				// navigation.navigate("Login", {
 				// 	to: "Detail",
 				// 	place_id: place_id,
 				// });
 			}
 			const result = await createSavedLocation({
-				accessToken: user.token,
+				accessToken: accessToken,
 				place_id: place_id,
 				User: 15,
 			});

@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
         position: "absolute",
         top:Dimensions.get('window').height*0.65,
         marginVertical: 26,
-        paddingHorizontal: 20,
+        paddingHorizontal: 15,
         backgroundColor: "#F9F9F9",
         height: Dimensions.get('window').height*0.3,
         width: Dimensions.get('window').width,
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
     },
     changeText: {
         paddingVertical: 13,
-        paddingHorizontal: 25,
+        paddingHorizontal: 22,
         fontSize: 15,
         fontWeight: "500",
         color: "#292C31",

@@ -11,6 +11,7 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useSelector } from "react-redux";
 import { deleteSavedLocation } from "../../https/Locations";
+import * as SecureStore from "expo-secure-store";
 
 const BankCard = ({ imgUrl, name, branch, place_id }) => {
 	console.log("place Id :", place_id);
@@ -18,7 +19,7 @@ const BankCard = ({ imgUrl, name, branch, place_id }) => {
 	const user = useSelector((state) => state.auth.user);
 	async function handleDelete() {
 		try {
-			const accessToken = user.token;
+			const accessToken = await SecureStore.getItemAsync("accessToken");;
 			const id = 15;
 			const data = await deleteSavedLocation({
 				accessToken: accessToken,

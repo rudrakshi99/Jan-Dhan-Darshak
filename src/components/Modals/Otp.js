@@ -60,7 +60,7 @@ const OtpScreen = () => {
 			return;
 		}
 		if(otp.length !== 6) {
-			setError('OTP should be of six digit !');
+			// setError('OTP should be of six digit !');
 			flashMessage("OTP should be of six digit !", 'danger');
 			return;
 		}
