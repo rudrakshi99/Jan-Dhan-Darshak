@@ -4,6 +4,9 @@ import Lottie from "lottie-react-native";
 
 function Loader() {
 	const animationRef = React.useRef(null);
+	React.useEffect(() => {
+		animationRef.current?.play();
+	}, []);
 	return (
 		<View style={styles.container}>
 			<Lottie
