@@ -1,6 +1,9 @@
 from django.urls import path
 
-from jan_dhan_darshak.users.api.views import UserLoginViewset  # , VerifyOtpViewset
+from jan_dhan_darshak.users.api.views import (
+    UserLoginViewset,
+    VoiceToText,
+)  # , VerifyOtpViewset
 
 from jan_dhan_darshak.users.views import (
     user_detail_view,
@@ -15,4 +18,5 @@ urlpatterns = [
     # path("<str:username>/", view=user_detail_view, name="detail"),
     path("signup/", view=UserLoginViewset.as_view({"post": "create"}), name="signup"),
     path("verify/", view=UserLoginViewset.as_view({"post": "verify"}), name="verify"),
+    path("voice-to-text/", view=VoiceToText.as_view(), name="voicetotext"),
 ]

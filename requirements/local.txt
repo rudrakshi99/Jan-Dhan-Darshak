@@ -40,3 +40,6 @@ djangorestframework-simplejwt==5.2.0
 twilio==7.12.1
 authy==2.2.6
 django-filter==22.1
+
+SpeechRecognition==3.8.1
+pydub==0.25.1

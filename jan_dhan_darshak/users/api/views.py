@@ -12,6 +12,9 @@ from .serializers import (
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import AuthenticationFailed
 from jan_dhan_darshak.core.utils import response_payload
+from rest_framework.views import APIView
+import speech_recognition as sr
+from pydub import AudioSegment
 
 
 User = get_user_model()
@@ -25,6 +28,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return self.queryset.all()
+
 
 class UserLoginViewset(viewsets.ViewSet):
     queryset = User.objects.all()
@@ -112,5 +116,29 @@ class UserLoginViewset(viewsets.ViewSet):
             message = e.__dict__["detail"][error_key][0]
             return Response(
                 response_payload(success=False, msg=f"{message}"),
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+
+
+
+class VoiceToText(APIView):
+    def post(self, request, **kwargs):
+        voice = request.data.get("voice")
+        try:
+            r = sr.Recognizer()
+            with sr.AudioFile(voice) as source:
+                audio_data = r.record(source)
+                text = r.recognize_google(audio_data)
+            return Response(
+                response_payload(
+                    success=True,
+                    data={"msg": text},
+                    msg="Voice to text converted successfully!",
+                )
+            )
+        except Exception as e:
+            return Response(
+                response_payload(success=False, msg=str(e)),
                 status=status.HTTP_400_BAD_REQUEST,
             )
