@@ -16,7 +16,7 @@ import * as SecureStore from "expo-secure-store";
 import { verifyOtp } from "../../https/auth";
 import OTPInputView from "@twotalltotems/react-native-otp-input";
 import PhoneInput from "react-native-phone-number-input";
-// import RNOtpVerify from 'react-native-otp-verify';
+import RNOtpVerify from 'react-native-otp-verify';
 // import Clipboard from '@react-native-community/clipboard';
 
 const OtpScreen = () => {
@@ -24,6 +24,7 @@ const OtpScreen = () => {
 	const dispatch = useDispatch();
 	const [phone, setPhone] = useState("");
 	const [otp, setOTP] = useState("");
+	const [error, setError] = useState('');
 
 	useEffect(() => {
 		const alreadyLogin = async () => {
@@ -36,25 +37,28 @@ const OtpScreen = () => {
 		alreadyLogin();
 	}, []);
 
-	// useEffect(() => {
-	//     RNOtpVerify.getHash()
-	//     .then(console.log)
-	//     .catch(console.log);
-
-	//     RNOtpVerify.getOtp()
-	//     .then(p => RNOtpVerify.addListener(otpHandler))
-	//     .catch(p => console.log(p));
-	// }, [])
-
+	// const getHash = RNOtpVerify.getHash().then(console.log).catch(console.log);
+	// const startListeningForOtp = () => RNOtpVerify.getOtp().then(p => RNOtpVerify.addListener(otpHandler)).catch(p => console.log(p));
 	// const otpHandler = (message) => {
-	//     const otp = /(\d{4})/g.exec(message)[1];
+	//     const otp = /(\d{6})/g.exec(message)[1];
 	//     setOTP(otp);
 	//     RNOtpVerify.removeListener();
 	//     Keyboard.dismiss();
 	// }
+		
+	// useEffect(() => {
+	// 	getHash();
+	// 	startListeningForOtp();
+	// }, []);
+	
 
 	const handleOtp = async () => {
 		if (!otp || !phone) {
+			setError('All fields are required !');
+			return;
+		}
+		if(otp.length !== 6) {
+			setError('OTP should be of six digit !');
 			return;
 		}
 		try {
@@ -83,19 +87,20 @@ const OtpScreen = () => {
 			}
 		} catch (err) {
 			console.log(err?.response?.data);
+			setError(err?.response?.data);
 		}
 	};
 
 	return (
 		<SafeAreaView className="flex-1 bg-gray-200">
 			<View className="flex-1 bg-gray-100">
-				<TouchableOpacity onPress={() => navigation.navigate("Login")} style={styles.buttonBox}>
+				<TouchableOpacity onPress={() => navigation.navigate("Login")} className=''>
 					<XIcon className="z-50" size={30} />
 				</TouchableOpacity>
 				<View className="flex-1 flex-col items-center justify-center -mt-32 bg-white relative">
 					<TouchableOpacity
 						onPress={() => navigation.navigate("Login")}
-						className="absolute top-[14%] left-5 bg-[#00CCBB] rounded-full" style={styles.buttonBox}
+						className="absolute top-[14%] left-5 bg-[#2C81E0] rounded-full"
 					>
 						<XIcon color="white" className="z-999" size={36} />
 					</TouchableOpacity>
@@ -127,6 +132,7 @@ const OtpScreen = () => {
 					/> */}
 
 					{/* <TextInput onChangeText={val => setOTP(val)} defaultValue={otp} placeholder='Enter OTP' className='h-10 w-72 border border-gray-400 text-lg px-4 py-0' keyboardType='number-pad' maxLength={14} /> */}
+					<Text className='text-lg font-semibold text-[#e35944] mb-2'>{error}</Text>
 
 					<OTPInputView
 						style={{ width: "86%", height: 60 }}
@@ -143,8 +149,7 @@ const OtpScreen = () => {
 
 					<TouchableOpacity
 						onPress={() => handleOtp()}
-						className="bg-[#00CCBB] mx-8 mt-6 p-3 rounded-lg flex-row items-center"
-						style={styles.buttonBox}
+						className="bg-[#2C81E0] mx-8 mt-6 p-3 rounded-lg flex-row items-center"
 					>
 						<Text className="flex-1 text-white font-bold text-lg text-center">
 							Verify OTP
@@ -160,9 +165,6 @@ const styles = StyleSheet.create({
 	underlineStyleBase: {
 		color: '#505050'
 	},
-	buttonBox: {
-        backgroundColor: '#2C81E0'
-    }
 })
 
 export default OtpScreen;

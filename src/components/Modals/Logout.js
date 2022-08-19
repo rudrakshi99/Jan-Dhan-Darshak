@@ -1,7 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import * as SecureStore from 'expo-secure-store';
+import { XIcon } from "react-native-heroicons/outline";
 
 const Logout = () => {
     const navigation = useNavigation();
@@ -29,7 +30,19 @@ const Logout = () => {
 
     return (
         <View style={styles.centeredView}>
+          <TouchableOpacity
+						onPress={() => navigation.goBack()}
+						className="absolute top-[2%] left-6 bg-[#2C81E0] rounded-full"
+					>
+						<XIcon color="white" className="z-999" size={36} />
+					</TouchableOpacity>
             <View style={styles.modalView}>
+            <Image
+                        source={require('../../assets/images/logo.png')}
+                        resizeMode="contain"
+                        className='h-36 w-64'
+                        style={{ marginTop: -100, marginBottom: 40 }}
+                    />
                 <Text style={styles.modalText}>Do you want to logout ?</Text>
                 <TouchableOpacity
                     style={[styles.button, styles.buttonClose]}
@@ -49,6 +62,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 22
   },
+  modalView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   button: {
     borderRadius: 20,
     padding: 12,
@@ -59,7 +77,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#F194FF",
   },
   buttonClose: {
-    marginLeft: 14,
     backgroundColor: "#db5a5a",
   },
   textStyle: {
@@ -73,8 +90,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 22,
     fontWeight: 'bold',
-
-  }
+  },
 });
 
 export default Logout;

@@ -69,6 +69,7 @@ const BankFeedback = () => {
 			}
 		} catch (err) {
 			console.log(err?.response?.data);
+			setError(err?.response?.data);
 		}
 	};
 
@@ -97,6 +98,8 @@ const BankFeedback = () => {
 					showsHorizontalScrollIndicator={false}
 					showsVerticalScrollIndicator={false}
 				>
+					<Text className='text-lg font-semibold text-[#e35944] ml-2 mb-2'>{error}</Text>
+
 					<Text style={styles.inputLabel}>Financial Type</Text>
 					<View style={styles.borderGet}>
 						<RNPickerSelect

@@ -20,7 +20,7 @@ import BankFeedback from "../components/Modals/BankFeedback";
 import { useSelector } from "react-redux";
 import * as SecureStore from 'expo-secure-store';
 import Logout from "../components/Modals/Logout";
-import OtpScreen from "../components/Modals/Otp";
+import Icon from "react-native-vector-icons/AntDesign";
 
 const Drawer = createDrawerNavigator();
 
@@ -64,7 +64,7 @@ const Home = ({ navigation }) => {
                 options={{
                     headerShown: false,
                     drawerIcon: () => (
-                        <Image source={require("../assets/icons/icon.png")} />
+                        <Icon name="login" size={24} color="#2C81E0" />
                     ),
                 }}
             />
@@ -170,14 +170,12 @@ const Home = ({ navigation }) => {
                 }}
             />
             {!customer ? null : <Drawer.Screen
-                name="Logout"
+                name='Logout'
                 component={Logout}
                 options={{
                     headerShown: false,
                     drawerIcon: () => (
-                        <Image
-                            source={require("../assets/icons/missingbank.png")}
-                        />
+                        <Icon name="logout" size={24} color="#2C81E0" />
                     ),
                 }}
             />}

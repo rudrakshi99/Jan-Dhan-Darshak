@@ -90,7 +90,7 @@ const Help = () => {
 						showsHorizontalScrollIndicator={false}
 						showsVerticalScrollIndicator={false}
 					>
-						<Text style={styles.errorMsg}>{error}</Text>
+						<Text className='text-lg font-semibold text-[#e35944] ml-2 mt-2 mb-2'>{error}</Text>
 						<InputField
 							inputname="Phone number"
 							keyboardType="phone-pad"
