@@ -19,6 +19,7 @@ import LoginScreen from "../components/Modals/Login";
 import BankFeedback from "../components/Modals/BankFeedback";
 import { useSelector } from "react-redux";
 import * as SecureStore from 'expo-secure-store';
+import Logout from "../components/Modals/Logout";
 
 const Drawer = createDrawerNavigator();
 
@@ -71,7 +72,6 @@ const Home = ({ navigation }) => {
                 }}
             />
             }
-            
             <Drawer.Screen
                 name="Find"
                 component={MapBox}
@@ -172,6 +172,18 @@ const Home = ({ navigation }) => {
                     ),
                 }}
             />
+            {/* {customer && <Drawer.Screen
+                name="Logout"
+                component={Logout}
+                options={{
+                    headerShown: false,
+                    drawerIcon: () => (
+                        <Image
+                            source={require("../assets/icons/missingbank.png")}
+                        />
+                    ),
+                }}
+            />} */}
             
         </Drawer.Navigator>
     );
