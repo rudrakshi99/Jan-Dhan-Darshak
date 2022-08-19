@@ -1,15 +1,26 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { XIcon } from 'react-native-heroicons/outline'
 import { useNavigation } from '@react-navigation/native'
 import { sendOtp } from '../../https/auth'
+import * as SecureStore from 'expo-secure-store';
 
 const LoginScreen = () => {
     const navigation = useNavigation();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
+
+    useEffect(() => {
+        const alreadyLogin = async () => {
+            const name = await SecureStore.getItemAsync('name');
+            if(name) {
+                navigation.push('Home');
+            }
+        }
+        alreadyLogin();
+    }, []);
 
     const handleSubmit = async () => {
         if( !phone || !name ) {
@@ -21,9 +32,8 @@ const LoginScreen = () => {
             const data = await sendOtp({ name, email, phone_number: phone });
             console.log(data, 'data');
             if(data?.success === true) {
-                navigation.navigate('OTP', {
-                    phone
-                });
+                await SecureStore.setItemAsync('phone', phone);
+                navigation.navigate('OTP');
             }
         } catch(err) {
             console.log(err?.response?.data);

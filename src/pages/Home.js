@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Image } from "react-native";
+import { Image, Text, TouchableOpacity } from "react-native";
 
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
@@ -19,7 +19,6 @@ import LoginScreen from "../components/Modals/Login";
 import BankFeedback from "../components/Modals/BankFeedback";
 import { useSelector } from "react-redux";
 import * as SecureStore from 'expo-secure-store';
-import OtpScreen from "../components/Modals/Otp";
 
 const Drawer = createDrawerNavigator();
 
@@ -27,6 +26,7 @@ const Home = ({ navigation }) => {
     const [current, setCurrent] = useState("test");
     const [customer, setCustomer] = useState("");
     const { user } = useSelector(state => state.auth || {});
+    
     const getToken = async () => {
         console.log(await SecureStore.getItemAsync('name'), "access token header");
         setCustomer(await SecureStore.getItemAsync('name'));
@@ -72,16 +72,6 @@ const Home = ({ navigation }) => {
             />
             }
             
-            <Drawer.Screen
-                name="OTP"
-                component={OtpScreen}
-                options={{
-                    headerShown: false,
-                    drawerIcon: () => (
-                        <Image source={require("../assets/icons/icon.png")} />
-                    ),
-                }}
-            />
             <Drawer.Screen
                 name="Find"
                 component={MapBox}
@@ -182,6 +172,7 @@ const Home = ({ navigation }) => {
                     ),
                 }}
             />
+            
         </Drawer.Navigator>
     );
 };

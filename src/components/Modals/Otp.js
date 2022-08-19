@@ -10,9 +10,20 @@ import { verifyOtp } from '../../https/auth'
 const OtpScreen = () => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
+    const [phone, setPhone] = useState('');
     const [otp, setOTP] = useState('');
 
-    const { params: { phone }} = useRoute();
+    useEffect(() => {
+        const alreadyLogin = async () => {
+            const name = await SecureStore.getItemAsync('name');
+            setPhone(await SecureStore.getItemAsync('phone') || '');
+            if(name) {
+                navigation.push('Home');
+            }
+        }
+        alreadyLogin();
+    }, []);
+    
 
     const handleOtp = async () => {
         if( !otp || !phone ) {
@@ -31,8 +42,7 @@ const OtpScreen = () => {
                 console.log(await SecureStore.getItemAsync('accessToken'), 'added');
                 console.log(data.data, 'user object');
 
-                dispatch(setAuth(data.data));
-                navigation.navigate('Find');
+                navigation.push("Home");
             }
         } catch(err) {
             console.log(err?.response?.data);
