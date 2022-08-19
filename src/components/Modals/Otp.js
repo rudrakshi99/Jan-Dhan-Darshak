@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
 	View,
 	Text,
@@ -89,13 +89,13 @@ const OtpScreen = () => {
 	return (
 		<SafeAreaView className="flex-1 bg-gray-200">
 			<View className="flex-1 bg-gray-100">
-				<TouchableOpacity onPress={() => navigation.navigate("Login")}>
-					<XIcon color="green" className="z-50" size={30} />
+				<TouchableOpacity onPress={() => navigation.navigate("Login")} style={styles.buttonBox}>
+					<XIcon className="z-50" size={30} />
 				</TouchableOpacity>
 				<View className="flex-1 flex-col items-center justify-center -mt-32 bg-white relative">
 					<TouchableOpacity
 						onPress={() => navigation.navigate("Login")}
-						className="absolute top-[14%] left-5 bg-[#00CCBB] rounded-full"
+						className="absolute top-[14%] left-5 bg-[#00CCBB] rounded-full" style={styles.buttonBox}
 					>
 						<XIcon color="white" className="z-999" size={36} />
 					</TouchableOpacity>
@@ -116,15 +116,15 @@ const OtpScreen = () => {
 					</Text>
 
 					{/* <TextInput defaultValue={phone} editable={false} placeholder='Enter your phone number' className='h-10 w-72 border border-gray-400 text-lg px-4 py-0' keyboardType='email-address' maxLength={50} /> */}
-					<PhoneInput
+					{/* <PhoneInput
 						defaultCode="IN"
-						disabled={true}
-						containerStyle={{ height: 52 }}
+						layout="first"
+						defaultValue={phone}
 						placeholder={phone}
+						containerStyle={{ height: 52 }}
 						withDarkTheme
 						withShadow
-						autoFocus
-					/>
+					/> */}
 
 					{/* <TextInput onChangeText={val => setOTP(val)} defaultValue={otp} placeholder='Enter OTP' className='h-10 w-72 border border-gray-400 text-lg px-4 py-0' keyboardType='number-pad' maxLength={14} /> */}
 
@@ -155,5 +155,14 @@ const OtpScreen = () => {
 		</SafeAreaView>
 	);
 };
+
+const styles = StyleSheet.create({
+	underlineStyleBase: {
+		color: '#505050'
+	},
+	buttonBox: {
+        backgroundColor: '#2C81E0'
+    }
+})
 
 export default OtpScreen;

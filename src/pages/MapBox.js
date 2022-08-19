@@ -114,7 +114,7 @@ const MapBox = () => {
 					}}
 					style={[type.atm ? styles.button : {}, styles.column]}
 				>
-					<Icon name="headphones" size={25} color="#8E8E8E" />
+					<Icon name="headphones" size={22} color="#8E8E8E" />
 					<Text style={style.buttonText}>ATM</Text>
 				</TouchableOpacity>
 				<TouchableOpacity
@@ -127,7 +127,7 @@ const MapBox = () => {
 					<Image
 						source={require("../assets/icons/bank.png")}
 						resizeMode="contain"
-						style={{ height: 28, width: 28 }}
+						style={{ height: 24, width: 24 }}
 					/>
 					<Text style={style.buttonText}>Branch</Text>
 				</TouchableOpacity>
@@ -143,7 +143,7 @@ const MapBox = () => {
 					<Image
 						source={require("../assets/icons/post_office.png")}
 						resizeMode="contain"
-						style={{ height: 28, width: 28 }}
+						style={{ height: 24, width: 24 }}
 					/>
 					<Text style={style.buttonText}>Post Office</Text>
 				</TouchableOpacity>
@@ -156,7 +156,7 @@ const MapBox = () => {
 					<Image
 						source={require("../assets/icons/csc.png")}
 						resizeMode="contain"
-						style={{ height: 28, width: 28 }}
+						style={{ height: 24, width: 24 }}
 					/>
 					<Text style={style.buttonText}>CRC</Text>
 				</TouchableOpacity>
@@ -169,7 +169,7 @@ const MapBox = () => {
 					<Image
 						source={require("../assets/icons/bank_mitra.png")}
 						resizeMode="contain"
-						style={{ height: 28, width: 28 }}
+						style={{ height: 24, width: 24 }}
 					/>
 					<Text style={style.buttonText}>Bank Mitra</Text>
 				</TouchableOpacity>

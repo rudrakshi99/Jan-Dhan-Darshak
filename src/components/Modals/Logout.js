@@ -22,6 +22,9 @@ const Logout = () => {
         await SecureStore.setItemAsync('name',"");
         await SecureStore.setItemAsync('refreshToken',"");
         await SecureStore.setItemAsync('userId',"");
+        await SecureStore.setItemAsync('phone',"");
+
+        navigation.push('Home');
     }
 
     return (
@@ -56,6 +59,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#F194FF",
   },
   buttonClose: {
+    marginLeft: 14,
     backgroundColor: "#db5a5a",
   },
   textStyle: {

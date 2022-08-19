@@ -54,12 +54,12 @@ const BankCard = ({ imgUrl, name, branch, place_id }) => {
 			<TouchableOpacity
 				style={{
 					position: "absolute",
-					bottom: 20,
-					right: 20,
+					bottom: 10,
+					right: 15,
 				}}
 				onPress={() => handleDelete()}
 			>
-				<Icon name="trash" size={25} color="#000" />
+				<Icon name="trash" size={24} color="#000" />
 			</TouchableOpacity>
 		</View>
 	);
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		flexDirection: "row",
 		paddingVertical: 20,
-		paddingHorizontal: 20,
+		paddingHorizontal: 15,
 		backgroundColor: "#fff",
 		marginTop: 5,
 	},
@@ -80,7 +80,9 @@ const styles = StyleSheet.create({
 		height: 100,
 		width: 100,
 	},
-	rightBox: {},
+	rightBox: {
+		marginLeft: -10
+	},
 	name: {
 		fontSize: 17,
 		lineHeight: 17,

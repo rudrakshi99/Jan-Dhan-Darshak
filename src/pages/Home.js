@@ -20,6 +20,7 @@ import BankFeedback from "../components/Modals/BankFeedback";
 import { useSelector } from "react-redux";
 import * as SecureStore from 'expo-secure-store';
 import Logout from "../components/Modals/Logout";
+import OtpScreen from "../components/Modals/Otp";
 
 const Drawer = createDrawerNavigator();
 
@@ -32,10 +33,6 @@ const Home = ({ navigation }) => {
         console.log(await SecureStore.getItemAsync('name'), "access token header");
         setCustomer(await SecureStore.getItemAsync('name'));
         console.log(await SecureStore.getItemAsync('userId'),"userId")
-        // await SecureStore.setItemAsync('accessToken',"")
-        // await SecureStore.setItemAsync('name',"")
-        // await SecureStore.setItemAsync('refreshToken',"")
-        // await SecureStore.setItemAsync('userId',"")
     }
     getToken();
 
@@ -172,7 +169,7 @@ const Home = ({ navigation }) => {
                     ),
                 }}
             />
-            {/* {customer && <Drawer.Screen
+            {!customer ? null : <Drawer.Screen
                 name="Logout"
                 component={Logout}
                 options={{
@@ -183,7 +180,7 @@ const Home = ({ navigation }) => {
                         />
                     ),
                 }}
-            />} */}
+            />}
             
         </Drawer.Navigator>
     );
