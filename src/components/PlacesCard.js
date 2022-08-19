@@ -108,7 +108,10 @@ const PlaceCard = ({ item, location }) => {
 						});
 					}}
 				>
-					<Image source={require("../assets/icons/direction.png")} />
+					<Image
+						source={require("../assets/icons/direction.png")}
+						style={{ height: 15, width: 15 }}
+					/>
 					<Text
 						style={{ color: "#fff", marginLeft: 10, fontSize: 15 }}
 					>
@@ -178,7 +181,7 @@ const styles = StyleSheet.create({
 		borderRadius: 30,
 		flex: 1,
 		flexDirection: "row",
-		paddingVertical: 15,
+		paddingVertical: 8,
 		paddingHorizontal: 20,
 		justifyContent: "center",
 		alignItems: "center",

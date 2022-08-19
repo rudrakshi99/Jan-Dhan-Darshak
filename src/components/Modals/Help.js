@@ -20,7 +20,7 @@ import VoiceToText from "../VoiceToText";
 const Help = () => {
 	return (
 		<View>
-			<VoiceToText />
+			<VoiceToText visible={false} setVisible={() => {}} />
 		</View>
 	);
 };

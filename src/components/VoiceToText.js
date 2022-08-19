@@ -1,15 +1,45 @@
 import React, { useRef, useState } from "react";
 import LottieView from "lottie-react-native";
-import { View, Modal, Text, StyleSheet, Dimensions } from "react-native";
+import {
+	View,
+	Modal,
+	Text,
+	StyleSheet,
+	Dimensions,
+	TouchableOpacity,
+} from "react-native";
 import Voice from "@react-native-community/voice";
 import { Permissions } from "expo";
-import Icon from "react-native-vector-icons/FontAwesome5";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-function VoiceToText() {
+function VoiceToText({ visible, setVisible }) {
 	const animationRef = useRef(null);
 	const [status, setStatus] = useState("");
+
 	React.useEffect(() => {
 		animationRef.current?.play();
+		async function check() {
+			Voice.isAvailable()
+				.then((result) => {
+					console.log(result);
+					return result;
+				})
+				.catch((err) => console.log(err));
+		}
+		async function startListening() {
+			Voice.getSpeechRecognitionServices()
+				.then((result) => {
+					console.log(result);
+				})
+				.catch((err) => console.log(err));
+		}
+		async function stopListening() {
+			Voice.stop()
+				.then((result) => {
+					console.log(result);
+				})
+				.catch((err) => console.log(err));
+		}
 		async () => {
 			const { status, expires, permissions } = await Permissions.askAsync(
 				Permissions.AUDIO_RECORDING
@@ -18,28 +48,21 @@ function VoiceToText() {
 				//Permissions not granted. Don't show the start recording button because it will cause problems if it's pressed.
 				// this.setState({showRecordButton: false});
 			} else {
-				// this.setState({showRecordButton: true});
+				const result = check();
+				if (result) {
+					startListening();
+					setTimeout(() => {
+						stopListening();
+						setVisible(false);
+					}, 3000);
+				}
 			}
 		};
 	});
-	async function check() {
-		Voice.isAvailable()
-			.then((result) => {
-				console.log(result);
-			})
-			.catch((err) => console.log(err));
-	}
-	async function startListening() {
-		Voice.getSpeechRecognitionServices()
-			.then((result) => {
-				console.log(result);
-			})
-			.catch((err) => console.log(err));
-	}
 	return (
 		<Modal
 			animationType="slide"
-			visible={false}
+			visible={visible}
 			transparent={true}
 			onRequestClose={() => {
 				console.log("Modal Closed");
@@ -47,6 +70,17 @@ function VoiceToText() {
 		>
 			<View style={styles.modal}>
 				<View style={styles.container}>
+					<TouchableOpacity
+						onPress={() => {
+							Voice.cancel()
+								.then((res) => console.log(res))
+								.catch((err) => console.log(err));
+							setVisible(false);
+						}}
+						style={{ flex: 1, justifyContent: "flex-end" }}
+					>
+						<Icon name="close" size={25} color="black" />
+					</TouchableOpacity>
 					<LottieView
 						source={require("../lottie/animation.json")}
 						autoplay={true}

@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import * as Location from "expo-location";
 import { useIsFocused } from "@react-navigation/native";
+import Icon from "react-native-vector-icons/FontAwesome5";
 
 //Components
 import Map from "../components/Map";
@@ -92,6 +93,7 @@ const MapBox = () => {
 					style={styles.resultContainer}
 					snapToAlignment="start"
 					snapToInterval={100}
+					contentContainerStyle={{ paddingVertical: 10 }}
 					renderItem={({ item, index }) => {
 						return (
 							<PlaceCard
@@ -110,40 +112,65 @@ const MapBox = () => {
 					onPress={() => {
 						setType({ ...initialState, atm: true });
 					}}
-					style={type.atm ? styles.button : {}}
+					style={[type.atm ? styles.button : {}, styles.column]}
 				>
+					<Icon name="headphones" size={25} color="#8E8E8E" />
 					<Text style={style.buttonText}>ATM</Text>
 				</TouchableOpacity>
 				<TouchableOpacity
 					onPress={() => {
 						setType({ ...initialState, bank: true });
 					}}
-					style={type.bank ? styles.button : {}}
+					style={[type.bank ? styles.button : {}, styles.column]}
 				>
+					{/* <Icon name="building-columns" size={25} color="#8E8E8E" /> */}
+					<Image
+						source={require("../assets/icons/bank.png")}
+						resizeMode="contain"
+						style={{ height: 28, width: 28 }}
+					/>
 					<Text style={style.buttonText}>Branch</Text>
 				</TouchableOpacity>
 				<TouchableOpacity
 					onPress={() => {
 						setType({ ...initialState, postOffice: true });
 					}}
-					style={type.postOffice ? styles.button : {}}
+					style={[
+						type.postOffice ? styles.button : {},
+						styles.column,
+					]}
 				>
+					<Image
+						source={require("../assets/icons/post_office.png")}
+						resizeMode="contain"
+						style={{ height: 28, width: 28 }}
+					/>
 					<Text style={style.buttonText}>Post Office</Text>
 				</TouchableOpacity>
 				<TouchableOpacity
 					onPress={() => {
 						setType({ ...initialState, crc: true });
 					}}
-					style={type.crc ? styles.button : {}}
+					style={[type.crc ? styles.button : {}, styles.column]}
 				>
+					<Image
+						source={require("../assets/icons/csc.png")}
+						resizeMode="contain"
+						style={{ height: 28, width: 28 }}
+					/>
 					<Text style={style.buttonText}>CRC</Text>
 				</TouchableOpacity>
 				<TouchableOpacity
 					onPress={() => {
 						setType({ ...initialState, bankMitra: true });
 					}}
-					style={type.bankMitra ? styles.button : {}}
+					style={[type.bankMitra ? styles.button : {}, styles.column]}
 				>
+					<Image
+						source={require("../assets/icons/bank_mitra.png")}
+						resizeMode="contain"
+						style={{ height: 28, width: 28 }}
+					/>
 					<Text style={style.buttonText}>Bank Mitra</Text>
 				</TouchableOpacity>
 			</View>
@@ -165,6 +192,11 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 10,
 		flex: 1,
 		paddingVertical: 10,
+	},
+	column: {
+		flexDirection: "column",
+		justifyContent: "center",
+		alignItems: "center",
 	},
 });
 

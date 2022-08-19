@@ -19,6 +19,7 @@ import { BASE_URL, API_KEY } from "@env";
 import { TabView, SceneMap } from "react-native-tab-view";
 import { createSavedLocation } from "../https/Locations";
 import { useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux";
 
 // let item = {
 // 	address_components: [
@@ -282,7 +283,8 @@ const DetailModal = ({ show, setShow, item }) => {
 		{ key: "first", title: "Overview" },
 		{ key: "second", title: "Reviews" },
 	]);
-
+	const user = useSelector((state) => state.auth.user);
+	console.log(user);
 	async function share(name) {
 		try {
 			const result = await Share.share({
@@ -304,18 +306,21 @@ const DetailModal = ({ show, setShow, item }) => {
 	}
 	async function handleSaveLocation(place_id) {
 		try {
-			const accessToken = await SecureStore.getItemAsync("accessToken");
-			if (!!accessToken) {
-				navigation.navigate("Login", {
-					to: "Detail",
-					place_id: place_id,
-				});
+			if (!!user.token) {
+				// navigation.navigate("Login", {
+				// 	to: "Detail",
+				// 	place_id: place_id,
+				// });
 			}
 			const result = await createSavedLocation({
-				accessToken: accessToken,
+				accessToken: user.token,
 				place_id: place_id,
-				User: 1,
+				User: 15,
 			});
+			if (result.success) {
+				Alert.alert(result.message);
+			}
+			console.log(result);
 		} catch (err) {
 			console.log(err);
 		}
