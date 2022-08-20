@@ -2,8 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useEffect } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import * as SecureStore from 'expo-secure-store';
-import { XIcon } from "react-native-heroicons/outline";
-import { showMessage } from "react-native-flash-message";
+import { ArrowNarrowLeftIcon } from "react-native-heroicons/outline";
 import { flashMessage } from "../../lottie/flashMessage";
 
 const Logout = () => {
@@ -35,9 +34,9 @@ const Logout = () => {
         <View style={styles.centeredView}>
           <TouchableOpacity
 						onPress={() => navigation.goBack()}
-						className="absolute top-[2%] left-6 bg-[#2C81E0] rounded-full"
+						className="absolute top-[2%] left-6 rounded-full"
 					>
-						<XIcon color="white" className="z-999" size={36} />
+						<ArrowNarrowLeftIcon style={styles.iconHeader} size={30} color="#101010" />
 					</TouchableOpacity>
             <View style={styles.modalView}>
             <Image

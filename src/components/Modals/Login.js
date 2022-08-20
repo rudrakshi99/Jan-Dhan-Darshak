@@ -1,12 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { XIcon } from 'react-native-heroicons/outline'
 import { useNavigation } from '@react-navigation/native'
 import { sendOtp } from '../../https/auth'
 import * as SecureStore from 'expo-secure-store';
-import PhoneInput from "react-native-phone-number-input";
 import { flashMessage } from '../../lottie/flashMessage'
+import { ArrowNarrowLeftIcon } from "react-native-heroicons/outline";
 
 const LoginScreen = () => {
     const navigation = useNavigation();
@@ -14,7 +13,6 @@ const LoginScreen = () => {
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [error, setError] = useState('');
-    const phoneInput = useRef(null);
 
     useEffect(() => {
         const alreadyLogin = async () => {
@@ -32,7 +30,7 @@ const LoginScreen = () => {
             flashMessage('All fields are required !', 'danger');
             return;
         }
-        const checkValid = phoneInput.current?.isValidNumber(phone);
+        const checkValid = true;
         if(!checkValid) {
             flashMessage('Invalid phone number !', 'danger');
             setError('Invalid phone number !');
@@ -61,9 +59,9 @@ const LoginScreen = () => {
             <View className='flex-1 bg-gray-100'>
                 
                 <View className='flex-1 flex-col items-center justify-center -mt-28 bg-white relative'>
-                  <TouchableOpacity onPress={() => navigation.navigate('Find')} className='absolute top-[17%] left-5 bg-[#2C81E0] rounded-full'
+                  <TouchableOpacity onPress={() => navigation.navigate('Find')} className='absolute top-[17%] left-5 rounded-full'
                   >
-                      <XIcon color="white" className='z-999' size={36} />
+                    <ArrowNarrowLeftIcon style={styles.iconHeader} size={30} color="#101010" />
                   </TouchableOpacity>
                     <Image 
                         source={require('../../assets/images/logo.png')}
@@ -71,37 +69,26 @@ const LoginScreen = () => {
                         className='h-32 w-64'
                     />
 
-                    <Text className='text-center text-3xl text-gray-600 p-4 mb-6 font-bold'>Login</Text>
+                    <Text className='text-center text-[28px] text-[#101010] pt-4 mb-1 font-bold'>Sign Up/Login</Text>
+                    <Text className='text-center text-[16px] text-[#8E8E8E] font-normal'>Login via OTP</Text>
 
                     <View className='flex-col items-center justify-center space-y-6'>
                         <Text className='text-[16.5px] font-semibold text-[#e35944] -mb-3'>{error}</Text>
                         
-                        <TextInput onChangeText={val => setName(val)} defaultValue={name} placeholder='Enter your name' className='h-10 w-72 border border-gray-400 text-lg px-4 py-0' keyboardType='default' maxLength={50} />
-                        <Text className='absolute top-4 right-12 text-[25px] text-[#cf304f]'>*</Text>
+                        <TextInput onChangeText={val => setName(val)} defaultValue={name} placeholder='Name' className='h-10 w-72 border border-gray-400 text-[16px] px-4 py-0' keyboardType='default' maxLength={50} />
 
-                        <TextInput onChangeText={val => setEmail(val)} defaultValue={email} placeholder='Enter your email address' className='h-10 w-72 border border-gray-400 text-lg px-4 py-0' keyboardType='email-address' maxLength={50} />
+                        <TextInput onChangeText={val => setEmail(val)} defaultValue={email} placeholder='Email (Optional)' className='h-10 w-72 border border-gray-400 text-[16px] px-4 py-0' keyboardType='email-address' maxLength={50} />
 
-                        {/* <TextInput onChangeText={val => setPhone(val)} defaultValue={phone} placeholder='Enter your phone number' className='h-10 w-72 border border-gray-400 text-lg px-4 py-0' keyboardType='phone-pad' maxLength={10} /> */}
-
-                        <View className=''>
-                        <PhoneInput
-                            ref={phoneInput}
-                            containerStyle={{ height: 52, }}
-                            defaultValue={phone} defaultCode="IN" layout="first"
-                            value={phone}
-                            onChangeText={(val) => setPhone(val)}
-                            withDarkTheme
-                            withShadow
-                            autoFocus
-                        />
-                        <Text className='absolute top-4 right-3 text-[25px] text-[#cf304f]'>*</Text>
+                        <View className='flex flex-row'>
+                            <TextInput defaultValue="+91" editable={false} className='h-10 w-12 border bg-white border-gray-400 text-[16px] text-black font-normal px-2 py-0' keyboardType='phone-pad' maxLength={10} />
+                            <TextInput onChangeText={val => setPhone(val)} defaultValue={phone} placeholder='Mobile Number' className='h-10 w-60 border border-gray-400 text-[16px] px-4 py-0' keyboardType='phone-pad' maxLength={10} />
                         </View>
 
                         <TouchableOpacity
                             onPress={handleSubmit}
                             className='bg-[#2C81E0] mx-8 mt-6 p-3 rounded-lg flex-row items-center'
                         >
-                            <Text className='flex-1 text-white font-bold text-lg text-center'>Request for OTP</Text>
+                            <Text className='flex-1 text-white font-bold text-lg text-center'>Get OTP</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
