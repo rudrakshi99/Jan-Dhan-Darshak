@@ -38,6 +38,7 @@
     "react-dom": "17.0.2",
     "react-native": "0.68.2",
     "react-native-dotenv": "^3.3.1",
+    "react-native-flash-message": "^0.3.1",
     "react-native-gesture-handler": "~2.2.1",
     "react-native-heroicons": "^2.2.0",
     "react-native-maps": "0.30.2",
@@ -66,7 +67,7 @@
   "private": true,
   "resolutions": {
     "overrides": {
-       "react-devtools-core": "~4.25.0"
+      "react-devtools-core": "~4.25.0"
     }
   }
 }

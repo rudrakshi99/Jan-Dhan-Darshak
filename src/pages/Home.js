@@ -17,25 +17,20 @@ import MissingBankSuggestion from "../components/Modals/MissingBankSuggestion";
 import Help from "../components/Modals/Help";
 import LoginScreen from "../components/Modals/Login";
 import BankFeedback from "../components/Modals/BankFeedback";
-import { useSelector } from "react-redux";
 import * as SecureStore from 'expo-secure-store';
 import Logout from "../components/Modals/Logout";
+import Icon from "react-native-vector-icons/AntDesign";
 
 const Drawer = createDrawerNavigator();
 
 const Home = ({ navigation }) => {
     const [current, setCurrent] = useState("test");
     const [customer, setCustomer] = useState("");
-    const { user } = useSelector(state => state.auth || {});
     
     const getToken = async () => {
         console.log(await SecureStore.getItemAsync('name'), "access token header");
         setCustomer(await SecureStore.getItemAsync('name'));
         console.log(await SecureStore.getItemAsync('userId'),"userId")
-        // await SecureStore.setItemAsync('accessToken',"")
-        // await SecureStore.setItemAsync('name',"")
-        // await SecureStore.setItemAsync('refreshToken',"")
-        // await SecureStore.setItemAsync('userId',"")
     }
     getToken();
 
@@ -67,7 +62,7 @@ const Home = ({ navigation }) => {
                 options={{
                     headerShown: false,
                     drawerIcon: () => (
-                        <Image source={require("../assets/icons/icon.png")} />
+                        <Icon name="login" size={24} color="#2C81E0" />
                     ),
                 }}
             />
@@ -117,7 +112,7 @@ const Home = ({ navigation }) => {
                 }}
             />
             <Drawer.Screen
-                name="Track Request/ Suggestion"
+                name="Track Request"
                 component={TrackRequest}
                 options={{
                     headerShown: false,
@@ -172,18 +167,16 @@ const Home = ({ navigation }) => {
                     ),
                 }}
             />
-            {/* {customer && <Drawer.Screen
-                name="Logout"
+            {!customer ? null : <Drawer.Screen
+                name='Logout'
                 component={Logout}
                 options={{
                     headerShown: false,
                     drawerIcon: () => (
-                        <Image
-                            source={require("../assets/icons/missingbank.png")}
-                        />
+                        <Icon name="logout" size={24} color="#e35944" />
                     ),
                 }}
-            />} */}
+            />}
             
         </Drawer.Navigator>
     );

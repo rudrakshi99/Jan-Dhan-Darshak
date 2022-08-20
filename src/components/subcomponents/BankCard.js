@@ -11,6 +11,7 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useSelector } from "react-redux";
 import { deleteSavedLocation } from "../../https/Locations";
+import * as SecureStore from "expo-secure-store";
 
 const BankCard = ({ imgUrl, name, branch, place_id }) => {
 	console.log("place Id :", place_id);
@@ -18,7 +19,7 @@ const BankCard = ({ imgUrl, name, branch, place_id }) => {
 	const user = useSelector((state) => state.auth.user);
 	async function handleDelete() {
 		try {
-			const accessToken = user.token;
+			const accessToken = await SecureStore.getItemAsync("accessToken");;
 			const id = 15;
 			const data = await deleteSavedLocation({
 				accessToken: accessToken,
@@ -54,12 +55,12 @@ const BankCard = ({ imgUrl, name, branch, place_id }) => {
 			<TouchableOpacity
 				style={{
 					position: "absolute",
-					bottom: 20,
-					right: 20,
+					bottom: 10,
+					right: 15,
 				}}
 				onPress={() => handleDelete()}
 			>
-				<Icon name="trash" size={25} color="#000" />
+				<Icon name="trash" size={24} color="#000" />
 			</TouchableOpacity>
 		</View>
 	);
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		flexDirection: "row",
 		paddingVertical: 20,
-		paddingHorizontal: 20,
+		paddingHorizontal: 15,
 		backgroundColor: "#fff",
 		marginTop: 5,
 	},
@@ -80,7 +81,9 @@ const styles = StyleSheet.create({
 		height: 100,
 		width: 100,
 	},
-	rightBox: {},
+	rightBox: {
+		marginLeft: -10
+	},
 	name: {
 		fontSize: 17,
 		lineHeight: 17,

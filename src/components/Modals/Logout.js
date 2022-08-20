@@ -1,7 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import * as SecureStore from 'expo-secure-store';
+import { ArrowNarrowLeftIcon } from "react-native-heroicons/outline";
+import { flashMessage } from "../../lottie/flashMessage";
 
 const Logout = () => {
     const navigation = useNavigation();
@@ -18,15 +20,31 @@ const Logout = () => {
     
 
     const handleLogout = async () => {
+        flashMessage("User logged out successfully", 'success');
         await SecureStore.setItemAsync('accessToken',"");
         await SecureStore.setItemAsync('name',"");
         await SecureStore.setItemAsync('refreshToken',"");
         await SecureStore.setItemAsync('userId',"");
+        await SecureStore.setItemAsync('phone',"");
+
+        navigation.push('Home');
     }
 
     return (
         <View style={styles.centeredView}>
+          <TouchableOpacity
+						onPress={() => navigation.goBack()}
+						className="absolute top-[2%] left-6 rounded-full"
+					>
+						<ArrowNarrowLeftIcon style={styles.iconHeader} size={30} color="#101010" />
+					</TouchableOpacity>
             <View style={styles.modalView}>
+            <Image
+                        source={require('../../assets/images/logo.png')}
+                        resizeMode="contain"
+                        className='h-36 w-64'
+                        style={{ marginTop: -100, marginBottom: 40 }}
+                    />
                 <Text style={styles.modalText}>Do you want to logout ?</Text>
                 <TouchableOpacity
                     style={[styles.button, styles.buttonClose]}
@@ -45,6 +63,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 22
+  },
+  modalView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   button: {
     borderRadius: 20,
@@ -69,8 +92,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 22,
     fontWeight: 'bold',
-
-  }
+  },
 });
 
 export default Logout;

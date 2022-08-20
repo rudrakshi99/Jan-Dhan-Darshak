@@ -17,6 +17,7 @@ import RNPickerSelect from "react-native-picker-select";
 // import { MY_SECURE_AUTH_STATE_KEY } from "@env";
 import { createFinancialPoint } from "../../https/feedback";
 import { useSelector } from "react-redux";
+import { flashMessage } from "../../lottie/flashMessage";
 
 const BankFeedback = () => {
 	const navigation = useNavigation();
@@ -52,6 +53,7 @@ const BankFeedback = () => {
 				!unique_id
 			) {
 				setError("All fields are required !");
+				flashMessage('All fields are required !', 'danger');
 				return;
 			}
 			const accessToken = await SecureStore.getItemAsync("accessToken");
@@ -66,9 +68,12 @@ const BankFeedback = () => {
 			});
 
 			if (data.success === true) {
+				flashMessage("Feedback has been submitted", 'success');
 			}
 		} catch (err) {
 			console.log(err?.response?.data);
+			setError(err?.response?.data);
+			flashMessage(err?.response?.data, 'danger');
 		}
 	};
 
@@ -97,6 +102,8 @@ const BankFeedback = () => {
 					showsHorizontalScrollIndicator={false}
 					showsVerticalScrollIndicator={false}
 				>
+					<Text className='text-[16.5px] font-semibold text-[#e35944] ml-2 mb-2'>{error}</Text>
+
 					<Text style={styles.inputLabel}>Financial Type</Text>
 					<View style={styles.borderGet}>
 						<RNPickerSelect

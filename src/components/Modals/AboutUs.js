@@ -29,11 +29,11 @@ const About = () => {
                     <Text style={styles.para}>The Jan Dhan Darshak mobile application provides an interface for citizen to view the Banking Infrastructures in India consisting of Bank Branches, ATMs and Bank Mitra locations. the data is collated by Department of Financial Services from Scheduled Commercial Banks both in Public and Private Sector. </Text>
                 </View>
 
-                <View style={styles.topBorder}>
+                {/* <View style={styles.topBorder}>
                     <TouchableOpacity style={styles.buttonBox}>
                         <Text style={styles.button}>Got it</Text>
                     </TouchableOpacity>
-                </View>
+                </View> */}
             </View>
 
         </ScrollView>
@@ -69,14 +69,14 @@ const styles = StyleSheet.create({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 80
+        marginTop: 70
     },
     imageLogo: {
 
     },
     textBox: {
         marginTop: 60,
-        marginBottom: 80,
+        // marginBottom: 80,
     },
     para: {
         fontSize: 17,
@@ -84,8 +84,8 @@ const styles = StyleSheet.create({
         lineHeight: 24,
         color: '#101010',
         paddingBottom: 120,
-        borderBottomColor: '#E0E0E0',
-        borderBottomWidth: 3,
+        // borderBottomColor: '#E0E0E0',
+        // borderBottomWidth: 3,
         width: '100%',
         letterSpacing: 0,
         lineHeight: 24.4,
