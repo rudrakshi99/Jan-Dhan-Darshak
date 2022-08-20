@@ -18,10 +18,10 @@ class MissingSuggestions(models.Model):
     address = models.CharField(max_length=250, blank=False, null=False)
     otherdetails = models.TextField(max_length=2000, blank=False, null=False)
     latitude = models.DecimalField(
-        max_digits=10, decimal_places=7, blank=False, null=False
+        max_digits=20, decimal_places=14, blank=False, null=False
     )
     longitude = models.DecimalField(
-        max_digits=10, decimal_places=7, blank=False, null=False
+        max_digits=20, decimal_places=14, blank=False, null=False
     )
     suggestion_status = models.CharField(
         max_length=100,
