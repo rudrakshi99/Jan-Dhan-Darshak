@@ -12,6 +12,28 @@ providers such as banks, post office, CSC, etc.
 > #### RS1079 (Ministry of Finance)
 > Upgradation of Jan-Dhan Darshak App
 
+## Table of Contents
+
+1. [Problem Statement Code](#problem-statement-code)
+2. [Features](#features)
+3. [Technology Stack to be used](#technology-stack-to-be-used)
+4. [GitHub Repository Structure](#github-repository-structure)
+5. [Getting Started](#getting-started)
+	1. [Fork, clone locally and create a branch](#fork-clone-locally--create-a-branch)
+	1. [Setting Environment First Time](#setting-environment-first-time)
+		1. [Basic Requirements](#basic-requirements)
+		1. [Creating Virtual Environment](#creating-virtual-environment)
+		1. [Installing Requirements](#installing-requirements)
+		1. [Setting up Environment File](#setting-up-environment-file)
+		1. [Migrating Database](#migrating-database)
+		1. [Create Superuser](#create-superuser)
+	1. [Starting Development Server](#starting-development-server)
+	1. [Leaving the virtual environment](#leaving-the-virtual-environment)
+	1. [Update requirements file](#update-requirements-file-critical)
+	1. [Update Database](#update-database)  
+6. [Team Members](#team-members)
+7. [Maintainers](#maintainers)
+
 ## Features
 
 1. Login/Sign Up.
@@ -26,7 +48,7 @@ providers such as banks, post office, CSC, etc.
 11. Rating and feedback systems to ensure better customer experience.
 12. Share live location.
 
-## Technology Stack:
+## Technology Stack to be used:
 
 <img src="https://img.shields.io/badge/python%20-%2314354C.svg?&style=for-the-badge&logo=python&logoColor=white"/> <img src="https://img.shields.io/badge/django%20-%23092E20.svg?&style=for-the-badge&logo=django&logoColor=white"/>  <img src="https://img.shields.io/badge/markdown-%23000000.svg?&style=for-the-badge&logo=markdown&logoColor=white"/><img src="https://img.shields.io/badge/github%20-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white"/> <img src="https://img.shields.io/badge/postgres-0B96B2?style=for-the-badge&logo=postgresql&logoColor=white"/> <img src="https://img.shields.io/badge/Heroku-430098?style=for-the-badge&logo=heroku&logoColor=white"/>
 
@@ -39,7 +61,7 @@ providers such as banks, post office, CSC, etc.
 - **Database**: PostgreSQL
 - **Hosting**: Heroku
 
-### How to Get Started?
+### Getting Started
 ### Fork, clone locally & create a branch
 
 Fork [Jan Dhan Darshak Backend](https://github.com/rudrakshi99/Jan-Dhan-Darshak) repository and clone at your local 
