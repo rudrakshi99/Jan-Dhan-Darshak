@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     },
     tabsContainer: {
         backgroundColor: "#fff",
-        height: 60,
+        height: 56,
         width: Dimensions.get("window").width,
         paddingHorizontal: 20,
         flexDirection: "row",
@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: "#626262",
-        fontSize: 12,
-        marginTop: 2
+        fontSize: 10,
+        marginTop: 5
     },
 });
 
