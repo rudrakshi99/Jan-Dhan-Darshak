@@ -89,6 +89,7 @@ THIRD_PARTY_APPS = [
     "drf_spectacular",
     "import_export",
     "django_filters",
+    "drf_yasg",
 ]
 
 LOCAL_APPS = [
