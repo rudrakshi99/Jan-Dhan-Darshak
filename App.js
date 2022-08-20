@@ -19,6 +19,7 @@ import Otp from "./src/components/Modals/Otp";
 import Directions from "./src/pages/Directions";
 import Navigation from "./src/pages/Navigation";
 import { useSelector } from "react-redux";
+import Onboarding from "./src/pages/Onboarding";
 
 const Stack = createNativeStackNavigator();
 
@@ -99,6 +100,13 @@ function App() {
 				<Stack.Screen
 					name="Navigate"
 					component={Navigation}
+					options={{
+						headerShown: false,
+					}}
+				/>
+				<Stack.Screen
+					name="Onboarding"
+					component={Onboarding}
 					options={{
 						headerShown: false,
 					}}
