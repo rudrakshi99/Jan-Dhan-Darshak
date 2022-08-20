@@ -234,12 +234,12 @@ X_FRAME_OPTIONS = "DENY"
 # EMAIL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
-EMAIL_BACKEND = env(
-    "DJANGO_EMAIL_BACKEND",
-    default="django.core.mail.backends.smtp.EmailBackend",
-)
+# EMAIL_BACKEND = env(
+#     "DJANGO_EMAIL_BACKEND",
+#     default="django.core.mail.backends.smtp.EmailBackend",
+# )
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-timeout
-EMAIL_TIMEOUT = 5
+# EMAIL_TIMEOUT = 5
 
 # ADMIN
 # ------------------------------------------------------------------------------
@@ -385,3 +385,4 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = env.str("EMAIL_HOST_USER", None)
 EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD", None)
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

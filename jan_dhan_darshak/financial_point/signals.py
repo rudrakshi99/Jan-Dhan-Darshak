@@ -2,6 +2,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.conf import settings
 from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 
 import logging
 import traceback
@@ -20,6 +21,7 @@ logger = logging.getLogger()
 def financial_point(sender, instance, created, **kwargs):
     if created:
         try:
+            print("SIGNAL STARTED")
             feedback_grp = Group.objects.get(name="FeedbackViewer")
 
             user = User.objects.create(
@@ -34,20 +36,20 @@ def financial_point(sender, instance, created, **kwargs):
 
             user.groups.add(feedback_grp)
 
-            # subject = "Welcome to Jan Dhan Darshak"
-            # message = (
-            #     f"Hi {instance.username}. You have been registered to Jan Dhan Darshak.\n"
-            #     f"Your username is '{user.username}' and password is in format 'phonenumber_uniqueid'.\n"
-            #     "Please login to your account on 'https://jan-dhan-darshak.herokuapp.com/admin/' to get started.\n\n"
-            #     "Thank you.\nTEAM JAN DHAN DARSHAK."
-            # )
-            # email_from = settings.EMAIL_HOST_USER
-            # recipient_list = [
-            #     instance.email,
-            # ]
-            # send_mail(subject, message, email_from, recipient_list)
+            subject = "Welcome to Jan Dhan Darshak"
+            message = (
+                f"Hi {instance.username}. You have been registered to Jan Dhan Darshak.\n"
+                f"Your username is '{user.username}' and password is in format 'phonenumber_uniqueid'.\n"
+                "Please login to your account on 'https://jan-dhan-darshak.herokuapp.com/admin/' to get started.\n\n"
+                "Thank you.\nTEAM JAN DHAN DARSHAK."
+            )
+
+            email = EmailMessage(subject=subject, body=message, to=[instance.email])
+            email.send()
+            print(f"MAIL SENT for user {instance.email}")
         except Exception as e:
             logger.error(
                 "Error on financial point signals:"
                 f"Stacktrace : {traceback.format_exc()}",
             )
+            raise e
