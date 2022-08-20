@@ -13,6 +13,9 @@ providers such as banks, post office, CSC, etc.
 > Upgradation of Jan-Dhan Darshak App
 
 ## Technology Stack:
+
+<img src="https://img.shields.io/badge/html5%20-%23E34F26.svg?&style=for-the-badge&logo=html5&logoColor=white"/> <img src="https://img.shields.io/badge/css3%20-%231572B6.svg?&style=for-the-badge&logo=css3&logoColor=white"/> <img src="https://img.shields.io/badge/javascript%20-%23323330.svg?&style=for-the-badge&logo=javascript&logoColor=%23F7DF1E"/> <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white"/>  <img src="https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"/> <img src="https://img.shields.io/badge/Redux-764ABC?style=for-the-badge&logo=redux&logoColor=white"/> <img src="https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white"/>  <img src="https://img.shields.io/badge/markdown-%23000000.svg?&style=for-the-badge&logo=markdown&logoColor=white"/><img src="https://img.shields.io/badge/github%20-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white"/> <img src="https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white"/>
+
 - **Frontend**: React Native, Redux
 - **Backend**: Django, Django Rest Framework
 - **IDE**: VS Code
@@ -57,7 +60,7 @@ $ npm start
 | 2. | Sarthak Shukla | Frontend Development | [@sarthakshukla1316](https://github.com/sarthakshukla1316) |
 | 3. | Suyash Rastogi | Frontend Development | [@suyashrastogi7](https://github.com/suyashrastogi7) |
 | 4. | Anmol Srivastava | Backend Development| [@anmolsrivastava1](https://github.com/anmolsrivastava1)  |
-| 5. | Parth Sharma | Full-stack Developement | [@ParthSharmaT](https://github.com/ParthSharmaT)  |
+| 5. | Parth Sharma | Full-stack Development | [@ParthSharmaT](https://github.com/ParthSharmaT)  |
 | 6. | Kushal Gautam | UI Designer | [@kushalgautam](https://github.com/kushalgautam)  |
 
 ## Maintainers✨
