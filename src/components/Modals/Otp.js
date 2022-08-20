@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	View,
 	Text,
@@ -9,15 +9,15 @@ import {
 	Keyboard,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { XIcon } from "react-native-heroicons/outline";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
 import * as SecureStore from "expo-secure-store";
 import { verifyOtp } from "../../https/auth";
 import OTPInputView from "@twotalltotems/react-native-otp-input";
-import PhoneInput from "react-native-phone-number-input";
 import RNOtpVerify from 'react-native-otp-verify';
+import { flashMessage } from "../../lottie/flashMessage";
 // import Clipboard from '@react-native-community/clipboard';
+import { ArrowNarrowLeftIcon } from "react-native-heroicons/outline";
 
 const OtpScreen = () => {
 	const navigation = useNavigation();
@@ -55,10 +55,12 @@ const OtpScreen = () => {
 	const handleOtp = async () => {
 		if (!otp || !phone) {
 			setError('All fields are required !');
+			flashMessage('All fields are required !', 'danger');
 			return;
 		}
 		if(otp.length !== 6) {
-			setError('OTP should be of six digit !');
+			// setError('OTP should be of six digit !');
+			flashMessage("OTP should be of six digit !", 'danger');
 			return;
 		}
 		try {
@@ -66,6 +68,7 @@ const OtpScreen = () => {
 			console.log(data, "data");
 
 			if (data?.success === true) {
+				flashMessage(data?.message, 'success');
 				let userId = data.data.user.id;
 				await SecureStore.setItemAsync(
 					"accessToken",
@@ -82,11 +85,13 @@ const OtpScreen = () => {
 					"added"
 				);
 				console.log(data.data, "user object");
-
+				setOTP('');
 				navigation.push("Home");
+				
 			}
 		} catch (err) {
 			console.log(err?.response?.data);
+			flashMessage(err?.response?.data, 'danger');
 			setError(err?.response?.data);
 		}
 	};
@@ -95,14 +100,14 @@ const OtpScreen = () => {
 		<SafeAreaView className="flex-1 bg-gray-200">
 			<View className="flex-1 bg-gray-100">
 				<TouchableOpacity onPress={() => navigation.navigate("Login")} className=''>
-					<XIcon className="z-50" size={30} />
+					<ArrowNarrowLeftIcon style={styles.iconHeader} size={30} color="#101010" />
 				</TouchableOpacity>
 				<View className="flex-1 flex-col items-center justify-center -mt-32 bg-white relative">
 					<TouchableOpacity
 						onPress={() => navigation.navigate("Login")}
-						className="absolute top-[14%] left-5 bg-[#2C81E0] rounded-full"
+						className="absolute top-[14%] left-5 rounded-full"
 					>
-						<XIcon color="white" className="z-999" size={36} />
+						<ArrowNarrowLeftIcon style={styles.iconHeader} size={30} color="#101010" />
 					</TouchableOpacity>
 
 					<Image
@@ -116,23 +121,11 @@ const OtpScreen = () => {
 					>
 						Verify OTP
 					</Text>
-					<Text className="text-center text-[15px] text-gray-500 mb-8 font-bold">
-						A verification code has been sent on your phone.
+					<Text className="text-center text-[15px] text-[#8E8E8E] mb-3 font-semibold">
+						A Verification code has been sent to {'\n'} <Text className='underline'>{phone}</Text>.
 					</Text>
 
-					{/* <TextInput defaultValue={phone} editable={false} placeholder='Enter your phone number' className='h-10 w-72 border border-gray-400 text-lg px-4 py-0' keyboardType='email-address' maxLength={50} /> */}
-					{/* <PhoneInput
-						defaultCode="IN"
-						layout="first"
-						defaultValue={phone}
-						placeholder={phone}
-						containerStyle={{ height: 52 }}
-						withDarkTheme
-						withShadow
-					/> */}
-
-					{/* <TextInput onChangeText={val => setOTP(val)} defaultValue={otp} placeholder='Enter OTP' className='h-10 w-72 border border-gray-400 text-lg px-4 py-0' keyboardType='number-pad' maxLength={14} /> */}
-					<Text className='text-lg font-semibold text-[#e35944] mb-2'>{error}</Text>
+					<Text className='text-[16.5px] font-semibold text-[#e35944] mb-2'>{error}</Text>
 
 					<OTPInputView
 						style={{ width: "86%", height: 60 }}
@@ -141,10 +134,6 @@ const OtpScreen = () => {
 						codeInputFieldStyle={styles.underlineStyleBase}
 						code={otp}
 						onCodeChanged={(val) => setOTP(val)}
-						// onCodeFilled = {(code) => {
-						//     console.log(code);
-						//     handleOtp(code);
-						// }}
 					/>
 
 					<TouchableOpacity

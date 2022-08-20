@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     },
     para: {
         fontSize: 17,
-        fontWeight: '600',
+        fontWeight: '500',
         lineHeight: 24,
         color: '#101010',
         letterSpacing: 0,

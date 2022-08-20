@@ -8,6 +8,7 @@ import HeaderCard from "../subcomponents/HeaderCard";
 import { BASE_URL, API_KEY } from "@env";
 import Loader from "../Loader";
 import { useSelector } from "react-redux";
+import * as SecureStore from "expo-secure-store";
 
 // var results = [];
 
@@ -22,7 +23,7 @@ const SavedLocations = () => {
 		const getLocations = async () => {
 			setLoading(true);
 			try {
-				const accessToken = user.token;
+				const accessToken = await SecureStore.getItemAsync("accessToken");;
 				const id = 15;
 				const data = await getSavedLocations({
 					accessToken: accessToken,

@@ -15,6 +15,7 @@ import RNPickerSelect from "react-native-picker-select";
 
 import { createFeedback } from "../../https/feedback";
 import VoiceToText from "../VoiceToText";
+import { flashMessage } from "../../lottie/flashMessage";
 
 const Help = () => {
 	const navigation = useNavigation();
@@ -43,6 +44,7 @@ const Help = () => {
 				!rating
 			) {
 				setError("All fields are required !");
+				flashMessage('All fields are required !', 'danger');
 				return;
 			}
 			console.log(phone_number, " ", email, " ", message, " ", rating);
@@ -57,10 +59,12 @@ const Help = () => {
 			console.log(data, "response feedback");
 			if (data.success === true) {
 				setResponse(data.message);
+				flashMessage(data?.message, 'success');
 			}
 		} catch (err) {
 			console.log(err?.response?.data);
 			setError(err?.response?.data);
+			flashMessage(err?.response?.data, 'danger');
 		}
 	};
 
@@ -90,7 +94,7 @@ const Help = () => {
 						showsHorizontalScrollIndicator={false}
 						showsVerticalScrollIndicator={false}
 					>
-						<Text className='text-lg font-semibold text-[#e35944] ml-2 mt-2 mb-2'>{error}</Text>
+						<Text className='text-[16.5px] font-semibold text-[#e35944] ml-2 mt-2 mb-2'>{error}</Text>
 						<InputField
 							inputname="Phone number"
 							keyboardType="phone-pad"
