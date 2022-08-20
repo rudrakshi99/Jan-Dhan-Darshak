@@ -46,9 +46,9 @@ const PlaceCard = ({ item, location }) => {
 	return (
 		<View
 			style={{
-				marginHorizontal: 10,
+				marginHorizontal: 6,
 				backgroundColor: "#fff",
-				borderRadius: 20,
+				borderRadius: 10,
 				padding: 12,
 				elevation: 5,
 			}}
