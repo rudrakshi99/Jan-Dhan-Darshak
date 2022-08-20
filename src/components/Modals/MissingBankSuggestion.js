@@ -25,11 +25,29 @@ import {
 } from "react-native-heroicons/outline";
 import { createSuggestion } from "../../https/suggestions";
 import * as SecureStore from "expo-secure-store";
+// import MapMarker from "../MapMarker";
+
+import MapView,{Marker} from "react-native-maps";
+
+
+
 const MissingBankSuggestion = () => {
+    const[latlon,setLatlon]=useState({
+        latitude: 28.614788,
+		longitude: 77.359662,
+      })
+	
+	
+	const [location, setLocation] = useState({
+		latitude: 28.614788,
+		longitude: 77.359662,
+		latitudeDelta: 0.01,
+		longitudeDelta: 0.01,
+	});
     const [confirmLocation, setConfirmLocation] = useState(false);
-    const [location, setLocation] = useState("");
     const [name, setName] = useState("");
     const [details, setDetails] = useState("");
+
 
     const focused = useIsFocused();
     const [modalVisible, setModalVisible] = useState(false);
@@ -40,29 +58,39 @@ const MissingBankSuggestion = () => {
     const navigation = useNavigation();
     const [userId,setUserId]=useState("")
     const [accessToken,setAccessToken]=useState("")
+    async function getGeocodedAddress() {
+        const location = await Location.getCurrentPositionAsync({});
+        const { latitude, longitude } = location.coords;
+        
+        setLocationObj({latitude:latitude,longitude:longitude});
+        const result = await axios.get(
+            `${BASE_URL}maps/api/geocode/json?latlng=${
+                latlon.latitude + "," + latlon.longitude
+            }&key=${API_KEY}`
+        )
+        console.log(result.data.results[0].formatted_address);
+        setAddress(result.data.results[0].formatted_address);
+    }
     useEffect(() => {
-        // async function getGeocodedAddress() {
-        //     const location = await Location.getCurrentPositionAsync({});
-        //     const { latitude, longitude } = location.coords;
-        //     setLocationObj({latitude:latitude,longitude:longitude});
-        //     const result = await axios.get(
-        //         `${BASE_URL}maps/api/geocode/json?latlng=${
-        //             latitude + "," + longitude
-        //         }&key=${API_KEY}`
-        //     )
-        //     console.log(result.data.results[0].formatted_address);
-        //     setAddress(result.data.results[0].formatted_address);
-        // }
-        // async function getUserData(){
+        
+        async function getUserData(){
        
-        //     setAccessToken(await SecureStore.getItemAsync('accessToken'));
-        //     setUserId(await SecureStore.getItemAsync('userId'))
-        // }
-        // getUserData();
-        // getGeocodedAddress();
+            setAccessToken(await SecureStore.getItemAsync('accessToken'));
+            setUserId(await SecureStore.getItemAsync('userId'))
+        }
+        
+        getUserData();
     }, [focused]);
     
-   
+    
+    const handleRegionChange=()=>{
+        
+        setLatlon({
+            latitude: location.latitude,
+            longitude: location.longitude,
+        })
+        getGeocodedAddress();
+    }
     const handleFormChange = async() => {
       
         try {
@@ -131,7 +159,39 @@ const MissingBankSuggestion = () => {
                         text="Suggest Missing Bank or FInancial Points"
                     />
                     <View style={styles.mapper}>
-                    <Map />
+                    <View style={mapstyles.mappercontainer}>
+                    <MapView
+                                    style={mapstyles.mapmark}
+                                    initialRegion={location}
+                                    showsUserLocation={true}
+                                    region={location}
+                                    showsMyLocationButton={true}
+                                    followsUserLocation={true}
+                                    showsCompass={true}
+                                    scrollEnabled={true}
+                                    zoomEnabled={true}
+                                    pitchEnabled={true}
+                                    rotateEnabled={true}
+                                    showsTraffic={true}
+                                
+                                    onRegionChangeComplete={handleRegionChange}
+                                >
+                            <Marker
+                            draggable
+                            coordinate={latlon}
+                            title={"Hold and Drag Me"}
+                            icon={"https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png"}
+                        
+                            onDragEnd={e => {
+                            
+                                setLatlon(e.nativeEvent.coordinate);
+                                console.log(latlon);
+                            }}
+                            />
+                            
+                            </MapView>
+                            </View>
+                    
                     </View>
                     <View style={styles.bottomBox}>
                         <View style={styles.locationBox}>
@@ -162,7 +222,30 @@ const MissingBankSuggestion = () => {
                 <ScrollView>
                 <View>
                     <View style={styles.mapper2}>
-                        <Map />
+                    <MapView
+                                    style={mapstyles.mapmark}
+                                    initialRegion={location}
+                                    showsUserLocation={true}
+                                    region={location}
+                                    showsMyLocationButton={true}
+                                    followsUserLocation={true}
+                                    showsCompass={true}
+                                    scrollEnabled={true}
+                                    zoomEnabled={true}
+                                    pitchEnabled={true}
+                                    rotateEnabled={true}
+                                    showsTraffic={true}
+                                
+                                    onRegionChangeComplete={handleRegionChange}
+                                >
+                            <Marker
+                            coordinate={latlon}
+                            title={"Hold and Drag Me"}
+                            icon={"https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png"}
+                    
+                            />
+                            
+                            </MapView>
                     </View>
                     <View style={styles.missingform}>
                         
@@ -412,5 +495,20 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
 });
+//create our styling code:
+const mapstyles = StyleSheet.create({
+    mappercontainer: {
+      ...StyleSheet.absoluteFillObject,
+      height:Dimensions.get("window").height,
+      flex: 1,
+      justifyContent: "flex-end",
+      alignItems: "center",
+    },
+    mapmark: {
+      height: Dimensions.get("window").height,
+      width: Dimensions.get("window").width,
+      flex:1,
+    },
+  });
 
 export default MissingBankSuggestion;

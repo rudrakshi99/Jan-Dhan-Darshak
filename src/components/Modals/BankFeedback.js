@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useNavigation, useIsFocused } from "@react-navigation/native";
+import {
+	useNavigation,
+	useIsFocused,
+	useRoute,
+} from "@react-navigation/native";
 import {
 	StyleSheet,
 	Text,
@@ -21,6 +25,7 @@ import { flashMessage } from "../../lottie/flashMessage";
 
 const BankFeedback = () => {
 	const navigation = useNavigation();
+	const route = useRoute();
 	// const focused = useIsFocused();
 	// const [show, setShow] = useState(true);
 	// const [user, setUser] = useState();
@@ -31,7 +36,16 @@ const BankFeedback = () => {
 	const focused = useIsFocused();
 	const user = useSelector((state) => state.auth.user);
 
-	useEffect(() => {}, [focused]);
+	useEffect(() => {
+		async function autoFill() {
+			console.log(route.params);
+			setNameOfThePoint(route.params.name);
+			setLocation(route.params.location);
+			setUsername(await SecureStore.getItemAsync("name"));
+			setMobile(await SecureStore.getItemAsync("phone"));
+		}
+		autoFill();
+	});
 
 	const [financial_type, setFinancial_type] = useState("");
 	const [NameOfThePoint, setNameOfThePoint] = useState("");
@@ -53,7 +67,7 @@ const BankFeedback = () => {
 				!unique_id
 			) {
 				setError("All fields are required !");
-				flashMessage('All fields are required !', 'danger');
+				flashMessage("All fields are required !", "danger");
 				return;
 			}
 			const accessToken = await SecureStore.getItemAsync("accessToken");
@@ -68,12 +82,12 @@ const BankFeedback = () => {
 			});
 
 			if (data.success === true) {
-				flashMessage("Feedback has been submitted", 'success');
+				flashMessage("Feedback has been submitted", "success");
 			}
 		} catch (err) {
 			console.log(err?.response?.data);
 			setError(err?.response?.data);
-			flashMessage(err?.response?.data, 'danger');
+			flashMessage(err?.response?.data, "danger");
 		}
 	};
 
@@ -102,7 +116,9 @@ const BankFeedback = () => {
 					showsHorizontalScrollIndicator={false}
 					showsVerticalScrollIndicator={false}
 				>
-					<Text className='text-[16.5px] font-semibold text-[#e35944] ml-2 mb-2'>{error}</Text>
+					<Text className="text-[16.5px] font-semibold text-[#e35944] ml-2 mb-2">
+						{error}
+					</Text>
 
 					<Text style={styles.inputLabel}>Financial Type</Text>
 					<View style={styles.borderGet}>

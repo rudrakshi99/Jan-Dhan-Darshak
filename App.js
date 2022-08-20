@@ -9,7 +9,6 @@ import { useDispatch } from "react-redux";
 import { setAuth } from "./src/redux/slices/authSlice";
 import store from "./src/redux/store";
 import "react-native-gesture-handler";
-import FlashMessage from "react-native-flash-message";
 
 LogBox.ignoreLogs(["EventEmitter.removeListener"]);
 
@@ -20,7 +19,6 @@ import Otp from "./src/components/Modals/Otp";
 import Directions from "./src/pages/Directions";
 import Navigation from "./src/pages/Navigation";
 import { useSelector } from "react-redux";
-import Onboarding from "./src/pages/Onboarding";
 
 const Stack = createNativeStackNavigator();
 
@@ -92,13 +90,6 @@ function App() {
 					}}
 				/>
 				<Stack.Screen
-					name="Onboarding"
-					component={Onboarding}
-					options={{
-						headerShown: false,
-					}}
-				/>
-				<Stack.Screen
 					name="Directions"
 					component={Directions}
 					options={{
@@ -113,7 +104,6 @@ function App() {
 					}}
 				/>
 			</Stack.Navigator>
-			<FlashMessage position="top" />
 		</TailwindProvider>
 	);
 }

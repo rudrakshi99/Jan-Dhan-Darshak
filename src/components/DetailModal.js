@@ -327,6 +327,15 @@ const DetailModal = ({ show, setShow, item }) => {
 		}
 	}
 
+	function handleFeedback({ name, financial_type, location, place_id }) {
+		navigation.navigate("Feedback", {
+			name: name,
+			financial_type: financial_type,
+			location: location,
+			place_id: place_id,
+		});
+	}
+
 	const FirstRoute = () => {
 		const [expand, setExpand] = useState(false);
 		return (
@@ -595,6 +604,12 @@ const DetailModal = ({ show, setShow, item }) => {
 										styles.optionButton,
 										{ backgroundColor: "#2C81E0" },
 									]}
+									onPress={() => {
+										navigation.navigate("Directions", {
+											name: item.name,
+											place_id: item.place_id,
+										});
+									}}
 								>
 									<Image
 										source={require("../assets/icons/direction.png")}
@@ -668,6 +683,36 @@ const DetailModal = ({ show, setShow, item }) => {
 						indicatorContainerStyle={{ backgroundColor: "white" }}
 						inactiveColor="#fff"
 					/>
+					<View style={styles.floatingButtonContainer}>
+						<TouchableOpacity
+							style={styles.floatingButton}
+							onPress={() =>
+								handleFeedback({
+									name: item.name,
+									place_id: item.place_id,
+									location: item.formatted_address,
+									financial_type: item.type
+										? item.type[0]
+										: null,
+								})
+							}
+						>
+							<Image
+								source={require("../assets/icons/feedback.png")}
+								style={styles.floatingButtonImage}
+								resizeMode="contain"
+							/>
+						</TouchableOpacity>
+						<Text
+							style={{
+								fontSize: 16,
+								fontWeight: "600",
+								marginTop: 10,
+							}}
+						>
+							Feedback
+						</Text>
+					</View>
 				</View>
 			</View>
 		</Modal>
@@ -695,9 +740,10 @@ const styles = StyleSheet.create({
 		backgroundColor: "#fff",
 		height: Dimensions.get("window").height / 1.3,
 		paddingVertical: 20,
-		borderRadius: 20,
+		borderTopLeftRadius: 20,
+		borderTopRightRadius: 20,
 		elevation: 5,
-		transform: [{ translateY: -20 }],
+		transform: [{ translateY: 0 }],
 	},
 	image: {
 		width: Dimensions.get("window").width,
@@ -757,6 +803,25 @@ const styles = StyleSheet.create({
 	reviewTitle: {
 		fontSize: 20,
 		fontWeight: "700",
+	},
+	floatingButtonContainer: {
+		position: "absolute",
+		bottom: 45,
+		right: 25,
+		backgroundColor: "white",
+		borderTopLeftRadius: 99,
+		borderTopRightRadius: 99,
+		padding: 10,
+	},
+	floatingButton: {
+		backgroundColor: "#fff",
+		borderRadius: 99,
+		padding: 20,
+		elevation: 10,
+	},
+	floatingButtonImage: {
+		height: 30,
+		width: 30,
 	},
 });
 
