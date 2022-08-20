@@ -8,7 +8,7 @@ const HeaderCard = ({ heading, text }) => {
 
     return (
         <View style={styles.innerContainer}>
-            <TouchableOpacity onPress={navigation.goBack}>
+            <TouchableOpacity onPress={() => navigation.navigate('Find')}>
                 <ArrowNarrowLeftIcon style={styles.iconHeader} size={30} color="#101010" />
             </TouchableOpacity>
             <View style={styles.headingBox}>

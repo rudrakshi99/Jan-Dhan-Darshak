@@ -20,6 +20,7 @@ import BankFeedback from "../components/Modals/BankFeedback";
 import * as SecureStore from 'expo-secure-store';
 import Logout from "../components/Modals/Logout";
 import Icon from "react-native-vector-icons/AntDesign";
+import Faq from "../components/Modals/Faq";
 
 const Drawer = createDrawerNavigator();
 
@@ -158,6 +159,18 @@ const Home = ({ navigation }) => {
             <Drawer.Screen
                 name="Help"
                 component={Help}
+                options={{
+                    headerShown: false,
+                    drawerIcon: () => (
+                        <Image
+                            source={require("../assets/icons/missingbank.png")}
+                        />
+                    ),
+                }}
+            />
+            <Drawer.Screen
+                name="Faq"
+                component={Faq}
                 options={{
                     headerShown: false,
                     drawerIcon: () => (
