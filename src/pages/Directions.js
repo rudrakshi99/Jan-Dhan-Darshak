@@ -57,6 +57,12 @@ function Directions() {
 		}
 		getLocation();
 	}, [focused]);
+	function handleNavigate({ place_id }) {
+		const googleMapOpenUrl = ({ place_id }) => {
+			return `https://www.google.com/maps/dir/?api=1&origin=${location.latitude},${location.longitude}&destination=QVB&destination_place_id=${place_id}&travelmode=walking`;
+		};
+		Linking.openURL(googleMapOpenUrl({ place_id: place_id }));
+	}
 	return (
 		<View style={{ flex: 1 }}>
 			<View style={styles.header}>
@@ -264,10 +270,7 @@ function Directions() {
 						<TouchableOpacity
 							style={styles.navigationButton}
 							onPress={() => {
-								navigation.navigate("Navigate", {
-									place_id: params.place_id,
-									name: params.name,
-								});
+								handleNavigate({ place_id: params.place_id });
 							}}
 						>
 							<Icon name="navigation" size={20} color="#fff" />

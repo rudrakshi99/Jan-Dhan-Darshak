@@ -93,7 +93,7 @@ const MapBox = () => {
 					style={styles.resultContainer}
 					snapToAlignment="start"
 					snapToInterval={100}
-					contentContainerStyle={{ paddingVertical: 10 }}
+					contentContainerStyle={{ paddingVertical: 5 }}
 					renderItem={({ item, index }) => {
 						return (
 							<PlaceCard
