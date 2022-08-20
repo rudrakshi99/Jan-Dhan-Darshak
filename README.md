@@ -40,6 +40,147 @@ providers such as banks, post office, CSC, etc.
 - **Hosting**: Heroku
 
 ### How to Get Started?
+### Fork, clone locally & create a branch
+
+Fork [Jan Dhan Darshak Backend](https://github.com/rudrakshi99/Jan-Dhan-Darshak) repository and clone at your local 
+
+- Fork and Clone the repo using
+```
+$ git clone https://github.com/rudrakshi99/Jan-Dhan-Darshak.git
+```
+- Change Branch to `backend` using 
+```
+$ git checkout backend
+```
+### Setting Environment First Time
+
+#### Basic Requirements 
+1. [Python](https://www.python.org/downloads/)
+1. [pip](https://pip.pypa.io/en/stable/installation/)
+
+#### Creating [Virtual Environment](https://docs.python.org/3/library/venv.html) 
+
+A virtual environment is a tool that helps keep dependencies required and the project isolated. If you wish to install a new library and write
+```
+pip install name_of_library
+``` 
+on the terminal without activating an environment, all the packages will be installed globally which is not a good practice if you’re working with different projects on your computer.
+
+If this sounds a bit complicated, don’t worry so much because a virtual environment is just a directory that will contain all the necessary files for our project to run.
+
+**Installing venv (required once)**
+
+**Windows**
+```
+py -m pip install --user virtualenv
+py -m venv env
+```
+**Linux**
+```
+python3 -m pip install --user virtualenv
+python3 -m venv env
+```
+
+You have to start virtual environment everytime you start new terminal -
+
+**Windows**
+
+Using gitbash
+```
+. env/Scripts/activate
+```
+Using Powershell
+```
+. env\Scripts\activate
+```
+**Linux**
+```
+source env/bin/activate
+```
+
+#### Installing Requirements 
+
+**Windows**
+```
+pip install -r requirements/base.txt
+pip install -r requirements/local.txt
+```
+**Linux**
+```
+pip install -r requirements/base.txt
+pip install -r requirements/local.txt
+```
+#### Setting up Environment File
+
+**Configuring Environment Variables**
+
+Make environment file by copying the example file -
+```
+cd .envs/.local
+cp .django .env
+cp .postgres .env
+``` 
+
+#### Migrating Database
+**Windows**
+```
+py manage.py migrate
+```
+**Linux**
+```
+python3 manage.py migrate
+```
+
+#### Create Superuser
+**Windows**
+```
+py manage.py createsupeser
+```
+**Linux**
+```
+python3 manage.py createsupeser
+```
+
+### Starting Development Server
+**Windows**
+```
+py manage.py runserver
+```
+**Linux**
+```
+python3 manage.py runserver
+``` 
+
+### Leaving the virtual environment
+```
+deactivate
+```
+
+### Update requirements file (Critical)
+If you have installed new dependency, the pip freeze command lists the third-party packages and versions installed in the environment. 
+
+**Windows**
+```
+pip freeze > requirements/local.txt
+```
+**Linux**
+```
+pip3 freeze > requirements/local.txt
+```
+
+### Update Database  
+Everytime you change db models, you need to run makemigrations and migrate to update on database.
+
+**Windows**
+```
+py manage.py makemigrations
+py manage.py migrate
+```
+**Linux**
+```
+python3 manage.py makemigrations
+python3 manage.py migrate
+``` 
 
 #### GitHub Repository Structure
 
