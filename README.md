@@ -79,7 +79,7 @@ $ npm start
 | 3. | Suyash Rastogi | Frontend Development | [@suyashrastogi7](https://github.com/suyashrastogi7) |
 | 4. | Anmol Srivastava | Backend Development| [@anmolsrivastava1](https://github.com/anmolsrivastava1)  |
 | 5. | Parth Sharma | Full-stack Development | [@ParthSharmaT](https://github.com/ParthSharmaT)  |
-| 6. | Kushal Gautam | UI Designer | [@kushalgautam](https://github.com/kushalgautam)  |
+| 6. | Kushal Gautam | Product Designer | [@kushalgautam](https://github.com/kushalgautam)  |
 
 ## Maintainers✨
 
