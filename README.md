@@ -63,7 +63,7 @@ $ git clone https://github.com/rudrakshi99/Jan-Dhan-Darshak.git
 ```
 $ npm i
 ```
-- Run the Server and see the demo at [http://localhost:3000/](http://localhost:3000/)
+- Run the Server and see the demo at [https://expo.dev/client](https://expo.dev/client)
 ```
 $ expo start
 ```
