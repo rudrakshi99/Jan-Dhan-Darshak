@@ -385,3 +385,8 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = env.str("EMAIL_HOST_USER", None)
 EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD", None)
+
+GRAPH_MODEL = {
+    "all_applications": True,
+    "group_models": True,
+}
