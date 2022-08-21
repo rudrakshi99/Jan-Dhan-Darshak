@@ -25,6 +25,10 @@ providers such as banks, post office, CSC, etc.
 10. Display route map of the selected place from user location.
 11. Rating and feedback systems to ensure better customer experience.
 12. Share live location.
+13. Save financial point location.
+14. Add missing bank suggestions.
+15. Track suggestion requests the ID.
+
 
 ## Technology Stack:
 
