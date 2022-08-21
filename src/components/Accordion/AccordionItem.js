@@ -30,8 +30,8 @@ const AccordionItem = ({ otherdetails,pointName,uid,address,status}) => {
         </CollapseHeader>
       <CollapseBody>   
         <View style={styles.dropdownView}>
-          <Text style={styles.dropdetail}>{address}</Text>
-          <Text style={styles.dropdetail}>{otherdetails}</Text>
+          <View style={styles.address}><Text style={styles.dropdetail}>Address:</Text><Text style={styles.dropdetailview}>{address}</Text></View>
+          <View style={styles.address}><Text style={styles.dropdetail}>Other Details:</Text><Text style={styles.dropdetailview}>{otherdetails}</Text></View>
         </View>
       </CollapseBody>
     </Collapse>
@@ -95,10 +95,25 @@ const styles = StyleSheet.create({
         background: "#1c1c1c",
         color: "#00ffb9",
         width: "100%",
-        height: "100px",
         
+        padding:40,
+
     },
     dropdetail:{
-        fontSize: 16,
+      color:"#626262",
+        fontSize: 14,
+        
     },
+    dropdetailview:{
+      color:"#626262",
+        fontSize: 14,
+        flexShrink: 1,
+        paddingHorizontal:20,
+    },
+
+    address:{
+      display:"flex",
+      flexDirection:"row",
+      justifyContent:"space-between",
+    }
 })

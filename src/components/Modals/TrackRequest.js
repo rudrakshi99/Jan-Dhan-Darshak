@@ -5,7 +5,7 @@ import * as SecureStore from "expo-secure-store";
 import HeaderCard from "../subcomponents/HeaderCard";
 
 import { SuggestionByUser } from "../../https/suggestions";
-import AccordionItem from "../Accordion/Accordion";
+import AccordionItem from "../Accordion/AccordionItem";
 const TrackRequest = () => {
     const [accessToken,setAccessToken]=useState("");
     const [userId,setUserId]=useState("");
@@ -30,7 +30,7 @@ const TrackRequest = () => {
     //     getDetails();
         
     // }, [])
-    const data=[{'uid':1,'pointName':'JSS Academy of technical education','address':'address1','otherdetails':'content1lnkacsklnsalcasnnlkcsanncsansakcl','status':'Pending'},
+    const data=[{'uid':1,'pointName':'JSS Academy of technical education','address':'address1','otherdetails':'content1lnkacsklnsalcasnnlkcsanncsansakclnasbckacksbjkasbckbbascbkbskjac','status':'Pending'},
       {'uid':2,'pointName':'title2','address':'address2','otherdetails':'content2clasnklnsancascnk','status':'Rejected'},
       {'uid':3,'pointName':'title3','address':'address3','otherdetails':'content3alscnnklanslknacslk','status':'Pending'},
       {'uid':4,'pointName':'title4','address':'address4','otherdetails':'content4alscnlnasklnlacsnl','status':'Approved'},
@@ -62,21 +62,23 @@ const TrackRequest = () => {
 				heading="Your Suggestions"
 				text="List of all your Suggestions"
 			  />
-        <ScrollView>
+        <ScrollView style={styles.listview}>
         
        {data.map(({ uid,address,otherdetails,pointName,status }) => {
             return (
               <AccordionItem key={uid} uid={uid} address={address} pointName={pointName} otherdetails={otherdetails} status={status}/>
             );
-          })}</ScrollView></View>}
+          })}</ScrollView></View>
+         } 
     </View>
     );
 };
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
+      
       marginTop: StatusBar.currentHeight || 0,
     },
+    
     loadView:{  
         flex: 1,
         justifyContent: "center",
