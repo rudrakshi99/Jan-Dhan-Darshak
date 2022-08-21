@@ -65,7 +65,18 @@ $ npm i
 ```
 - Run the Server and see the demo at [http://localhost:3000/](http://localhost:3000/)
 ```
-$ npm start
+$ expo start
+```
+
+### Build Project
+```
+- Build for Android
+```
+$ expo build:android
+```
+- Build for IOS
+```
+$ expo build:ios
 ```
 
 ## Team Members:
