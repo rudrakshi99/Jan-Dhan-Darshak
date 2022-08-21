@@ -69,7 +69,7 @@ $ expo start
 ```
 
 ### Build Project
-```
+
 - Build for Android
 ```
 $ expo build:android
@@ -80,8 +80,6 @@ $ expo build:ios
 ```
 
 ## Team Members:
-
-> "Team Members"
 
 | S.No. | Name | Role | GitHub Username:octocat: |
 | --------------- | --------------- | --------------- | --------------- |
