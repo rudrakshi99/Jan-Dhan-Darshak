@@ -5,7 +5,7 @@ import * as SecureStore from "expo-secure-store";
 import HeaderCard from "../subcomponents/HeaderCard";
 
 import { SuggestionByUser } from "../../https/suggestions";
-import Accordion from "../Accordion/Accordion";
+import AccordionItem from "../Accordion/Accordion";
 const TrackRequest = () => {
     const [accessToken,setAccessToken]=useState("");
     const [userId,setUserId]=useState("");
@@ -30,21 +30,21 @@ const TrackRequest = () => {
     //     getDetails();
         
     // }, [])
-    const data=[{'uid':1,'pointName':'JSS Academy of technical education','address':'address1','otherdetails':'content1lnkacsklnsalcasnnlkcsanncsansakcl','suggestion_status':'Pending'},
-      {'uid':2,'pointName':'title2','address':'address2','otherdetails':'content2clasnklnsancascnk','suggestion_status':'Rejected'},
-      {'uid':3,'pointName':'title3','address':'address3','otherdetails':'content3alscnnklanslknacslk','suggestion_status':'Pending'},
-      {'uid':4,'pointName':'title4','address':'address4','otherdetails':'content4alscnlnasklnlacsnl','suggestion_status':'Approved'},
-      {'uid':5,'pointName':'title5','address':'address5','otherdetails':'content5acnslnasclnlsacnlcaksnlsacnlcsallcsanncasl','suggestion_status':'Completed'},
-      {'uid':6,'pointName':'title5','address':'address5','otherdetails':'content5acnslnasclnlsacnlcaksnlsacnlcsallcsanncasl','suggestion_status':'Completed'},
-      {'uid':7,'pointName':'title5','address':'address5','otherdetails':'content5acnslnasclnlsacnlcaksnlsacnlcsallcsanncasl','suggestion_status':'Completed'},
-      {'uid':8,'pointName':'title5','address':'address5','otherdetails':'content5acnslnasclnlsacnlcaksnlsacnlcsallcsanncasl','suggestion_status':'Completed'},
-      {'uid':9,'pointName':'title2','address':'address2','otherdetails':'content2clasnklnsancascnk','suggestion_status':'Rejected'},
-      {'uid':10,'pointName':'title3','address':'address3','otherdetails':'content3alscnnklanslknacslk','suggestion_status':'Pending'},
-      {'uid':11,'pointName':'title4','address':'address4','otherdetails':'content4alscnlnasklnlacsnl','suggestion_status':'Approved'},
-      {'uid':12,'pointName':'title5','address':'address5','otherdetails':'content5acnslnasclnlsacnlcaksnlsacnlcsallcsanncasl','suggestion_status':'Completed'},
-      {'uid':13,'pointName':'title2','address':'address2','otherdetails':'content2clasnklnsancascnk','suggestion_status':'Rejected'},
-      {'uid':14,'pointName':'title3','address':'address3','otherdetails':'content3alscnnklanslknacslk','suggestion_status':'Pending'},
-      {'uid':15,'pointName':'title4','address':'address4','otherdetails':'content4alscnlnasklnlacsnl','suggestion_status':'Approved'},
+    const data=[{'uid':1,'pointName':'JSS Academy of technical education','address':'address1','otherdetails':'content1lnkacsklnsalcasnnlkcsanncsansakcl','status':'Pending'},
+      {'uid':2,'pointName':'title2','address':'address2','otherdetails':'content2clasnklnsancascnk','status':'Rejected'},
+      {'uid':3,'pointName':'title3','address':'address3','otherdetails':'content3alscnnklanslknacslk','status':'Pending'},
+      {'uid':4,'pointName':'title4','address':'address4','otherdetails':'content4alscnlnasklnlacsnl','status':'Approved'},
+      {'uid':5,'pointName':'title5','address':'address5','otherdetails':'content5acnslnasclnlsacnlcaksnlsacnlcsallcsanncasl','status':'Completed'},
+      {'uid':6,'pointName':'title5','address':'address5','otherdetails':'content5acnslnasclnlsacnlcaksnlsacnlcsallcsanncasl','status':'Completed'},
+      {'uid':7,'pointName':'title5','address':'address5','otherdetails':'content5acnslnasclnlsacnlcaksnlsacnlcsallcsanncasl','status':'Completed'},
+      {'uid':8,'pointName':'title5','address':'address5','otherdetails':'content5acnslnasclnlsacnlcaksnlsacnlcsallcsanncasl','status':'Completed'},
+      {'uid':9,'pointName':'title2','address':'address2','otherdetails':'content2clasnklnsancascnk','status':'Rejected'},
+      {'uid':10,'pointName':'title3','address':'address3','otherdetails':'content3alscnnklanslknacslk','status':'Pending'},
+      {'uid':11,'pointName':'title4','address':'address4','otherdetails':'content4alscnlnasklnlacsnl','status':'Approved'},
+      {'uid':12,'pointName':'title5','address':'address5','otherdetails':'content5acnslnasclnlsacnlcaksnlsacnlcsallcsanncasl','status':'Completed'},
+      {'uid':13,'pointName':'title2','address':'address2','otherdetails':'content2clasnklnsancascnk','status':'Rejected'},
+      {'uid':14,'pointName':'title3','address':'address3','otherdetails':'content3alscnnklanslknacslk','status':'Pending'},
+      {'uid':15,'pointName':'title4','address':'address4','otherdetails':'content4alscnlnasklnlacsnl','status':'Approved'},
     ]
 
     
@@ -52,7 +52,7 @@ const TrackRequest = () => {
     
      
     return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
         {loading
         ?
         <View style={styles.loadView}><Text style={styles.loading}>Loading....</Text></View>
@@ -64,12 +64,12 @@ const TrackRequest = () => {
 			  />
         <ScrollView>
         
-       {data.map(({ uid,address,otherdetails,pointName,suggestion_status }) => {
+       {data.map(({ uid,address,otherdetails,pointName,status }) => {
             return (
-              <Accordion uid={uid} address={address} pointName={pointName} otherdetails={otherdetails} suggestion_status={suggestion_status}/>
+              <AccordionItem key={uid} uid={uid} address={address} pointName={pointName} otherdetails={otherdetails} status={status}/>
             );
           })}</ScrollView></View>}
-    </SafeAreaView>
+    </View>
     );
 };
 const styles = StyleSheet.create({

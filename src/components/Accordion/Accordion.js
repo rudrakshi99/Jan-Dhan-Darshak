@@ -1,38 +1,45 @@
 import { ChevronUpIcon,ChevronDownIcon } from "react-native-heroicons/solid";
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React,{useState} from 'react'
-
-const Accordion = ({ otherdetails,pointName,uid,address,suggestion_status}) => {
+import {
+  Collapse,
+  CollapseHeader,
+  CollapseBody,
+} from "accordion-collapse-react-native";
+const AccordionItem = ({ otherdetails,pointName,uid,address,status}) => {
     const [isActive, setIsActive] = useState(false);
   return (
     <View>
-        
-        <TouchableOpacity onPress={() => setIsActive(!isActive)}>
+        <Collapse onToggle={isActive => setIsActive(isActive)}>
+        <CollapseHeader>
             <View style={styles.AccordView}>
             <View style={styles.innerAccord}>
             {pointName.length>18?(<Text style={styles.pointname}>{`${pointName.slice(0,15)}...`}</Text>):(<Text style={styles.pointname}>{pointName}</Text>)}
             <Text style={styles.trackid}>Track ID:{uid}</Text>
             </View>
             <View style={styles.buttonarrow}>
-            {suggestion_status === 'Pending' ? <View style={{backgroundColor:"#FFD233",borderRadius:8,justifyContent:"center",height:30,width:100,alignItems:"center"}}><Text style={styles.statustext}>{suggestion_status}</Text></View> : null}
-            {suggestion_status === 'Approved' ? <View style={{backgroundColor:"#3A8DEC",borderRadius:8,justifyContent:"center",height:30,width:100,alignItems:"center"}}><Text style={styles.statustext}>{suggestion_status}</Text></View> : null}
-            {suggestion_status === 'Rejected' ? <View style={{backgroundColor:"#DB0E0E",borderRadius:8,justifyContent:"center",height:30,width:100,alignItems:"center"}}><Text style={styles.statustext}>{suggestion_status}</Text></View> : null}
-            {suggestion_status === 'Completed' ? <View style={{backgroundColor:"#219653",borderRadius:8,justifyContent:"center",height:30,width:100,alignItems:"center"}}><Text style={styles.statustext}>{suggestion_status}</Text></View> : null}
+            {status === 'Pending' ? <View style={{backgroundColor:"#FFD233",borderRadius:8,justifyContent:"center",height:30,width:100,alignItems:"center"}}><Text style={styles.statustext}>{status}</Text></View> : null}
+            {status === 'Approved' ? <View style={{backgroundColor:"#3A8DEC",borderRadius:8,justifyContent:"center",height:30,width:100,alignItems:"center"}}><Text style={styles.statustext}>{status}</Text></View> : null}
+            {status === 'Rejected' ? <View style={{backgroundColor:"#DB0E0E",borderRadius:8,justifyContent:"center",height:30,width:100,alignItems:"center"}}><Text style={styles.statustext}>{status}</Text></View> : null}
+            {status === 'Completed' ? <View style={{backgroundColor:"#219653",borderRadius:8,justifyContent:"center",height:30,width:100,alignItems:"center"}}><Text style={styles.statustext}>{status}</Text></View> : null}
             
             
             <View style={styles.iconview}>{isActive ? <ChevronUpIcon size={12} color="#101010"/> : <ChevronDownIcon size={12} color="#101010" />}</View>
             </View>
             </View>
-        </TouchableOpacity>
-    {isActive &&<View style={styles.dropdownView}>
-    <Text style={styles.dropdetail}>{address}</Text>
-    <Text style={styles.dropdetail}>{otherdetails}</Text>
-    </View>}
+        </CollapseHeader>
+      <CollapseBody>   
+        <View style={styles.dropdownView}>
+          <Text style={styles.dropdetail}>{address}</Text>
+          <Text style={styles.dropdetail}>{otherdetails}</Text>
+        </View>
+      </CollapseBody>
+    </Collapse>
   </View>
   )
 }
 
-export default Accordion
+export default AccordionItem
 
 const styles = StyleSheet.create({
 
