@@ -12,7 +12,6 @@ import {
     ScrollView,
 } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
-import Map from "../Map";
 import HeaderCard from "../subcomponents/HeaderCard";
 import * as Location from "expo-location";
 import axios from "axios";
@@ -20,13 +19,11 @@ import { BASE_URL, API_KEY } from "@env";
 import InputField from "../inputComponents/InputField";
 import { useNavigation } from "@react-navigation/native";
 import {
-    ArrowNarrowLeftIcon,
+    
     CheckCircleIcon,
 } from "react-native-heroicons/outline";
 import { createSuggestion } from "../../https/suggestions";
 import * as SecureStore from "expo-secure-store";
-// import MapMarker from "../MapMarker";
-
 import MapView,{Marker} from "react-native-maps";
 
 
