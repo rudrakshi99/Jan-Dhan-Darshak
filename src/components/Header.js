@@ -7,6 +7,8 @@ import {
 	TextInput,
 	Dimensions,
 	Alert,
+	KeyboardAvoidingView,
+	Platform,
 } from "react-native";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
@@ -68,6 +70,10 @@ const Header = ({
 		return null;
 	}
 	return (
+		<KeyboardAvoidingView
+			behavior={Platform.OS === 'ios' ? 'padding' : null}
+			style={{height: 200}}
+		>
 		<View style={styles.container}>
 			<View style={styles.headerWrapper}>
 				<VoiceToText
@@ -272,6 +278,7 @@ const Header = ({
 				</View>
 			) : null}
 		</View>
+		</KeyboardAvoidingView>
 	);
 };
 

@@ -6,7 +6,6 @@ import {
 	StyleSheet,
 	Image,
 	FlatList,
-	Platform,
 } from "react-native";
 import * as Location from "expo-location";
 import { useIsFocused } from "@react-navigation/native";
