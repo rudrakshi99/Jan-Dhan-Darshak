@@ -47,6 +47,10 @@ providers such as banks, post office, CSC, etc.
 10. Display route map of the selected place from user location.
 11. Rating and feedback systems to ensure better customer experience.
 12. Share live location.
+13. Save financial point location.
+14. Add missing bank suggestions.
+15. Track suggestion requests the ID.
+16. Financial Points can read their reviews and feedbacks.
 
 ## Technology Stack to be used:
 
@@ -227,7 +231,7 @@ python3 manage.py migrate
 | 3. | Suyash Rastogi | Frontend Development | [@suyashrastogi7](https://github.com/suyashrastogi7) |
 | 4. | Anmol Srivastava | Backend Development| [@anmolsrivastava1](https://github.com/anmolsrivastava1)  |
 | 5. | Parth Sharma | Full-stack Development | [@ParthSharmaT](https://github.com/ParthSharmaT)  |
-| 6. | Kushal Gautam | UI Designer | [@kushalgautam](https://github.com/kushalgautam)  |
+| 6. | Kushal Gautam | Product Designer | [@kushalgautam](https://github.com/kushalgautam)  |
 
 ## Maintainers✨
 
