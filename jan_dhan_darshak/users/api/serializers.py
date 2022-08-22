@@ -26,6 +26,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     # extra_kwargs = {"url": {"view_name": "api:user-detail", "lookup_field": "username"}}
 
+
 class UserSignUpSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -40,3 +41,12 @@ class VerifyOTPSerializer(serializers.Serializer):
     phone_number = serializers.CharField(
         required=True, validators=[validator_mobile_number]
     )
+
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(required=False)
+    email = serializers.EmailField(required=False)
+
+    class Meta:
+        model = User
+        fields = ["name", "email"]
