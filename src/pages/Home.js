@@ -57,7 +57,7 @@ const Home = ({ navigation }) => {
             drawerContent={(props) => <CustomMenu {...props} />}
             initialRouteName="Find"
         >
-            {!customer && <Drawer.Screen
+            {/* {!customer && <Drawer.Screen
                 name="Login"
                 component={LoginScreen}
                 options={{
@@ -67,7 +67,7 @@ const Home = ({ navigation }) => {
                     ),
                 }}
             />
-            }
+            } */}
             <Drawer.Screen
                 name="Find"
                 component={MapBox}
@@ -180,7 +180,7 @@ const Home = ({ navigation }) => {
                     ),
                 }}
             />
-            {!customer ? null : <Drawer.Screen
+            {/* {!customer ? null : <Drawer.Screen
                 name='Logout'
                 component={Logout}
                 options={{
@@ -189,7 +189,7 @@ const Home = ({ navigation }) => {
                         <Icon name="logout" size={24} color="#e35944" />
                     ),
                 }}
-            />}
+            />} */}
             
         </Drawer.Navigator>
     );

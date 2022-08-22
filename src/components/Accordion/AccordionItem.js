@@ -18,13 +18,13 @@ const AccordionItem = ({ otherdetails,pointName,uid,address,status}) => {
             <Text style={styles.trackid}>Track ID:{uid}</Text>
             </View>
             <View style={styles.buttonarrow}>
-            {status === 'Pending' ? <View style={{backgroundColor:"#FFD233",borderRadius:8,justifyContent:"center",height:30,width:100,alignItems:"center"}}><Text style={styles.statustext}>{status}</Text></View> : null}
-            {status === 'Approved' ? <View style={{backgroundColor:"#3A8DEC",borderRadius:8,justifyContent:"center",height:30,width:100,alignItems:"center"}}><Text style={styles.statustext}>{status}</Text></View> : null}
-            {status === 'Rejected' ? <View style={{backgroundColor:"#DB0E0E",borderRadius:8,justifyContent:"center",height:30,width:100,alignItems:"center"}}><Text style={styles.statustext}>{status}</Text></View> : null}
-            {status === 'Completed' ? <View style={{backgroundColor:"#219653",borderRadius:8,justifyContent:"center",height:30,width:100,alignItems:"center"}}><Text style={styles.statustext}>{status}</Text></View> : null}
+            {status === 'Pending' ? <View style={{backgroundColor:"#FFD233",borderRadius:8,justifyContent:"center",height:32,width:100,alignItems:"center"}}><Text style={styles.statustext}>{status}</Text></View> : null}
+            {status === 'Approved' ? <View style={{backgroundColor:"#3A8DEC",borderRadius:8,justifyContent:"center",height:32,width:100,alignItems:"center"}}><Text style={styles.statustext}>{status}</Text></View> : null}
+            {status === 'Rejected' ? <View style={{backgroundColor:"#DB0E0E",borderRadius:8,justifyContent:"center",height:32,width:100,alignItems:"center"}}><Text style={styles.statustext}>{status}</Text></View> : null}
+            {status === 'Completed' ? <View style={{backgroundColor:"#219653",borderRadius:8,justifyContent:"center",height:32,width:100,alignItems:"center"}}><Text style={styles.statustext}>{status}</Text></View> : null}
             
             
-            <View style={styles.iconview}>{isActive ? <ChevronUpIcon size={12} color="#101010"/> : <ChevronDownIcon size={12} color="#101010" />}</View>
+            <View style={styles.iconview}>{isActive ? <ChevronUpIcon size={22} color="#2C81E0"/> : <ChevronDownIcon size={22} color="#2C81E0" />}</View>
             </View>
             </View>
         </CollapseHeader>
@@ -79,8 +79,8 @@ const styles = StyleSheet.create({
    
     statustext:{
      marginVertical:4,
-     fontSize:10,
-      fontWeight:"700",
+     fontSize:12,
+      fontWeight:"600",
       color:"#fff",
     },
     iconview:{

@@ -115,7 +115,7 @@ const MapBox = () => {
 					style={[type.atm ? styles.button : {}, styles.column]}
 				>
 					<Icon name="headphones" size={20} color="#8E8E8E" />
-					<Text style={style.buttonText}>ATM</Text>
+					<Text style={!type.atm ? style.buttonText : styles.blueActive}>ATM</Text>
 				</TouchableOpacity>
 				<TouchableOpacity
 					onPress={() => {
@@ -125,11 +125,11 @@ const MapBox = () => {
 				>
 					{/* <Icon name="building-columns" size={25} color="#8E8E8E" /> */}
 					<Image
-						source={require("../assets/icons/bank.png")}
+						source={!type.bank ? require("../assets/icons/bank.png") : require("../assets/icons/branch-blue.png")}
 						resizeMode="contain"
 						style={{ height: 20, width: 20 }}
 					/>
-					<Text style={style.buttonText}>Branch</Text>
+					<Text style={!type.bank ? style.buttonText : styles.blueActive}>Branch</Text>
 				</TouchableOpacity>
 				<TouchableOpacity
 					onPress={() => {
@@ -145,7 +145,7 @@ const MapBox = () => {
 						resizeMode="contain"
 						style={{ height: 20, width: 20 }}
 					/>
-					<Text style={style.buttonText}>Post Office</Text>
+					<Text style={!type.postOffice ? style.buttonText : styles.blueActive}>Post Office</Text>
 				</TouchableOpacity>
 				<TouchableOpacity
 					onPress={() => {
@@ -154,11 +154,11 @@ const MapBox = () => {
 					style={[type.crc ? styles.button : {}, styles.column]}
 				>
 					<Image
-						source={require("../assets/icons/csc.png")}
+						source={!type.crc ? require("../assets/icons/csc.png") : require("../assets/icons/crc-blue.png")}
 						resizeMode="contain"
 						style={{ height: 20, width: 20 }}
 					/>
-					<Text style={style.buttonText}>CRC</Text>
+					<Text style={!type.crc ? style.buttonText : styles.blueActive}>CRC</Text>
 				</TouchableOpacity>
 				<TouchableOpacity
 					onPress={() => {
@@ -167,11 +167,11 @@ const MapBox = () => {
 					style={[type.bankMitra ? styles.button : {}, styles.column]}
 				>
 					<Image
-						source={require("../assets/icons/bank_mitra.png")}
+						source={!type.bankMitra ? require("../assets/icons/bank_mitra.png") : require("../assets/icons/mitra-blue.png")}
 						resizeMode="contain"
-						style={{ height: 20, width: 20 }}
+						style={{ height: 20, width: 20, }}
 					/>
-					<Text style={style.buttonText}>Bank Mitra</Text>
+					<Text style={!type.bankMitra ? style.buttonText : styles.blueActive}>Bank Mitra</Text>
 				</TouchableOpacity>
 			</View>
 		</View>
@@ -180,7 +180,7 @@ const MapBox = () => {
 
 const styles = StyleSheet.create({
 	button: {
-		backgroundColor: "#ECECEC",
+		// backgroundColor: "#ECECEC",
 		paddingVertical: 6,
 		paddingHorizontal: 10,
 		borderRadius: 10,
@@ -198,6 +198,11 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 	},
+	blueActive: {
+		color: '#2C81E0',
+		fontSize: 12,
+		fontWeight: '500'
+	}
 });
 
 export default MapBox;
