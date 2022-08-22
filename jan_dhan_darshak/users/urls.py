@@ -2,6 +2,7 @@ from django.urls import path
 
 from jan_dhan_darshak.users.api.views import (
     UserLoginViewset,
+    UserUpdateView,
     VoiceToText,
 )  # , VerifyOtpViewset
 
@@ -19,4 +20,5 @@ urlpatterns = [
     path("signup/", view=UserLoginViewset.as_view({"post": "create"}), name="signup"),
     path("verify/", view=UserLoginViewset.as_view({"post": "verify"}), name="verify"),
     path("voice-to-text/", view=VoiceToText.as_view(), name="voicetotext"),
+    path("update/<int:id>", view=UserUpdateView.as_view(), name="user_update"),
 ]

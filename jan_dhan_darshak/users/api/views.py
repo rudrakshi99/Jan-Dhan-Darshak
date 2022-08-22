@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework import viewsets
 from .serializers import (
     UserSignUpSerializer,
+    UserUpdateSerializer,
     VerifyOTPSerializer,
     UserSerializer,
 )
@@ -15,6 +16,7 @@ from jan_dhan_darshak.core.utils import response_payload
 from rest_framework.views import APIView
 import speech_recognition as sr
 from pydub import AudioSegment
+from rest_framework.exceptions import NotFound
 
 
 User = get_user_model()
@@ -120,6 +122,40 @@ class UserLoginViewset(viewsets.ViewSet):
             )
 
 
+class UserUpdateView(APIView):
+    queryset = User.objects.all()
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserUpdateSerializer
+
+    def get_obj(self, id):
+        try:
+            return User.objects.get(id=id)
+        except User.DoesNotExist:
+            raise NotFound(response_payload(success=False, msg="User does not exist"))
+
+    def patch(self, request, *args, **kwargs):
+        try:
+            serializer = self.serializer_class(data=request.data)
+            serializer.is_valid(raise_exception=True)
+
+            user = serializer.update(
+                self.get_obj(kwargs.get("id")), serializer.validated_data
+            )
+
+            return Response(
+                response_payload(
+                    success=True,
+                    data=UserSerializer(user).data,
+                    msg="User Updated",
+                )
+            )
+        except Exception as e:
+            error_key = list(e.__dict__["detail"].keys())[0]
+            message = e.__dict__["detail"][error_key][0]
+            return Response(
+                response_payload(success=False, msg=f"{message}"),
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
 
 class VoiceToText(APIView):
