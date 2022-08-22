@@ -28,7 +28,7 @@ const OtpScreen = () => {
 
 	useEffect(() => {
 		const alreadyLogin = async () => {
-			const name = await SecureStore.getItemAsync("name");
+			const name = await SecureStore.getItemAsync("name") || '';
 			setPhone((await SecureStore.getItemAsync("phone")) || "");
 			if (name) {
 				navigation.push("Home");
@@ -36,21 +36,6 @@ const OtpScreen = () => {
 		};
 		alreadyLogin();
 	}, []);
-
-	// const getHash = RNOtpVerify.getHash().then(console.log).catch(console.log);
-	// const startListeningForOtp = () => RNOtpVerify.getOtp().then(p => RNOtpVerify.addListener(otpHandler)).catch(p => console.log(p));
-	// const otpHandler = (message) => {
-	//     const otp = /(\d{6})/g.exec(message)[1];
-	//     setOTP(otp);
-	//     RNOtpVerify.removeListener();
-	//     Keyboard.dismiss();
-	// }
-		
-	// useEffect(() => {
-	// 	getHash();
-	// 	startListeningForOtp();
-	// }, []);
-	
 
 	const handleOtp = async () => {
 		if (!otp || !phone) {
@@ -122,7 +107,7 @@ const OtpScreen = () => {
 						Verify OTP
 					</Text>
 					<Text className="text-center text-[15px] text-[#8E8E8E] mb-3 font-semibold">
-						A Verification code has been sent to {'\n'} <Text className='underline'>{phone}</Text>.
+						A Verification code has been sent to {'\n'} {phone}
 					</Text>
 
 					<Text className='text-[16.5px] font-semibold text-[#e35944] mb-2'>{error}</Text>

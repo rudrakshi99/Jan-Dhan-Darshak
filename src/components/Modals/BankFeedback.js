@@ -95,7 +95,7 @@ const BankFeedback = () => {
 		<View style={styles.container}>
 			<View>
 				<View style={styles.innerContainer}>
-					<TouchableOpacity onPress={navigation.goBack}>
+					<TouchableOpacity onPress={() => navigation.navigate('Find')}>
 						<ArrowNarrowLeftIcon
 							style={styles.iconHeader}
 							size={30}

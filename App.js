@@ -9,7 +9,6 @@ import { useDispatch } from "react-redux";
 import { setAuth } from "./src/redux/slices/authSlice";
 import store from "./src/redux/store";
 import "react-native-gesture-handler";
-import FlashMessage from "react-native-flash-message";
 
 LogBox.ignoreLogs(["EventEmitter.removeListener"]);
 
@@ -92,13 +91,6 @@ function App() {
 					}}
 				/>
 				<Stack.Screen
-					name="Onboarding"
-					component={Onboarding}
-					options={{
-						headerShown: false,
-					}}
-				/>
-				<Stack.Screen
 					name="Directions"
 					component={Directions}
 					options={{
@@ -112,8 +104,14 @@ function App() {
 						headerShown: false,
 					}}
 				/>
+				<Stack.Screen
+					name="Onboarding"
+					component={Onboarding}
+					options={{
+						headerShown: false,
+					}}
+				/>
 			</Stack.Navigator>
-			<FlashMessage position="top" />
 		</TailwindProvider>
 	);
 }

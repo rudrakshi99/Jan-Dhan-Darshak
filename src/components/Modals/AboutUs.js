@@ -10,7 +10,7 @@ const About = () => {
         <ScrollView>
             <View style={styles.container}>
                 <View style={styles.innerContainer}>
-                    <TouchableOpacity onPress={navigation.goBack}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Find')}>
                         <ArrowNarrowLeftIcon style={styles.iconHeader} size={30} color="#101010" />
                     </TouchableOpacity>
                     <Text style={styles.heading}>About Us</Text>

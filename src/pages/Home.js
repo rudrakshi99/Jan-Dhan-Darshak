@@ -20,6 +20,7 @@ import BankFeedback from "../components/Modals/BankFeedback";
 import * as SecureStore from "expo-secure-store";
 import Logout from "../components/Modals/Logout";
 import Icon from "react-native-vector-icons/AntDesign";
+import Faq from "../components/Modals/Faq";
 
 const Drawer = createDrawerNavigator();
 

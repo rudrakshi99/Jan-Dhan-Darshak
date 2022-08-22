@@ -30,7 +30,7 @@ const LoginScreen = () => {
             flashMessage('All fields are required !', 'danger');
             return;
         }
-        const checkValid = true;
+        const checkValid = phone.length === 10;
         if(!checkValid) {
             flashMessage('Invalid phone number !', 'danger');
             setError('Invalid phone number !');
@@ -50,7 +50,7 @@ const LoginScreen = () => {
         } catch(err) {
             console.log(err?.response?.data);
             flashMessage(err?.response?.data, 'danger');
-            setError(err?.response?.data);
+            // setError(err?.response?.data);
         }
     }
 
@@ -80,7 +80,7 @@ const LoginScreen = () => {
                         <TextInput onChangeText={val => setEmail(val)} defaultValue={email} placeholder='Email (Optional)' className='h-10 w-72 border border-gray-400 text-[16px] px-4 py-0' keyboardType='email-address' maxLength={50} />
 
                         <View className='flex flex-row'>
-                            <TextInput defaultValue="+91" editable={false} className='h-10 w-12 border bg-white border-gray-400 text-[16px] text-black font-normal px-2 py-0' keyboardType='phone-pad' maxLength={10} />
+                            <TextInput defaultValue="+91" editable={false} className='h-10 w-12 border bg-white border-gray-400 text-[16px] text-black font-normal px-2 py-0' />
                             <TextInput onChangeText={val => setPhone(val)} defaultValue={phone} placeholder='Mobile Number' className='h-10 w-60 border border-gray-400 text-[16px] px-4 py-0' keyboardType='phone-pad' maxLength={10} />
                         </View>
 
