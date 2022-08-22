@@ -6,6 +6,9 @@ import {
 	TouchableOpacity,
 	Image,
 	Dimensions,
+	Share,
+	Linking,
+	Alert,
 } from "react-native";
 import { API_KEY, BASE_URL } from "@env";
 import axios from "axios";
@@ -43,8 +46,34 @@ const PlaceCard = ({ item, location }) => {
 		setData(result);
 		setShow(true);
 	}
+	async function handleCall(place_id) {
+		const result = await getPlaceDetail(place_id);
+		result.formatted_phone_number
+			? Linking.openURL(`tel:${result.international_phone_number}`)
+			: Alert.alert("No Phone Number Available");
+	}
+	async function share(name) {
+		try {
+			const result = await Share.share({
+				message: `Hey, I wan to share this location of ${name}, Click on the link to view it. \n https://www.google.com/maps/search/?api=1&query=${item.geometry.location.lat},${item.geometry.location.lng}&query_place_id=${item.place_id}`,
+				title: "I am sharing this location with you",
+				url: `https://www.google.com/maps/search/?api=1&query=${item.geometry.location.lat},${item.geometry.location.lng}&query_place_id=${item.place_id}`,
+			});
+			if (result.action === Share.sharedAction) {
+				if (result.activityType) {
+					// shared with activity type of result.activityType
+				} else {
+					// shared
+				}
+			} else if (result.action === Share.dismissedAction) {
+				// dismissed
+			}
+		} catch (error) {
+			alert(error.message);
+		}
+	}
 	return (
-		<View
+		<TouchableOpacity
 			style={{
 				marginHorizontal: 6,
 				backgroundColor: "#fff",
@@ -52,6 +81,7 @@ const PlaceCard = ({ item, location }) => {
 				padding: 12,
 				elevation: 5,
 			}}
+			onPress={() => LaunchModal(item.place_id)}
 		>
 			{show ? (
 				<DetailModal item={data} show={show} setShow={setShow} />
@@ -70,7 +100,24 @@ const PlaceCard = ({ item, location }) => {
 						style={styles.resultItemImage}
 					/>
 				)}
-				<View style={{ marginLeft: 25 }}>
+				<View style={{ position: "absolute", top: 10, right: 10 }}>
+					<TouchableOpacity
+						onPress={() => {
+							share(item.name);
+						}}
+					>
+						<Image
+							source={require("../assets/icons/share_outlined.png")}
+							style={{
+								height: 30,
+								width: 30,
+								backgroundColor: "#fff",
+							}}
+							resizeMode="contain"
+						/>
+					</TouchableOpacity>
+				</View>
+				<View style={{ marginLeft: 15 }}>
 					<Text style={styles.name}>
 						{item.name.substring(0, 25)}...
 					</Text>
@@ -129,31 +176,33 @@ const PlaceCard = ({ item, location }) => {
 						},
 					]}
 					onPress={() => {
-						LaunchModal(item.place_id);
+						handleCall(item.place_id);
 					}}
 				>
-					<Text
+					<Image
+						source={require("../assets/icons/call.png")}
 						style={{
-							color: "#2C81E0",
 							fontSize: 15,
+							width: 25,
+							height: 25,
 						}}
-					>
-						View Details
-					</Text>
+						resizeMode="contain"
+					/>
 				</TouchableOpacity>
 			</View>
-		</View>
+		</TouchableOpacity>
 	);
 };
 
 const styles = StyleSheet.create({
 	resultItemContainer: {
 		flexDirection: "row",
-		justifyContent: "space-between",
+		justifyContent: "flex-start",
 		alignItems: "center",
+		width: Dimensions.get("window").width / 1.4,
 	},
 	name: {
-		fontSize: 18,
+		fontSize: 16,
 		fontWeight: "700",
 		color: "#000",
 		marginBottom: 3,
@@ -188,8 +237,8 @@ const styles = StyleSheet.create({
 		marginTop: 10,
 	},
 	resultItemImage: {
-		height: 100,
-		width: 100,
+		height: 80,
+		width: 80,
 		borderRadius: 15,
 	},
 });

@@ -31,6 +31,12 @@ const MapBox = () => {
 		crc: false,
 		bankMitra: false,
 	};
+	const filters = {
+		relevance: false,
+		open_now: false,
+		distance: false,
+	};
+	const [filter, setFilter] = useState(filters);
 	const [show, setShow] = useState(false);
 	const [type, setType] = useState(initialState);
 	const [results, setResults] = useState([]);
@@ -44,6 +50,18 @@ const MapBox = () => {
 		if (type.crc) return "crc";
 		if (type.bankMitra) return "bank%20mitra";
 		else return "post%20office";
+	}
+	function generateFilter() {
+		let filter = "";
+		if (filter.relevance) {
+			filter += `&rankby=prominence`;
+		} else if (filter.open_now) {
+			filter += `&opennow`;
+		} else if (filter.distance) {
+			filter += `&rankby=distance`;
+		} else {
+		}
+		return filter;
 	}
 	useEffect(() => {
 		async function getLocation() {
@@ -61,7 +79,7 @@ const MapBox = () => {
 						location.coords.latitude
 					},${
 						location.coords.longitude
-					}&radius=1500&type=${generateString()}&keyword=${generateString()}&key=${API_KEY}`
+					}&radius=1500&type=${generateString()}&keyword=${generateString()}${generateFilter}&key=${API_KEY}`
 				);
 				setResults(response.data.results);
 			} catch (err) {
@@ -76,6 +94,8 @@ const MapBox = () => {
 		};
 	}, [type, focused]);
 
+	function handleList() {}
+
 	return (
 		<View style={style.container}>
 			<Header
@@ -84,8 +104,31 @@ const MapBox = () => {
 				subtitle="Current Address of the User"
 				location={location}
 				type={generateString}
+				setFilter={setFilter}
+				filter={filter}
 			/>
 			<Map markers={results} />
+			<TouchableOpacity
+				style={styles.viewList}
+				onPress={() => {
+					handleList();
+				}}
+			>
+				<Image
+					source={require("../assets/icons/dotted_hamburger.png")}
+					resizeMode="contain"
+					style={{ height: 20, width: 20 }}
+				/>
+				<Text
+					style={{
+						marginLeft: 6,
+						color: "#2C81E0",
+						fontWeight: "600",
+					}}
+				>
+					View List
+				</Text>
+			</TouchableOpacity>
 			{results !== [] ? (
 				<FlatList
 					data={results}
@@ -114,7 +157,11 @@ const MapBox = () => {
 					}}
 					style={[type.atm ? styles.button : {}, styles.column]}
 				>
-					<Icon name="headphones" size={20} color="#8E8E8E" />
+					<Image
+						source={require("../assets/icons/atm.png")}
+						resizeMode="contain"
+						style={{ height: 20, width: 20 }}
+					/>
 					<Text style={style.buttonText}>ATM</Text>
 				</TouchableOpacity>
 				<TouchableOpacity
@@ -197,6 +244,18 @@ const styles = StyleSheet.create({
 		flexDirection: "column",
 		justifyContent: "center",
 		alignItems: "center",
+	},
+	viewList: {
+		justifyContent: "center",
+		alignItems: "center",
+		backgroundColor: "white",
+		paddingVertical: 14,
+		paddingHorizontal: 15,
+		flexDirection: "row",
+		position: "absolute",
+		bottom: 300,
+		right: 10,
+		borderRadius: 10,
 	},
 });
 
