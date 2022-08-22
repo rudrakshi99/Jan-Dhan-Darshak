@@ -20,6 +20,8 @@ import Directions from "./src/pages/Directions";
 import Navigation from "./src/pages/Navigation";
 import { useSelector } from "react-redux";
 import Onboarding from "./src/pages/Onboarding";
+import LoginScreen from "./src/components/Modals/Login";
+import Logout from "./src/components/Modals/Logout";
 
 const Stack = createNativeStackNavigator();
 
@@ -68,14 +70,14 @@ function App() {
 	}, []);
 	return (
 		<TailwindProvider>
-			<Stack.Navigator initialRouteName="Splash">
-				<Stack.Screen
+			<Stack.Navigator>
+				{/* <Stack.Screen
 					name="Splash"
 					component={Splash}
 					options={{
 						headerShown: false,
 					}}
-				/>
+				/> */}
 				<Stack.Screen
 					name="Home"
 					component={Home}
@@ -84,8 +86,22 @@ function App() {
 					}}
 				/>
 				<Stack.Screen
+					name="Login"
+					component={LoginScreen}
+					options={{
+						headerShown: false,
+					}}
+				/>
+				<Stack.Screen
 					name="OTP"
 					component={Otp}
+					options={{
+						headerShown: false,
+					}}
+				/>
+				<Stack.Screen
+					name="Logout"
+					component={Logout}
 					options={{
 						headerShown: false,
 					}}

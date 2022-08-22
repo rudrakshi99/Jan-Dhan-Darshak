@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Image, Text, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { Image } from "react-native";
 
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
@@ -15,11 +15,8 @@ import SavedLocations from "../components/Modals/SavedLocations";
 import TrackRequest from "../components/Modals/TrackRequest";
 import MissingBankSuggestion from "../components/Modals/MissingBankSuggestion";
 import Help from "../components/Modals/Help";
-import LoginScreen from "../components/Modals/Login";
 import BankFeedback from "../components/Modals/BankFeedback";
 import * as SecureStore from "expo-secure-store";
-import Logout from "../components/Modals/Logout";
-import Icon from "react-native-vector-icons/AntDesign";
 import Faq from "../components/Modals/Faq";
 
 const Drawer = createDrawerNavigator();
@@ -43,17 +40,6 @@ const Home = ({ navigation }) => {
             drawerContent={(props) => <CustomMenu {...props} />}
             initialRouteName="Find"
         >
-            {/* {!customer && <Drawer.Screen
-                name="Login"
-                component={LoginScreen}
-                options={{
-                    headerShown: false,
-                    drawerIcon: () => (
-                        <Icon name="login" size={24} color="#2C81E0" />
-                    ),
-                }}
-            />
-            } */}
             <Drawer.Screen
                 name="Find"
                 component={MapBox}
@@ -166,16 +152,6 @@ const Home = ({ navigation }) => {
                     ),
                 }}
             />
-            {/* {!customer ? null : <Drawer.Screen
-                name='Logout'
-                component={Logout}
-                options={{
-                    headerShown: false,
-                    drawerIcon: () => (
-                        <Icon name="logout" size={24} color="#e35944" />
-                    ),
-                }}
-            />} */}
             
         </Drawer.Navigator>
     );

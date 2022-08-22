@@ -6,11 +6,25 @@ import HeaderCard from "../subcomponents/HeaderCard";
 
 import { SuggestionByUser } from "../../https/suggestions";
 import AccordionItem from "../Accordion/AccordionItem";
+import { useNavigation } from "@react-navigation/native";
+
 const TrackRequest = () => {
     const [accessToken,setAccessToken]=useState("");
     const [userId,setUserId]=useState("");
     const [suggestions,setSuggestions]=useState({});
     const [loading ,setLoading]=useState(false);
+    const navigation = useNavigation();
+
+    useEffect(() => {
+      const isLoggedIn = async () => {
+        const name = await SecureStore.getItemAsync('name');
+        if(!name) {
+          navigation.push('Login');
+        }
+      }
+      isLoggedIn();
+    }, []);
+
     // useEffect(() => {
     //     async function getDetails(){
         
@@ -76,7 +90,7 @@ const TrackRequest = () => {
 const styles = StyleSheet.create({
     container: {
       
-      marginTop: StatusBar.currentHeight || 0,
+      // marginTop: StatusBar.currentHeight || 0,
     },
     
     loadView:{  

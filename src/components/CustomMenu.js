@@ -38,10 +38,10 @@ const CustomMenu = (props) => {
             </DrawerContentScrollView>
             <View className='h-1 bg-[#EAEAEA]'></View>
             {customer ? ( 
-                <TouchableOpacity className='flex-row items-center mb-4 mt-2 justify-end'>
+                <TouchableOpacity onPress={() => navigation.navigate('Logout')} className='flex-row items-center mb-4 mt-2 justify-end'>
                     <Icon1 name="logout" size={16} color="#DB0E0E" />
                     <Text className='text-right pl-[3px] pr-4 text-[15px] font-semibold text-[#DB0E0E]'>Logout</Text>
-                </TouchableOpacity> 
+                </TouchableOpacity>
                 ) : (
                 <TouchableOpacity onPress={() => navigation.navigate('Login')} className='flex-row items-center mb-4 mt-2 justify-end'>
                     <Icon1 name="login" size={16} color="#2C81E0" />

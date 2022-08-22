@@ -156,16 +156,16 @@ const MapBox = () => {
 						setType({ ...initialState, atm: true });
 					}}
 					style={[type.atm ? styles.button : {}, styles.column]}
+					
 				>
-					<Icon name="headphones" size={20} color="#8E8E8E" />
-					<Text style={!type.atm ? style.buttonText : styles.blueActive}>ATM</Text>
+					{/* <Icon name="headphones" size={20} color="#8E8E8E" /> */}
 
 					<Image
-						source={require("../assets/icons/atm.png")}
+						source={!type.atm ? require("../assets/icons/atm.png") : require("../assets/icons/atm-blue.png")}
 						resizeMode="contain"
 						style={{ height: 20, width: 20 }}
 					/>
-					<Text style={style.buttonText}>ATM</Text>
+					<Text style={!type.atm ? style.buttonText : styles.blueActive}>ATM</Text>
 
 				</TouchableOpacity>
 				<TouchableOpacity
@@ -192,7 +192,7 @@ const MapBox = () => {
 					]}
 				>
 					<Image
-						source={require("../assets/icons/post_office.png")}
+						source={!type.postOffice ? require("../assets/icons/post_office.png") : require("../assets/icons/po-blue.png")}
 						resizeMode="contain"
 						style={{ height: 20, width: 20 }}
 					/>
@@ -209,7 +209,7 @@ const MapBox = () => {
 						resizeMode="contain"
 						style={{ height: 20, width: 20 }}
 					/>
-					<Text style={!type.crc ? style.buttonText : styles.blueActive}>CRC</Text>
+					<Text style={!type.crc ? style.buttonText : styles.blueActive}>CSC</Text>
 				</TouchableOpacity>
 				<TouchableOpacity
 					onPress={() => {
@@ -236,6 +236,9 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 10,
 		borderRadius: 10,
 		fontWeight: "bold",
+		borderTopColor: '#2081E2',
+		borderRadius: -5,
+		borderTopWidth: 3
 	},
 	resultContainer: {
 		position: "absolute",
@@ -252,7 +255,7 @@ const styles = StyleSheet.create({
 	blueActive: {
 		color: '#2C81E0',
 		fontSize: 12,
-		fontWeight: '500'
+		fontWeight: '600'
 	},
 	viewList: {
 		justifyContent: "center",
