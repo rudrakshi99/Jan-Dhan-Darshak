@@ -71,6 +71,12 @@ const Map = ({ markers, missingBank }) => {
 									latitudeDelta: 0.01,
 									longitudeDelta: 0.01,
 								}}
+								pinColor={
+									item?.opening_hours?.open_now
+										? "green"
+										: "red"
+								}
+								// image={item?.opening_hours?.open_now ? require('') : require('')}
 							/>
 						);
 					})
