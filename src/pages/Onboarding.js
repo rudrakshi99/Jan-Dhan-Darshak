@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
 		marginVertical: 10,
 	},
 	title: {
-		color: "#2C81E0",
+		color: "#101010",
 		fontSize: 20,
 		fontWeight: "600",
 		letterSpacing: 1,

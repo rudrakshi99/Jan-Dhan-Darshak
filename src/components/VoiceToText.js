@@ -8,63 +8,119 @@ import {
 	Dimensions,
 	TouchableOpacity,
 } from "react-native";
-import Voice from "@react-native-community/voice";
+import axios from "axios";
+import { Audio } from "expo-av";
 import { Permissions } from "expo";
+import * as FileSystem from "expo-file-system";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { Recording } from "expo-av/build/Audio";
+import { useIsFocused } from "@react-navigation/native";
 
-function VoiceToText({ visible, setVisible }) {
+// RecordingOptionsPresets.HIGH_QUALITY = {
+// 	isMeteringEnabled: true,
+// 	android: {
+// 		extension: ".m4a",
+// 		outputFormat: AndroidOutputFormat.MPEG_4,
+// 		audioEncoder: AndroidAudioEncoder.AAC,
+// 		sampleRate: 44100,
+// 		numberOfChannels: 2,
+// 		bitRate: 128000,
+// 	},
+// 	ios: {
+// 		extension: ".wav",
+// 		outputFormat: IOSOutputFormat.MPEG4AAC,
+// 		audioQuality: IOSAudioQuality.MAX,
+// 		sampleRate: 44100,
+// 		numberOfChannels: 2,
+// 		bitRate: 128000,
+// 		linearPCMBitDepth: 16,
+// 		linearPCMIsBigEndian: false,
+// 		linearPCMIsFloat: false,
+// 	},
+// };
+
+let recording = new Recording();
+
+function VoiceToText({ visible, setVisible, setSearch }) {
 	const animationRef = useRef(null);
-	const [status, setStatus] = useState("");
+	const focused = useIsFocused();
+	const [recordings, setRecordings] = React.useState([]);
+	const [uri, setUri] = useState();
+	const [message, setMessage] = React.useState("");
+
+	async function getTextFromVoice(uri) {
+		try {
+			const file = await FileSystem.readAsStringAsync(uri);
+			let form = new FormData();
+			console.log("Initial", form);
+			form.append("voice", file);
+			console.log(form);
+			const { data } = axios.post(
+				"https://jan-dhan-darshak.herokuapp.com/users/voice-to-text/",
+				{
+					voice: form,
+				},
+				{
+					headers: {
+						"Content-Type": "multipart/form-data",
+					},
+				}
+			);
+			console.log(data);
+		} catch (err) {
+			console.log(err);
+		}
+	}
+
+	async function startRecording() {
+		try {
+			console.log("Requesting permissions..");
+			await Audio.requestPermissionsAsync();
+			await Audio.setAudioModeAsync({
+				allowsRecordingIOS: true,
+				playsInSilentModeIOS: true,
+			});
+			console.log("Starting recording..");
+			await recording.prepareToRecordAsync(
+				Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
+			);
+			await recording.startAsync();
+			console.log("Recording started");
+		} catch (err) {
+			console.error("Failed to start recording", err);
+		}
+	}
+
+	async function stopRecording() {
+		console.log("Stopping recording..");
+		setVisible(false);
+		await recording.stopAndUnloadAsync();
+		console.log(recording);
+		const uri = recording.getURI();
+		console.log("Recording stopped and stored at", uri);
+		getTextFromVoice(uri);
+	}
 
 	React.useEffect(() => {
 		animationRef.current?.play();
-		async function check() {
-			Voice.isAvailable()
-				.then((result) => {
-					console.log(result);
-					return result;
-				})
-				.catch((err) => console.log(err));
+		async function begin() {
+			startRecording();
+			setTimeout(() => {
+				stopRecording();
+			}, 3000);
+			console.log(recordings);
 		}
-		async function startListening() {
-			Voice.getSpeechRecognitionServices()
-				.then((result) => {
-					console.log(result);
-				})
-				.catch((err) => console.log(err));
+		if (visible) {
+			begin();
 		}
-		async function stopListening() {
-			Voice.stop()
-				.then((result) => {
-					console.log(result);
-				})
-				.catch((err) => console.log(err));
-		}
-		async () => {
-			const { status, expires, permissions } = await Permissions.askAsync(
-				Permissions.AUDIO_RECORDING
-			);
-			if (status !== "granted") {
-				//Permissions not granted. Don't show the start recording button because it will cause problems if it's pressed.
-				// this.setState({showRecordButton: false});
-			} else {
-				const result = check();
-				if (result) {
-					startListening();
-					setTimeout(() => {
-						stopListening();
-						setVisible(false);
-					}, 3000);
-				}
-			}
-		};
-	});
+	}, [focused]);
 	return (
 		<Modal
 			animationType="slide"
 			visible={visible}
 			transparent={true}
 			onRequestClose={() => {
+				setVisible(false);
 				console.log("Modal Closed");
 			}}
 		>
@@ -72,9 +128,6 @@ function VoiceToText({ visible, setVisible }) {
 				<View style={styles.container}>
 					<TouchableOpacity
 						onPress={() => {
-							Voice.cancel()
-								.then((res) => console.log(res))
-								.catch((err) => console.log(err));
 							setVisible(false);
 						}}
 						style={{ flex: 1, justifyContent: "flex-end" }}

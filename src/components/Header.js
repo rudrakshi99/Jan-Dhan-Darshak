@@ -16,18 +16,21 @@ import { API_KEY, BASE_URL } from "@env";
 
 import { useFonts } from "expo-font";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import VoiceToText from "./VoiceToText";
 
 const Header = ({
 	title,
 	subtitle,
-	showFilters,
 	setResults,
 	location,
 	type,
+	setFilter,
+	filter,
 }) => {
 	const navigation = useNavigation();
 	const route = useRoute();
 	const [search, setSearch] = useState("");
+	const [visible, setVisible] = useState("");
 
 	const [loaded] = useFonts({
 		InterBold: require("../assets/fonts/Inter-Bold.otf"),
@@ -50,12 +53,28 @@ const Header = ({
 			console.log(err);
 		}
 	}
+	async function getTextFromVoice() {
+		try {
+			const response = await axios.post("", {
+				voice: "",
+			});
+			const { data } = response;
+			setSearch(data);
+		} catch (err) {
+			console.log(err);
+		}
+	}
 	if (!loaded) {
 		return null;
 	}
 	return (
 		<View style={styles.container}>
 			<View style={styles.headerWrapper}>
+				<VoiceToText
+					visible={visible}
+					setVisible={setVisible}
+					setSearch={setSearch}
+				/>
 				<TouchableOpacity
 					style={styles.back}
 					onPress={() => {
@@ -126,6 +145,15 @@ const Header = ({
 					/>
 					<Icon
 						onPress={() => {
+							setVisible(true);
+						}}
+						name="microphone"
+						style={{ marginLeft: 5 }}
+						size={30}
+						color="black"
+					/>
+					<Icon
+						onPress={() => {
 							if (search !== "") {
 								handleSearch();
 							}
@@ -139,14 +167,107 @@ const Header = ({
 			) : null}
 			{route.name === "Find" ? (
 				<View style={styles.filterButtonGroup}>
-					<TouchableOpacity style={styles.filterButton}>
-						<Text style={styles.filterButtonText}>Relevance</Text>
+					<TouchableOpacity
+						style={[
+							styles.filterButton,
+							{
+								backgroundColor: filter.relevance
+									? "#E3ECF7"
+									: "#fff",
+							},
+						]}
+						onPress={() => {
+							if (filter.relevance) {
+								setFilter({ ...filter, relevance: false });
+							} else {
+								setFilter({ ...filter, relevance: true });
+							}
+						}}
+					>
+						<Text
+							style={[
+								styles.filterButtonText,
+								{
+									color: filter.relevance
+										? "#2C81E0"
+										: "#7C7C7C",
+									marginRight: 5,
+								},
+							]}
+						>
+							Relevance
+						</Text>
+						{filter.relevance ? (
+							<Icon name="close" color="#2C81E0" size={15} />
+						) : null}
 					</TouchableOpacity>
-					<TouchableOpacity style={styles.filterButton}>
-						<Text style={styles.filterButtonText}>Open Now</Text>
+					<TouchableOpacity
+						style={[
+							styles.filterButton,
+							{
+								backgroundColor: filter.open_now
+									? "#E3ECF7"
+									: "#fff",
+							},
+						]}
+						onPress={() => {
+							if (filter.open_now) {
+								setFilter({ ...filter, open_now: false });
+							} else {
+								setFilter({ ...filter, open_now: true });
+							}
+						}}
+					>
+						<Text
+							style={[
+								styles.filterButtonText,
+								{
+									color: filter.open_now
+										? "#2C81E0"
+										: "#7C7C7C",
+									marginRight: 5,
+								},
+							]}
+						>
+							Open Now
+						</Text>
+						{filter.open_now ? (
+							<Icon name="close" color="#2C81E0" size={15} />
+						) : null}
 					</TouchableOpacity>
-					<TouchableOpacity style={styles.filterButton}>
-						<Text style={styles.filterButtonText}>Distance</Text>
+					<TouchableOpacity
+						style={[
+							styles.filterButton,
+							{
+								backgroundColor: filter.distance
+									? "#E3ECF7"
+									: "#fff",
+							},
+						]}
+						onPress={() => {
+							if (filter.distance) {
+								setFilter({ ...filter, distance: false });
+							} else {
+								setFilter({ ...filter, distance: true });
+							}
+						}}
+					>
+						<Text
+							style={[
+								styles.filterButtonText,
+								{
+									color: filter.distance
+										? "#2C81E0"
+										: "#7C7C7C",
+									marginRight: 5,
+								},
+							]}
+						>
+							Distance
+						</Text>
+						{filter.distance ? (
+							<Icon name="close" color="#2C81E0" size={15} />
+						) : null}
 					</TouchableOpacity>
 				</View>
 			) : null}
@@ -203,9 +324,13 @@ const styles = StyleSheet.create({
 		paddingVertical: 5,
 		borderRadius: 10,
 		backgroundColor: "#fff",
+		flexDirection: "row",
+		justifyContent: "center",
+		alignItems: "space-between",
 	},
 	filterButtonText: {
 		color: "#7C7C7C",
+		fontSize: 13,
 	},
 });
 

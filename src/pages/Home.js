@@ -17,7 +17,7 @@ import MissingBankSuggestion from "../components/Modals/MissingBankSuggestion";
 import Help from "../components/Modals/Help";
 import LoginScreen from "../components/Modals/Login";
 import BankFeedback from "../components/Modals/BankFeedback";
-import * as SecureStore from 'expo-secure-store';
+import * as SecureStore from "expo-secure-store";
 import Logout from "../components/Modals/Logout";
 import Icon from "react-native-vector-icons/AntDesign";
 import Faq from "../components/Modals/Faq";
@@ -25,32 +25,18 @@ import Faq from "../components/Modals/Faq";
 const Drawer = createDrawerNavigator();
 
 const Home = ({ navigation }) => {
-    const [current, setCurrent] = useState("test");
-    const [customer, setCustomer] = useState("");
-    
-    const getToken = async () => {
-        console.log(await SecureStore.getItemAsync('name'), "access token header");
-        setCustomer(await SecureStore.getItemAsync('name'));
-        console.log(await SecureStore.getItemAsync('userId'),"userId")
-    }
-    getToken();
+	const [current, setCurrent] = useState("test");
+	const [customer, setCustomer] = useState("");
 
-    // useEffect(() => {
-    //     const callFn = async () => {
-    //         const refreshToken = await SecureStore.getItemAsync('refreshToken');
-    //         console.log(refreshToken, 'refresh token');
-    //         if(!refreshToken) {
-    //             return;
-    //         }
-      
-    //         const { data } = await axios.post('http://192.168.207.154:5000/api/refresh', { refresh: refreshToken });
-    //         console.log(data);
-    //         await SecureStore.setItemAsync('accessToken', data.accessToken);
-    //         await SecureStore.setItemAsync('refreshToken', data.refreshToken);
-    //         dispatch(setAuth(data));
-    //     }
-    //     callFn();
-    // }, [])
+	const getToken = async () => {
+		console.log(
+			await SecureStore.getItemAsync("name"),
+			"access token header"
+		);
+		setCustomer(await SecureStore.getItemAsync("name"));
+		console.log(await SecureStore.getItemAsync("userId"), "userId");
+	};
+	getToken();
 
     return (
         <Drawer.Navigator

@@ -9,17 +9,18 @@ import {
 	StyleSheet,
 	Image,
 	ScrollView,
-	Alert,
 	Share,
+	Alert,
 	Linking,
 } from "react-native";
 import * as SecureStore from "expo-secure-store";
-import { ArrowNarrowDownIcon, StarIcon } from "react-native-heroicons/outline";
+import { ArrowNarrowDownIcon } from "react-native-heroicons/outline";
 import { BASE_URL, API_KEY } from "@env";
 import { TabView, SceneMap } from "react-native-tab-view";
 import { createSavedLocation } from "../https/Locations";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 // let item = {
 // 	address_components: [
@@ -288,8 +289,9 @@ const DetailModal = ({ show, setShow, item }) => {
 	async function share(name) {
 		try {
 			const result = await Share.share({
-				message: `Hey, I have this location of ${name}, Click on the link to view it.`,
-				url: "https://www.google.com",
+				message: `Hey, I wan to share this location of ${name}, Click on the link to view it. \n https://www.google.com/maps/search/?api=1&query=${item.geometry.location.lat},${item.geometry.location.lng}&query_place_id=${item.place_id}`,
+				title: "I am sharing this location with you",
+				url: `https://www.google.com/maps/search/?api=1&query=${item.geometry.location.lat},${item.geometry.location.lng}&query_place_id=${item.place_id}`,
 			});
 			if (result.action === Share.sharedAction) {
 				if (result.activityType) {
@@ -366,7 +368,7 @@ const DetailModal = ({ show, setShow, item }) => {
 							marginLeft: 10,
 						}}
 					>
-						{item.formatted_address}
+						{item?.formatted_address}
 					</Text>
 				</View>
 				<View
@@ -385,7 +387,7 @@ const DetailModal = ({ show, setShow, item }) => {
 					/>
 					{expand ? (
 						<View>
-							{item.opening_hours.weekday_text.map((item, i) => {
+							{item?.opening_hours.weekday_text.map((item, i) => {
 								return (
 									<Text
 										style={{ marginLeft: 10, fontSize: 16 }}
@@ -459,9 +461,9 @@ const DetailModal = ({ show, setShow, item }) => {
 								fontWeight: "600",
 							}}
 						>
-							{item.rating}
+							{item?.rating}
 						</Text>
-						<StarIcon color="#FF9900" size={50} fill="#FF9900" />
+						<Icon name="star" size={40} color="#FF9900" />
 					</View>
 				</View>
 				<View></View>
@@ -477,8 +479,8 @@ const DetailModal = ({ show, setShow, item }) => {
 				</Text>
 			</View>
 			<View style={{}}>
-				{item.reviews ? (
-					item.reviews.map((review, i) => {
+				{item?.reviews ? (
+					item?.reviews?.map((review, i) => {
 						return (
 							<View
 								key={i}
@@ -561,10 +563,10 @@ const DetailModal = ({ show, setShow, item }) => {
 			}}
 		>
 			<View style={styles.container}>
-				{item.photos ? (
+				{item?.photos ? (
 					<Image
 						source={{
-							uri: `${BASE_URL}maps/api/place/photo?maxwidth=400&photo_reference=${item.photos[0]?.photo_reference}&key=${API_KEY}`,
+							uri: `${BASE_URL}maps/api/place/photo?maxwidth=400&photo_reference=${item?.photos[0]?.photo_reference}&key=${API_KEY}`,
 						}}
 						style={styles.image}
 					/>
@@ -574,11 +576,17 @@ const DetailModal = ({ show, setShow, item }) => {
 						style={styles.image}
 					/>
 				)}
+				<TouchableOpacity
+					style={styles.backButton}
+					onPress={() => setShow(false)}
+				>
+					<Icon name="keyboard-backspace" size={25} color="black" />
+				</TouchableOpacity>
 				<View style={styles.detailContainer}>
 					<View style={[{ paddingHorizontal: 30 }]}>
 						<View style={styles.headContainer}>
 							<View>
-								<Text style={styles.name}>{item.name}</Text>
+								<Text style={styles.name}>{item?.name}</Text>
 								<Text style={styles.id}>
 									ATM ID : #57238384882
 								</Text>
@@ -586,12 +594,12 @@ const DetailModal = ({ show, setShow, item }) => {
 							<Text
 								style={[
 									styles.openStatus,
-									item.opening_hours?.open_now
+									item?.opening_hours?.open_now
 										? { color: "#34994C" }
 										: { color: "#DB0E0E" },
 								]}
 							>
-								{item.opening_hours?.open_now
+								{item?.opening_hours?.open_now
 									? "Open Now"
 									: "Closed Now"}
 							</Text>
@@ -606,8 +614,8 @@ const DetailModal = ({ show, setShow, item }) => {
 									]}
 									onPress={() => {
 										navigation.navigate("Directions", {
-											name: item.name,
-											place_id: item.place_id,
+											name: item?.name,
+											place_id: item?.place_id,
 										});
 									}}
 								>
@@ -644,11 +652,11 @@ const DetailModal = ({ show, setShow, item }) => {
 								<TouchableOpacity
 									style={[styles.optionButton]}
 									onPress={() => {
-										share(item.name);
+										share(item?.name);
 									}}
 								>
 									<Image
-										source={require("../assets/icons/share.png")}
+										source={require("../assets/icons/share_outlined.png")}
 										style={styles.optionVector}
 										resizeMode="contain"
 									/>
@@ -659,7 +667,7 @@ const DetailModal = ({ show, setShow, item }) => {
 								<TouchableOpacity
 									style={[styles.optionButton]}
 									onPress={() =>
-										handleSaveLocation(item.place_id)
+										handleSaveLocation(item?.place_id)
 									}
 								>
 									<Image
@@ -688,9 +696,9 @@ const DetailModal = ({ show, setShow, item }) => {
 							style={styles.floatingButton}
 							onPress={() =>
 								handleFeedback({
-									name: item.name,
-									place_id: item.place_id,
-									location: item.formatted_address,
+									name: item?.name,
+									place_id: item?.place_id,
+									location: item?.formatted_address,
 									financial_type: item.type
 										? item.type[0]
 										: null,
@@ -822,6 +830,15 @@ const styles = StyleSheet.create({
 	floatingButtonImage: {
 		height: 30,
 		width: 30,
+	},
+	backButton: {
+		backgroundColor: "#fff",
+		borderRadius: 99,
+		padding: 10,
+		position: "absolute",
+		top: 10,
+		left: 10,
+		elevation: 5,
 	},
 });
 
