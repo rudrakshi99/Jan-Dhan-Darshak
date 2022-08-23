@@ -53,18 +53,7 @@ const MapBox = () => {
 		if (type.bankMitra) return "bank%20mitra";
 		else return "post%20office";
 	}
-	function generateFilter() {
-		let filter = "";
-		if (filter.relevance) {
-			filter += `&rankby=prominence`;
-		} else if (filter.open_now) {
-			filter += `&opennow`;
-		} else if (filter.distance) {
-			filter += `&rankby=distance`;
-		} else {
-		}
-		return filter;
-	}
+	console.log("Filter Object --> ", filter);
 	useEffect(() => {
 		async function getLocation() {
 			const { coords } = await Location.getCurrentPositionAsync({});
@@ -81,7 +70,11 @@ const MapBox = () => {
 						location.coords.latitude
 					},${
 						location.coords.longitude
-					}&radius=1500&type=${generateString()}&keyword=${generateString()}&key=${API_KEY}`
+					}&radius=1500&type=${generateString()}&keyword=${generateString()}${
+						filter.open_now ? "&opennow" : ""
+					}${filter.relevance ? "&radius=1500" : ""}${
+						filter.distance ? "&rankby=distance" : ""
+					}&key=${API_KEY}`
 				);
 				setResults(response.data.results);
 			} catch (err) {
@@ -94,7 +87,7 @@ const MapBox = () => {
 			setResults([]);
 			setLocation({}); // This worked for me
 		};
-	}, [type, focused]);
+	}, [type, filter, focused]);
 
 	function handleList() {
 		setHorizontal((prev) => !prev);
