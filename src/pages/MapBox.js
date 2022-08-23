@@ -6,6 +6,8 @@ import {
 	StyleSheet,
 	Image,
 	FlatList,
+	Platform,
+	Dimensions,
 } from "react-native";
 import * as Location from "expo-location";
 import { useIsFocused } from "@react-navigation/native";
@@ -43,6 +45,7 @@ const MapBox = () => {
 		latitude: 0,
 		longitude: 0,
 	});
+	const [horizontal, setHorizontal] = useState(true);
 	function generateString() {
 		if (type.atm) return "atm";
 		if (type.bank) return "bank";
@@ -50,18 +53,7 @@ const MapBox = () => {
 		if (type.bankMitra) return "bank%20mitra";
 		else return "post%20office";
 	}
-	function generateFilter() {
-		let filter = "";
-		if (filter.relevance) {
-			filter += `&rankby=prominence`;
-		} else if (filter.open_now) {
-			filter += `&opennow`;
-		} else if (filter.distance) {
-			filter += `&rankby=distance`;
-		} else {
-		}
-		return filter;
-	}
+	console.log("Filter Object --> ", filter);
 	useEffect(() => {
 		async function getLocation() {
 			const { coords } = await Location.getCurrentPositionAsync({});
@@ -78,7 +70,11 @@ const MapBox = () => {
 						location.coords.latitude
 					},${
 						location.coords.longitude
-					}&radius=1500&type=${generateString()}&keyword=${generateString()}${generateFilter}&key=${API_KEY}`
+					}&radius=1500&type=${generateString()}&keyword=${generateString()}${
+						filter.open_now ? "&opennow" : ""
+					}${filter.relevance ? "&radius=1500" : ""}${
+						filter.distance ? "&rankby=distance" : ""
+					}&key=${API_KEY}`
 				);
 				setResults(response.data.results);
 			} catch (err) {
@@ -91,9 +87,11 @@ const MapBox = () => {
 			setResults([]);
 			setLocation({}); // This worked for me
 		};
-	}, [type, focused]);
+	}, [type, filter, focused]);
 
-	function handleList() {}
+	function handleList() {
+		setHorizontal((prev) => !prev);
+	}
 
 	return (
 		<View style={style.container}>
@@ -108,7 +106,14 @@ const MapBox = () => {
 			/>
 			<Map markers={results} />
 			<TouchableOpacity
-				style={styles.viewList}
+				style={[
+					styles.viewList,
+					{
+						bottom: horizontal
+							? 300
+							: Dimensions.get("screen").height / 1.8,
+					},
+				]}
 				onPress={() => {
 					handleList();
 				}}
@@ -125,47 +130,67 @@ const MapBox = () => {
 						fontWeight: "600",
 					}}
 				>
-					View List
+					{`${horizontal ? "View" : "Hide"} List`}
 				</Text>
 			</TouchableOpacity>
-			{results !== [] ? (
-				<FlatList
-					data={results}
-					horizontal={true}
-					style={styles.resultContainer}
-					snapToAlignment="start"
-					snapToInterval={100}
-					contentContainerStyle={{ paddingVertical: 5 }}
-					renderItem={({ item, index }) => {
-						return (
-							<PlaceCard
-								key={index}
-								item={item}
-								location={location}
-							/>
-						);
-					}}
-				/>
-			) : (
-				<View></View>
-			)}
+			<View
+				style={
+					horizontal
+						? styles.resultContainer
+						: styles.resultContainerVertical
+				}
+			>
+				{results !== [] ? (
+					<FlatList
+						data={results}
+						horizontal={horizontal}
+						// style={styles.resultContainer}
+						snapToAlignment="start"
+						snapToInterval={horizontal ? 100 : 0}
+						contentContainerStyle={[
+							horizontal
+								? styles.horizontalList
+								: styles.verticalList,
+							{ paddingVertical: 5 },
+						]}
+						renderItem={({ item, index }) => {
+							return (
+								<PlaceCard
+									key={index}
+									item={item}
+									location={location}
+									horizontal={horizontal}
+								/>
+							);
+						}}
+					/>
+				) : (
+					<View></View>
+				)}
+			</View>
 			<View style={style.tabsContainer}>
 				<TouchableOpacity
 					onPress={() => {
 						setType({ ...initialState, atm: true });
 					}}
 					style={[type.atm ? styles.button : {}, styles.column]}
-					
 				>
 					{/* <Icon name="headphones" size={20} color="#8E8E8E" /> */}
 
 					<Image
-						source={!type.atm ? require("../assets/icons/atm.png") : require("../assets/icons/atm-blue.png")}
+						source={
+							!type.atm
+								? require("../assets/icons/atm.png")
+								: require("../assets/icons/atm-blue.png")
+						}
 						resizeMode="contain"
 						style={{ height: 20, width: 20 }}
 					/>
-					<Text style={!type.atm ? style.buttonText : styles.blueActive}>ATM</Text>
-
+					<Text
+						style={!type.atm ? style.buttonText : styles.blueActive}
+					>
+						ATM
+					</Text>
 				</TouchableOpacity>
 				<TouchableOpacity
 					onPress={() => {
@@ -175,11 +200,21 @@ const MapBox = () => {
 				>
 					{/* <Icon name="building-columns" size={25} color="#8E8E8E" /> */}
 					<Image
-						source={!type.bank ? require("../assets/icons/bank.png") : require("../assets/icons/branch-blue.png")}
+						source={
+							!type.bank
+								? require("../assets/icons/bank.png")
+								: require("../assets/icons/branch-blue.png")
+						}
 						resizeMode="contain"
 						style={{ height: 20, width: 20 }}
 					/>
-					<Text style={!type.bank ? style.buttonText : styles.blueActive}>Branch</Text>
+					<Text
+						style={
+							!type.bank ? style.buttonText : styles.blueActive
+						}
+					>
+						Branch
+					</Text>
 				</TouchableOpacity>
 				<TouchableOpacity
 					onPress={() => {
@@ -191,11 +226,23 @@ const MapBox = () => {
 					]}
 				>
 					<Image
-						source={!type.postOffice ? require("../assets/icons/post_office.png") : require("../assets/icons/po-blue.png")}
+						source={
+							!type.postOffice
+								? require("../assets/icons/post_office.png")
+								: require("../assets/icons/po-blue.png")
+						}
 						resizeMode="contain"
 						style={{ height: 20, width: 20 }}
 					/>
-					<Text style={!type.postOffice ? style.buttonText : styles.blueActive}>Post Office</Text>
+					<Text
+						style={
+							!type.postOffice
+								? style.buttonText
+								: styles.blueActive
+						}
+					>
+						Post Office
+					</Text>
 				</TouchableOpacity>
 				<TouchableOpacity
 					onPress={() => {
@@ -204,11 +251,19 @@ const MapBox = () => {
 					style={[type.crc ? styles.button : {}, styles.column]}
 				>
 					<Image
-						source={!type.crc ? require("../assets/icons/csc.png") : require("../assets/icons/crc-blue.png")}
+						source={
+							!type.crc
+								? require("../assets/icons/csc.png")
+								: require("../assets/icons/crc-blue.png")
+						}
 						resizeMode="contain"
 						style={{ height: 20, width: 20 }}
 					/>
-					<Text style={!type.crc ? style.buttonText : styles.blueActive}>CSC</Text>
+					<Text
+						style={!type.crc ? style.buttonText : styles.blueActive}
+					>
+						CSC
+					</Text>
 				</TouchableOpacity>
 				<TouchableOpacity
 					onPress={() => {
@@ -217,11 +272,23 @@ const MapBox = () => {
 					style={[type.bankMitra ? styles.button : {}, styles.column]}
 				>
 					<Image
-						source={!type.bankMitra ? require("../assets/icons/bank_mitra.png") : require("../assets/icons/mitra-blue.png")}
+						source={
+							!type.bankMitra
+								? require("../assets/icons/bank_mitra.png")
+								: require("../assets/icons/mitra-blue.png")
+						}
 						resizeMode="contain"
-						style={{ height: 20, width: 20, }}
+						style={{ height: 20, width: 20 }}
 					/>
-					<Text style={!type.bankMitra ? style.buttonText : styles.blueActive}>Bank Mitra</Text>
+					<Text
+						style={
+							!type.bankMitra
+								? style.buttonText
+								: styles.blueActive
+						}
+					>
+						Bank Mitra
+					</Text>
 				</TouchableOpacity>
 			</View>
 		</View>
@@ -235,9 +302,9 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 10,
 		borderRadius: 10,
 		fontWeight: "bold",
-		borderTopColor: '#2081E2',
+		borderTopColor: "#2081E2",
 		borderRadius: -5,
-		borderTopWidth: 3
+		borderTopWidth: 3,
 	},
 	resultContainer: {
 		position: "absolute",
@@ -246,27 +313,40 @@ const styles = StyleSheet.create({
 		flex: 1,
 		paddingVertical: 10,
 	},
+	resultContainerVertical: {
+		position: "absolute",
+		bottom: 50,
+		paddingHorizontal: 10,
+		flex: 1,
+		paddingVertical: 10,
+		height: Dimensions.get("screen").height / 2,
+	},
 	column: {
 		flexDirection: "column",
 		justifyContent: "center",
 		alignItems: "center",
 	},
 	blueActive: {
-		color: '#2C81E0',
+		color: "#2C81E0",
 		fontSize: 12,
-		fontWeight: '600'
+		fontWeight: "600",
 	},
 	viewList: {
-		justifyContent: "center",
-		alignItems: "center",
-		backgroundColor: "white",
+		// justifyContent: "center",
+		// alignItems: "center",
 		paddingVertical: 14,
 		paddingHorizontal: 15,
+		backgroundColor: "white",
 		flexDirection: "row",
 		position: "absolute",
 		bottom: 300,
 		right: 10,
 		borderRadius: 10,
+		elevation: 5,
+	},
+	verticalList: {
+		// height: Dimensions.get("screen").height / 2,
+		marginBottom: -20,
 	},
 });
 

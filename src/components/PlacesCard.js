@@ -15,7 +15,7 @@ import axios from "axios";
 import DetailModal from "./DetailModal";
 import { useNavigation } from "@react-navigation/native";
 
-const PlaceCard = ({ item, location }) => {
+const PlaceCard = ({ item, location, horizontal }) => {
 	const [show, setShow] = useState(false);
 	const navigation = useNavigation();
 	const [data, setData] = useState([]);
@@ -74,13 +74,18 @@ const PlaceCard = ({ item, location }) => {
 	}
 	return (
 		<TouchableOpacity
-			style={{
-				marginHorizontal: 6,
-				backgroundColor: "#fff",
-				borderRadius: 10,
-				padding: 12,
-				elevation: 5,
-			}}
+			style={[
+				{
+					marginHorizontal: 6,
+					backgroundColor: "#fff",
+					borderRadius: 10,
+					padding: 12,
+					elevation: 5,
+				},
+				{
+					borderRadius: horizontal ? 10 : 0,
+				},
+			]}
 			onPress={() => LaunchModal(item.place_id)}
 		>
 			{show ? (
@@ -143,53 +148,61 @@ const PlaceCard = ({ item, location }) => {
 					</Text>
 				</View>
 			</View>
-			<View style={{ backgroundColor: "#FFFFFF", flexDirection: "row" }}>
-				<TouchableOpacity
-					style={styles.directionButton}
-					onPress={() => {
-						navigation.navigate("Directions", {
-							latitude: item.geometry.location.lat,
-							longitude: item.geometry.location.lng,
-							place_id: item.place_id,
-							name: item.name,
-						});
-					}}
+			{horizontal ? (
+				<View
+					style={{ backgroundColor: "#FFFFFF", flexDirection: "row" }}
 				>
-					<Image
-						source={require("../assets/icons/direction.png")}
-						style={{ height: 15, width: 15 }}
-					/>
-					<Text
-						style={{ color: "#fff", marginLeft: 10, fontSize: 15 }}
-					>
-						Directions
-					</Text>
-				</TouchableOpacity>
-				<TouchableOpacity
-					style={[
-						styles.directionButton,
-						{
-							marginLeft: 10,
-							backgroundColor: "#fff",
-							borderColor: "#2C81E0",
-							borderWidth: 1,
-						},
-					]}
-					onPress={() => {
-						handleCall(item.place_id);
-					}}
-				>
-					<Image
-						source={require("../assets/icons/call.png")}
-						style={{
-							fontSize: 15,
-							width: 25,
-							height: 25,
+					<TouchableOpacity
+						style={[styles.directionButton]}
+						onPress={() => {
+							navigation.navigate("Directions", {
+								latitude: item.geometry.location.lat,
+								longitude: item.geometry.location.lng,
+								place_id: item.place_id,
+								name: item.name,
+							});
 						}}
-						resizeMode="contain"
-					/>
-				</TouchableOpacity>
-			</View>
+					>
+						<Image
+							source={require("../assets/icons/direction.png")}
+							style={{ height: 15, width: 15 }}
+						/>
+						<Text
+							style={{
+								color: "#fff",
+								marginLeft: 10,
+								fontSize: 15,
+							}}
+						>
+							Directions
+						</Text>
+					</TouchableOpacity>
+					<TouchableOpacity
+						style={[
+							styles.directionButton,
+							{
+								marginLeft: 10,
+								backgroundColor: "#fff",
+								borderColor: "#2C81E0",
+								borderWidth: 1,
+							},
+						]}
+						onPress={() => {
+							handleCall(item.place_id);
+						}}
+					>
+						<Image
+							source={require("../assets/icons/call.png")}
+							style={{
+								fontSize: 15,
+								width: 25,
+								height: 25,
+							}}
+							resizeMode="contain"
+						/>
+					</TouchableOpacity>
+				</View>
+			) : null}
 		</TouchableOpacity>
 	);
 };
