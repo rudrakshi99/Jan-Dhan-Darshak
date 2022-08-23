@@ -7,6 +7,8 @@ import {
 	TextInput,
 	Dimensions,
 	Alert,
+	KeyboardAvoidingView,
+	Platform,
 } from "react-native";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
@@ -68,6 +70,10 @@ const Header = ({
 		return null;
 	}
 	return (
+		<KeyboardAvoidingView
+			behavior={Platform.OS === 'ios' ? 'padding' : null}
+			style={{height: 200}}
+		>
 		<View style={styles.container}>
 			<View style={styles.headerWrapper}>
 				<VoiceToText
@@ -191,7 +197,7 @@ const Header = ({
 									color: filter.relevance
 										? "#2C81E0"
 										: "#7C7C7C",
-									marginRight: 5,
+									marginRight: 3,
 								},
 							]}
 						>
@@ -225,7 +231,7 @@ const Header = ({
 									color: filter.open_now
 										? "#2C81E0"
 										: "#7C7C7C",
-									marginRight: 5,
+									marginRight: 3,
 								},
 							]}
 						>
@@ -259,7 +265,7 @@ const Header = ({
 									color: filter.distance
 										? "#2C81E0"
 										: "#7C7C7C",
-									marginRight: 5,
+									marginRight: 3,
 								},
 							]}
 						>
@@ -272,6 +278,7 @@ const Header = ({
 				</View>
 			) : null}
 		</View>
+		</KeyboardAvoidingView>
 	);
 };
 
@@ -320,7 +327,7 @@ const styles = StyleSheet.create({
 		marginVertical: 10,
 	},
 	filterButton: {
-		paddingHorizontal: 20,
+		paddingHorizontal: 12,
 		paddingVertical: 5,
 		borderRadius: 10,
 		backgroundColor: "#fff",

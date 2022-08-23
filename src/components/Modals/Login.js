@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native'
 import { sendOtp } from '../../https/auth'
@@ -72,6 +72,10 @@ const LoginScreen = () => {
                     <Text className='text-center text-[28px] text-[#101010] pt-4 mb-1 font-bold'>Sign Up/Login</Text>
                     <Text className='text-center text-[16px] text-[#8E8E8E] font-normal'>Login via OTP</Text>
 
+                    <KeyboardAvoidingView
+                        behavior={Platform.OS === 'ios' ? 'padding' : null}
+                        style={{height: '28%'}}
+                    >
                     <View className='flex-col items-center justify-center space-y-6'>
                         <Text className='text-[16.5px] font-semibold text-[#e35944] -mb-3'>{error}</Text>
                         
@@ -91,6 +95,7 @@ const LoginScreen = () => {
                             <Text className='flex-1 text-white font-bold text-lg text-center'>Get OTP</Text>
                         </TouchableOpacity>
                     </View>
+                    </KeyboardAvoidingView>
                 </View>
             </View>
         </SafeAreaView>

@@ -37,6 +37,16 @@ const BankFeedback = () => {
 	const user = useSelector((state) => state.auth.user);
 
 	useEffect(() => {
+		const isLoggedIn = async () => {
+			const name = await SecureStore.getItemAsync('name');
+			if(!name) {
+				navigation.push('Login');
+			}
+		}
+		isLoggedIn();
+	}, []);
+
+	useEffect(() => {
 		async function autoFill() {
 			console.log(route.params);
 			setNameOfThePoint(route.params.name);

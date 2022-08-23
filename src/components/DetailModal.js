@@ -286,6 +286,17 @@ const DetailModal = ({ show, setShow, item }) => {
 	]);
 	const user = useSelector((state) => state.auth.user);
 	console.log(user);
+
+	useEffect(() => {
+		const isLoggedIn = async () => {
+			const name = await SecureStore.getItemAsync('name');
+			if(!name) {
+				navigation.push('Login');
+			}
+		}
+		isLoggedIn();
+	}, []);
+
 	async function share(name) {
 		try {
 			const result = await Share.share({

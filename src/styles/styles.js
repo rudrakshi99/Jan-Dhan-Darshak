@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     },
     tabsContainer: {
         backgroundColor: "#fff",
-        height: 56,
+        height: 58,
         width: Dimensions.get("window").width,
         paddingHorizontal: 20,
         flexDirection: "row",

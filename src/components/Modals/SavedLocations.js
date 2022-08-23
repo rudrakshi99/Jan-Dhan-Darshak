@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { View, StyleSheet, ScrollView } from "react-native";
-import { useIsFocused } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { getSavedLocations } from "../../https/Locations";
 import BankCard from "../subcomponents/BankCard";
 import HeaderCard from "../subcomponents/HeaderCard";
@@ -14,11 +14,23 @@ import * as SecureStore from "expo-secure-store";
 
 const SavedLocations = () => {
 	const focused = useIsFocused();
+	const navigation = useNavigation();
 	const [savedLocations, setSavedLocations] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [results, setResults] = useState([]);
 	const user = useSelector((state) => state.auth.user);
 	let savedRes = [];
+
+	useEffect(() => {
+		const isLoggedIn = async () => {
+			const name = await SecureStore.getItemAsync('name');
+			if(!name) {
+				navigation.push('Login');
+			}
+		}
+		isLoggedIn();
+	}, []);
+
 	useEffect(() => {
 		const getLocations = async () => {
 			setLoading(true);
