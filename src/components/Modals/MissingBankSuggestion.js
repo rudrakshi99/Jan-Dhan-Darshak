@@ -104,7 +104,6 @@ const MissingBankSuggestion = () => {
             console.log(err?.response?.data);
         }
         
-        
     };
     return (
         <View>

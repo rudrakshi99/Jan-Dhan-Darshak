@@ -46,6 +46,7 @@
     "react-native-heroicons": "^2.2.0",
     "react-native-maps": "0.30.2",
     "react-native-maps-directions": "^1.9.0",
+    "react-native-modal": "^13.0.1",
     "react-native-otp-verify": "^1.0.5",
     "react-native-pager-view": "5.4.15",
     "react-native-phone-number-input": "^2.1.0",

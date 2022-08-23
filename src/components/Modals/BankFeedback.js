@@ -224,6 +224,7 @@ const BankFeedback = () => {
 				</TouchableOpacity>
 			</View>
 			{/* ) : null} */}
+
 		</View>
 	);
 };

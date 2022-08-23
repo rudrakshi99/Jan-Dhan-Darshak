@@ -193,6 +193,7 @@ const Help = () => {
 				)}
 			</View>
 			{/* ) : null} */}
+
 		</View>
 	);
 };

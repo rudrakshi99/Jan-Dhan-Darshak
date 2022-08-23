@@ -94,7 +94,7 @@ const Home = ({ navigation }) => {
                     ),
                 }}
             />
-            <Drawer.Screen
+            {/* <Drawer.Screen
                 name="Feedback"
                 component={BankFeedback}
                 options={{
@@ -105,7 +105,7 @@ const Home = ({ navigation }) => {
                         />
                     ),
                 }}
-            />
+            /> */}
             <Drawer.Screen
                 name="About Us"
                 component={About}
@@ -129,7 +129,7 @@ const Home = ({ navigation }) => {
                 }}
             />
             <Drawer.Screen
-                name="Help"
+                name="Feedback"
                 component={Help}
                 options={{
                     headerShown: false,

@@ -13,3 +13,16 @@ export const verifyOtp = async (body) => {
     console.log(data, 'verify');
     return data;
 }
+
+export const updateProfile = async ({ userId, accessToken, ...body}) => {
+    console.log(body,'hello eolr')
+    const config = {
+        headers: {
+            'content-type': 'application/json',
+            authorization: `Bearer ${accessToken}`,
+        }
+    }
+    const { data } = await api.patch(`/users/update/${userId}`, body, config);
+    console.log(data, 'verify');
+    return data;
+}

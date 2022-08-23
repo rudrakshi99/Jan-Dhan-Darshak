@@ -64,6 +64,7 @@ const OtpScreen = () => {
 					data.data.tokens.refresh
 				);
 				await SecureStore.setItemAsync("name", data.data.user.name);
+				await SecureStore.setItemAsync("email", data.data.user.email);
 				await SecureStore.setItemAsync("userId", `${userId}`);
 				console.log(
 					await SecureStore.getItemAsync("accessToken"),
@@ -131,6 +132,7 @@ const OtpScreen = () => {
 					</TouchableOpacity>
 				</View>
 			</View>
+
 		</SafeAreaView>
 	);
 };

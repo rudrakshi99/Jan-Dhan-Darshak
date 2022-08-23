@@ -22,6 +22,9 @@ import { useSelector } from "react-redux";
 import Onboarding from "./src/pages/Onboarding";
 import LoginScreen from "./src/components/Modals/Login";
 import Logout from "./src/components/Modals/Logout";
+import Profile from "./src/pages/Profile";
+import LoginScreenViaPhone from "./src/components/Modals/LoginViaPhone";
+import FlashMessage from "react-native-flash-message";
 
 const Stack = createNativeStackNavigator();
 
@@ -93,6 +96,13 @@ function App() {
 					}}
 				/>
 				<Stack.Screen
+					name="LoginViaPhone"
+					component={LoginScreenViaPhone}
+					options={{
+						headerShown: false,
+					}}
+				/>
+				<Stack.Screen
 					name="OTP"
 					component={Otp}
 					options={{
@@ -127,7 +137,15 @@ function App() {
 						headerShown: false,
 					}}
 				/>
+				<Stack.Screen
+					name="Profile"
+					component={Profile}
+					options={{
+						headerShown: false,
+					}}
+				/>
 			</Stack.Navigator>
+			<FlashMessage position="top" />
 		</TailwindProvider>
 	);
 }

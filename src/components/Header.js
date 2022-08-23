@@ -72,7 +72,7 @@ const Header = ({
 	return (
 		<KeyboardAvoidingView
 			behavior={Platform.OS === 'ios' ? 'padding' : null}
-			style={{height: 200}}
+			style={{height: 200, paddingTop: 4}}
 		>
 		<View style={styles.container}>
 			<View style={styles.headerWrapper}>
