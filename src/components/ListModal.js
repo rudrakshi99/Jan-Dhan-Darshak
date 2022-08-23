@@ -1,26 +1,22 @@
 import React from "react";
-import {
-	View,
-	Modal,
-	StyleSheet,
-	TextStyle,
-	TouchableOpacity,
-} from "react-native";
+import { View, StyleSheet } from "react-native";
 
 function ListModal() {
-	return (
-		<View>
-			<Modal>
-				<View>
-					<View></View>
-				</View>
-			</Modal>
-		</View>
-	);
+	return <View></View>;
 }
 
 const styles = StyleSheet.create({
-	container: {},
+	container: {
+		width: Dimensions.get("window").width,
+		backgroundColor: "#fff",
+		// paddingVertical: 30,
+		position: "absolute",
+		bottom: 0,
+		flexDirection: "column",
+		justifyContent: "space-between",
+		paddingBottom: 60,
+		height: Dimensions.get("window").height / 2,
+	},
 });
 
 export default ListModal;

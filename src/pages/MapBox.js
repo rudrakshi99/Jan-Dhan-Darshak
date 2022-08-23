@@ -7,6 +7,7 @@ import {
 	Image,
 	FlatList,
 	Platform,
+	Dimensions,
 } from "react-native";
 import * as Location from "expo-location";
 import { useIsFocused } from "@react-navigation/native";
@@ -44,6 +45,7 @@ const MapBox = () => {
 		latitude: 0,
 		longitude: 0,
 	});
+	const [horizontal, setHorizontal] = useState(true);
 	function generateString() {
 		if (type.atm) return "atm";
 		if (type.bank) return "bank";
@@ -79,7 +81,7 @@ const MapBox = () => {
 						location.coords.latitude
 					},${
 						location.coords.longitude
-					}&radius=1500&type=${generateString()}&keyword=${generateString()}${generateFilter}&key=${API_KEY}`
+					}&radius=1500&type=${generateString()}&keyword=${generateString()}&key=${API_KEY}`
 				);
 				setResults(response.data.results);
 			} catch (err) {
@@ -94,7 +96,9 @@ const MapBox = () => {
 		};
 	}, [type, focused]);
 
-	function handleList() {}
+	function handleList() {
+		setHorizontal((prev) => !prev);
+	}
 
 	return (
 		<View style={style.container}>
@@ -109,7 +113,14 @@ const MapBox = () => {
 			/>
 			<Map markers={results} />
 			<TouchableOpacity
-				style={styles.viewList}
+				style={[
+					styles.viewList,
+					{
+						bottom: horizontal
+							? 300
+							: Dimensions.get("screen").height / 1.8,
+					},
+				]}
 				onPress={() => {
 					handleList();
 				}}
@@ -126,30 +137,44 @@ const MapBox = () => {
 						fontWeight: "600",
 					}}
 				>
-					View List
+					{`${horizontal ? "View" : "Hide"} List`}
 				</Text>
 			</TouchableOpacity>
-			{results !== [] ? (
-				<FlatList
-					data={results}
-					horizontal={true}
-					style={styles.resultContainer}
-					snapToAlignment="start"
-					snapToInterval={100}
-					contentContainerStyle={{ paddingVertical: 5 }}
-					renderItem={({ item, index }) => {
-						return (
-							<PlaceCard
-								key={index}
-								item={item}
-								location={location}
-							/>
-						);
-					}}
-				/>
-			) : (
-				<View></View>
-			)}
+			<View
+				style={
+					horizontal
+						? styles.resultContainer
+						: styles.resultContainerVertical
+				}
+			>
+				{results !== [] ? (
+					<FlatList
+						data={results}
+						horizontal={horizontal}
+						// style={styles.resultContainer}
+						snapToAlignment="start"
+						snapToInterval={horizontal ? 100 : 0}
+						contentContainerStyle={[
+							horizontal
+								? styles.horizontalList
+								: styles.verticalList,
+							{ paddingVertical: 5 },
+						]}
+						renderItem={({ item, index }) => {
+							return (
+								<PlaceCard
+									key={index}
+									item={item}
+									location={location}
+									horizontal={horizontal}
+								/>
+							);
+						}}
+					/>
+				) : (
+					<View></View>
+				)}
+			</View>
 			<View style={style.tabsContainer}>
 				<TouchableOpacity
 					onPress={() => {
@@ -240,22 +265,35 @@ const styles = StyleSheet.create({
 		flex: 1,
 		paddingVertical: 10,
 	},
+	resultContainerVertical: {
+		position: "absolute",
+		bottom: 50,
+		paddingHorizontal: 10,
+		flex: 1,
+		paddingVertical: 10,
+		height: Dimensions.get("screen").height / 2,
+	},
 	column: {
 		flexDirection: "column",
 		justifyContent: "center",
 		alignItems: "center",
 	},
 	viewList: {
-		justifyContent: "center",
-		alignItems: "center",
-		backgroundColor: "white",
+		// justifyContent: "center",
+		// alignItems: "center",
 		paddingVertical: 14,
 		paddingHorizontal: 15,
+		backgroundColor: "white",
 		flexDirection: "row",
 		position: "absolute",
 		bottom: 300,
 		right: 10,
 		borderRadius: 10,
+		elevation: 5,
+	},
+	verticalList: {
+		// height: Dimensions.get("screen").height / 2,
+		marginBottom: -20,
 	},
 });
 
