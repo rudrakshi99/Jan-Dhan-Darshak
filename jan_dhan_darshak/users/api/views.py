@@ -158,12 +158,22 @@ class UserUpdateView(APIView):
             )
 
 
+from pydub import AudioSegment
+
+
+from django.core.files.storage import FileSystemStorage
+
+from pathlib import Path
+
+ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
+
+
 class VoiceToText(APIView):
     def post(self, request, **kwargs):
-        voice = request.data.get("voice")
+        myfile = request.FILES["voice"]
         try:
             r = sr.Recognizer()
-            with sr.AudioFile(voice) as source:
+            with sr.AudioFile(myfile) as source:
                 audio_data = r.record(source)
                 text = r.recognize_google(audio_data)
             return Response(
@@ -174,6 +184,29 @@ class VoiceToText(APIView):
                 )
             )
         except Exception as e:
+            wav_filename = "test.wav"
+            fs = FileSystemStorage()
+            filename = fs.save(myfile.name, myfile)
+            uploaded_file_url = fs.url(filename)
+
+            track = AudioSegment.from_file(
+                str(ROOT_DIR) + uploaded_file_url, format="m4a"
+            )
+            track.export(wav_filename, format="wav")
+            
+            r = sr.Recognizer()
+            with sr.AudioFile("test.wav") as source:
+                audio_data = r.record(source)
+                text = r.recognize_google(audio_data)
+
+            return Response(
+                response_payload(
+                    success=True,
+                    data={"msg": text},
+                    msg="Voice to text converted successfully!",
+                )
+            )
+        except:
             return Response(
                 response_payload(success=False, msg=str(e)),
                 status=status.HTTP_400_BAD_REQUEST,
