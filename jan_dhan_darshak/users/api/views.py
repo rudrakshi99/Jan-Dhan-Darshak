@@ -166,6 +166,7 @@ from django.core.files.storage import FileSystemStorage
 from pathlib import Path
 
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
+import traceback
 
 
 class VoiceToText(APIView):
@@ -184,16 +185,25 @@ class VoiceToText(APIView):
                 )
             )
         except Exception as e:
-            wav_filename = "test.wav"
-            fs = FileSystemStorage()
-            filename = fs.save(myfile.name, myfile)
-            uploaded_file_url = fs.url(filename)
+            try:
+                wav_filename = "test.wav"
+                fs = FileSystemStorage()
+                filename = fs.save(myfile.name, myfile)
+                uploaded_file_url = fs.url(filename)
 
-            track = AudioSegment.from_file(
-                str(ROOT_DIR) + uploaded_file_url, format="m4a"
-            )
-            track.export(wav_filename, format="wav")
-            
+                track = AudioSegment.from_file(
+                    str(ROOT_DIR) + uploaded_file_url, format="m4a"
+                )
+                track.export(wav_filename, format="wav")
+            except Exception as e:
+                return Response(
+                    response_payload(
+                        success=False,
+                        msg=str(e) + f"Stacktrace: {traceback.format_exc()}",
+                    ),
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
             r = sr.Recognizer()
             with sr.AudioFile("test.wav") as source:
                 audio_data = r.record(source)
