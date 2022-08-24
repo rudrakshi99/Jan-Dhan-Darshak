@@ -6,12 +6,14 @@ import { updateProfile } from '../https/auth'
 import * as SecureStore from 'expo-secure-store';
 import { flashMessage } from '../lottie/flashMessage'
 import { ArrowNarrowLeftIcon } from "react-native-heroicons/outline";
+import Loader from '../components/Loader'
 
 const Profile = () => {
     const navigation = useNavigation();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const alreadyLogin = async () => {
@@ -26,6 +28,7 @@ const Profile = () => {
     }, []);
 
     const handleSubmit = async () => {
+        
         if( !email || !name ) {
             setError('All fields are required !');
             flashMessage('All fields are required !', 'danger');
@@ -33,24 +36,30 @@ const Profile = () => {
         }
 
         try {
+            setIsLoading(true);
             const userId = await SecureStore.getItemAsync('userId');
             const accessToken = await SecureStore.getItemAsync('accessToken');
             
             const data = await updateProfile({ userId, accessToken, name, email });
             console.log(data, 'data');
             if(data?.success === true) {
+                console.log('Success profile');
                 flashMessage(data?.message, 'success');
-				await SecureStore.setItemAsync("name", data.data.user.name);
-				await SecureStore.setItemAsync("email", data.data.user.email);
+				await SecureStore.setItemAsync("name", name);
+				await SecureStore.setItemAsync("email", email);
 				navigation.push("Home");
             }
         } catch(err) {
             console.log(err?.response?.data);
             flashMessage(err?.response?.data, 'danger');
             // setError(err?.response?.data);
+        } finally {
+            setIsLoading(false);
         }
     }
  
+    if(isLoading) return <Loader />
+    else
     return (
         <SafeAreaView className='flex-1 bg-gray-200'>
             <View className='flex-1 bg-gray-100'>

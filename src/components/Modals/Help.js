@@ -16,6 +16,7 @@ import RNPickerSelect from "react-native-picker-select";
 import { createFeedback } from "../../https/feedback";
 import VoiceToText from "../VoiceToText";
 import { flashMessage } from "../../lottie/flashMessage";
+import Loader from "../Loader";
 
 const Help = () => {
 	const navigation = useNavigation();
@@ -27,6 +28,7 @@ const Help = () => {
 	const [rating, setRating] = useState("5");
 	const [response, setResponse] = useState("");
 	const [error, setError] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
 
 	const ratingCompleted = (rating) => {
 		console.log("Rating is: " + rating);
@@ -48,6 +50,7 @@ const Help = () => {
 				return;
 			}
 			console.log(phone_number, " ", email, " ", message, " ", rating);
+			setIsLoading(true);
 			const data = await createFeedback({
 				phone_number,
 				name,
@@ -65,9 +68,13 @@ const Help = () => {
 			console.log(err?.response?.data);
 			setError(err?.response?.data);
 			flashMessage(err?.response?.data, 'danger');
-		}
+		} finally {
+            setIsLoading(false);
+        }
 	};
 
+	if(isLoading) return <Loader />
+    else
 	return (
 		<View style={styles.container}>
 			<View>

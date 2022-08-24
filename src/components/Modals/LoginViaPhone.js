@@ -6,11 +6,13 @@ import { sendOtp } from '../../https/auth'
 import * as SecureStore from 'expo-secure-store';
 import { flashMessage } from '../../lottie/flashMessage'
 import { ArrowNarrowLeftIcon } from "react-native-heroicons/outline";
+import Loader from '../Loader'
 
 const LoginScreenViaPhone = () => {
     const navigation = useNavigation();
     const [phone, setPhone] = useState('');
     const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const alreadyLogin = async () => {
@@ -34,10 +36,10 @@ const LoginScreenViaPhone = () => {
             setError('Invalid phone number !');
             return;
         }
-
+        setIsLoading(true);
         try {
             const data = await sendOtp({ phone_number: phone });
-            console.log(data, 'data');
+            console.log(data, 'data send otp');
             if(data?.success === true) {
                 flashMessage(data?.message, 'success');
                 await SecureStore.setItemAsync('phone', phone);
@@ -48,9 +50,13 @@ const LoginScreenViaPhone = () => {
             console.log(err?.response?.data);
             flashMessage(err?.response?.data, 'danger');
             setError(err?.response?.data);
+        } finally {
+            setIsLoading(false);
         }
     }
 
+    if(isLoading) return <Loader />
+    else
     return (
         <SafeAreaView className='flex-1 bg-gray-200'>
             <View className='flex-1 bg-gray-100'>

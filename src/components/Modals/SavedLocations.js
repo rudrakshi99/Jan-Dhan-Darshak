@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { View, StyleSheet, ScrollView } from "react-native";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
@@ -6,9 +6,9 @@ import { getSavedLocations } from "../../https/Locations";
 import BankCard from "../subcomponents/BankCard";
 import HeaderCard from "../subcomponents/HeaderCard";
 import { BASE_URL, API_KEY } from "@env";
-import Loader from "../Loader";
 import { useSelector } from "react-redux";
 import * as SecureStore from "expo-secure-store";
+import Loader from "../Loader";
 
 // var results = [];
 
@@ -16,9 +16,9 @@ const SavedLocations = () => {
 	const focused = useIsFocused();
 	const navigation = useNavigation();
 	const [savedLocations, setSavedLocations] = useState([]);
-	const [loading, setLoading] = useState(false);
 	const [results, setResults] = useState([]);
 	const user = useSelector((state) => state.auth.user);
+	const [isLoading, setIsLoading] = useState(false);
 	let savedRes = [];
 
 	useEffect(() => {
@@ -33,13 +33,13 @@ const SavedLocations = () => {
 
 	useEffect(() => {
 		const getLocations = async () => {
-			setLoading(true);
+			setIsLoading(true);
 			try {
 				const accessToken = await SecureStore.getItemAsync("accessToken");;
-				const id = 15;
+				const userId = await SecureStore.getItemAsync("userId");
 				const data = await getSavedLocations({
 					accessToken: accessToken,
-					id: id,
+					id: userId,
 				});
 				if (data?.success === true) {
 					setSavedLocations(data.data);
@@ -64,13 +64,13 @@ const SavedLocations = () => {
 					console.log(results);
 				});
 				console.log("Final Result", savedRes);
-				setLoading(false);
 			} catch (err) {
 				console.log(err);
 			}
 		}
 		getLocations();
 		getSavedResults();
+		setIsLoading(false);
 		() => {};
 	}, [focused]);
 
@@ -81,28 +81,35 @@ const SavedLocations = () => {
 				text="List of all your saved Financial Points"
 			/>
 			<View style={styles.divider}></View>
-			<ScrollView>
-				{results != [] && !loading ? (
-					results.map((item, i) => {
-						console.log("mapped Item", item);
-						return (
-							<BankCard
-								key={i}
-								imgUrl={{
-									uri: item.photos
-										? `${BASE_URL}maps/api/place/photo?maxwidth=400&photo_reference=${item?.photos[0]?.photo_reference}&key=${API_KEY}`
-										: "https://previews.123rf.com/images/kaymosk/kaymosk1804/kaymosk180400006/100130939-error-404-page-not-found-error-with-glitch-effect-on-screen-vector-illustration-for-your-design-.jpg",
-								}}
-								name={item?.name}
-								branch={`${item?.address_components[1]?.long_name} Branch`}
-								place_id={item?.place_id}
-							/>
-						);
-					})
-				) : (
-					<Loader />
-				)}
-			</ScrollView>
+			{
+				isLoading ? <Loader /> : (
+				<ScrollView>
+					{results != [] ? (
+						results.map((item, i) => {
+							console.log("mapped Item", item);
+							return (
+								<BankCard
+									key={i}
+									imgUrl={{
+										uri: item.photos
+											? `${BASE_URL}maps/api/place/photo?maxwidth=400&photo_reference=${item?.photos[0]?.photo_reference}&key=${API_KEY}`
+											: "https://previews.123rf.com/images/kaymosk/kaymosk1804/kaymosk180400006/100130939-error-404-page-not-found-error-with-glitch-effect-on-screen-vector-illustration-for-your-design-.jpg",
+									}}
+									name={item?.name}
+									branch={`${item?.address_components[1]?.long_name} Branch`}
+									place_id={item?.place_id}
+								/>
+							);
+						})
+					) : (
+						<View>
+							<Text className=''>No locations saved !</Text>
+						</View>
+					)}
+				</ScrollView>
+				)
+			}
+			
 		</View>
 	);
 };

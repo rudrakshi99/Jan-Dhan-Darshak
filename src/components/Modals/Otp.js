@@ -14,10 +14,9 @@ import { useDispatch } from "react-redux";
 import * as SecureStore from "expo-secure-store";
 import { verifyOtp } from "../../https/auth";
 import OTPInputView from "@twotalltotems/react-native-otp-input";
-import RNOtpVerify from 'react-native-otp-verify';
 import { flashMessage } from "../../lottie/flashMessage";
-// import Clipboard from '@react-native-community/clipboard';
 import { ArrowNarrowLeftIcon } from "react-native-heroicons/outline";
+import Loader from "../Loader";
 
 const OtpScreen = () => {
 	const navigation = useNavigation();
@@ -25,6 +24,7 @@ const OtpScreen = () => {
 	const [phone, setPhone] = useState("");
 	const [otp, setOTP] = useState("");
 	const [error, setError] = useState('');
+	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
 		const alreadyLogin = async () => {
@@ -49,8 +49,9 @@ const OtpScreen = () => {
 			return;
 		}
 		try {
+			setIsLoading(true);
 			const data = await verifyOtp({ otp, phone_number: phone });
-			console.log(data, "data");
+			console.log(data, "data verify otp");
 
 			if (data?.success === true) {
 				flashMessage(data?.message, 'success');
@@ -79,9 +80,13 @@ const OtpScreen = () => {
 			console.log(err?.response?.data);
 			flashMessage(err?.response?.data, 'danger');
 			setError(err?.response?.data);
-		}
+		} finally {
+            setIsLoading(false);
+        }
 	};
 
+	if(isLoading) return <Loader />
+    else
 	return (
 		<SafeAreaView className="flex-1 bg-gray-200">
 			<View className="flex-1 bg-gray-100">

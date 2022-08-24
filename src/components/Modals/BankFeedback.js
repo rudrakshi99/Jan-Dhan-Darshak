@@ -22,6 +22,7 @@ import RNPickerSelect from "react-native-picker-select";
 import { createFinancialPoint } from "../../https/feedback";
 import { useSelector } from "react-redux";
 import { flashMessage } from "../../lottie/flashMessage";
+import Loader from "../Loader";
 
 const BankFeedback = () => {
 	const navigation = useNavigation();
@@ -30,6 +31,7 @@ const BankFeedback = () => {
 	// const [show, setShow] = useState(true);
 	// const [user, setUser] = useState();
 	// const [token, setToken] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
 
 	const [recording, setRecording] = useState();
 	const [uri, setUri] = useState("");
@@ -80,6 +82,7 @@ const BankFeedback = () => {
 				flashMessage("All fields are required !", "danger");
 				return;
 			}
+			setIsLoading(true);
 			const accessToken = await SecureStore.getItemAsync("accessToken");
 			const data = await createFinancialPoint({
 				accessToken,
@@ -98,9 +101,13 @@ const BankFeedback = () => {
 			console.log(err?.response?.data);
 			setError(err?.response?.data);
 			flashMessage(err?.response?.data, "danger");
-		}
+		} finally {
+            setIsLoading(false);
+        }
 	};
 
+	if(isLoading) return <Loader />
+    else
 	return (
 		<View style={styles.container}>
 			<View>
