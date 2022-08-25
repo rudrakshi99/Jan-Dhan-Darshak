@@ -9,6 +9,8 @@ import { useDispatch } from "react-redux";
 import { setAuth } from "./src/redux/slices/authSlice";
 import store from "./src/redux/store";
 import "react-native-gesture-handler";
+import * as Localization from "expo-localization";
+import { I18n } from "i18n-js";
 
 LogBox.ignoreLogs(["EventEmitter.removeListener"]);
 
@@ -25,10 +27,15 @@ import Profile from "./src/pages/Profile";
 import LoginScreenViaPhone from "./src/components/Modals/LoginViaPhone";
 import FlashMessage from "react-native-flash-message";
 
+import { translations } from "./translations";
+import BankFeedback from "./src/components/Modals/BankFeedback";
+
 const Stack = createNativeStackNavigator();
 
 function App() {
 	const dispatch = useDispatch();
+	const i18n = new I18n(translations);
+	i18n.locale = Localization.locale;
 	const user = useSelector((state) => state.auth.user);
 	console.log("User is : ", user);
 	React.useEffect(() => {
@@ -125,6 +132,13 @@ function App() {
 				<Stack.Screen
 					name="Onboarding"
 					component={Onboarding}
+					options={{
+						headerShown: false,
+					}}
+				/>
+				<Stack.Screen
+					name="BankFeedback"
+					component={BankFeedback}
 					options={{
 						headerShown: false,
 					}}

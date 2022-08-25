@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	View,
 	Text,
@@ -20,7 +20,7 @@ import { useFonts } from "expo-font";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import VoiceToText from "./VoiceToText";
 import { translations } from "../translations/translations";
-import * as SecureStore from 'expo-secure-store';
+import * as SecureStore from "expo-secure-store";
 const Header = ({
 	title,
 	subtitle,
@@ -29,7 +29,7 @@ const Header = ({
 	type,
 	setFilter,
 	filter,
-	lanChanged
+	lanChanged,
 }) => {
 	const navigation = useNavigation();
 	const route = useRoute();
@@ -41,9 +41,10 @@ const Header = ({
 		InterRegular: require("../assets/fonts/Inter-Regular.otf"),
 		InterLight: require("../assets/fonts/Inter-Light.otf"),
 	});
+	useEffect(() => {
+		handleSearch();
+	}, [search]);
 	async function handleSearch() {
-
-		
 		try {
 			const { data } = await axios.get(
 				`${BASE_URL}maps/api/place/textsearch/json?query=${search}&location=${
@@ -59,23 +60,24 @@ const Header = ({
 			console.log(err);
 		}
 	}
-	const[lan,setLan]=useState('')
-    const [mapbox,setMapbox]=useState(translations['English'].homepage);
-   
-    useEffect(()=>{{
-        const getLan = async () => {
-            const res=await SecureStore.getItemAsync('lan')
-            if(res=='')
-            {setLan('English')}
-			else
-			{setLan(res)}
+	const [lan, setLan] = useState("");
+	const [mapbox, setMapbox] = useState(translations["English"].homepage);
 
-            setMapbox(translations[lan].homepage)
-			
-        }
-        getLan();
-		
-    }},[lanChanged]) 
+	useEffect(() => {
+		{
+			const getLan = async () => {
+				const res = await SecureStore.getItemAsync("lan");
+				if (res == "") {
+					setLan("English");
+				} else {
+					setLan(res);
+				}
+
+				// setMapbox(translations[lan].homepage);
+			};
+			getLan();
+		}
+	}, [lanChanged]);
 	async function getTextFromVoice() {
 		try {
 			const response = await axios.post("", {
@@ -92,213 +94,213 @@ const Header = ({
 	}
 	return (
 		<KeyboardAvoidingView
-			behavior={Platform.OS === 'ios' ? 'padding' : null}
-			style={{height: 200, paddingTop: 4}}
+			behavior={Platform.OS === "ios" ? "padding" : null}
+			style={{ height: 200, paddingTop: 4 }}
 		>
-		<View style={styles.container}>
-			<View style={styles.headerWrapper}>
-				<VoiceToText
-					visible={visible}
-					setVisible={setVisible}
-					setSearch={setSearch}
-				/>
-				<TouchableOpacity
-					style={styles.back}
-					onPress={() => {
-						if (route.name === "Find") {
-							//Open Drawer Navigation
-							navigation.openDrawer();
-						} else {
-							navigation.goBack();
-						}
-					}}
-				>
-					{route.name !== "Find" ? (
+			<View style={styles.container}>
+				<View style={styles.headerWrapper}>
+					<VoiceToText
+						visible={visible}
+						setVisible={setVisible}
+						setSearch={setSearch}
+					/>
+					<TouchableOpacity
+						style={styles.back}
+						onPress={() => {
+							if (route.name === "Find") {
+								//Open Drawer Navigation
+								navigation.openDrawer();
+							} else {
+								navigation.goBack();
+							}
+						}}
+					>
+						{route.name !== "Find" ? (
+							<Svg
+								width={35}
+								height={25}
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+								color="#101010"
+							>
+								<Path
+									stroke="#000"
+									strokeWidth={3}
+									strokeLinecap="round"
+									d="M2 7h22M1 6.586 6.586 1M7.071 12.657 1.414 7"
+								/>
+							</Svg>
+						) : (
+							<Svg
+								width={32}
+								height={20}
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<Path
+									d="M1 1h30M1 10h30M1 19h30"
+									stroke="#101010"
+									strokeWidth={2}
+									strokeLinecap="round"
+								/>
+							</Svg>
+						)}
+					</TouchableOpacity>
+					{route.name === "Find" && (
 						<Svg
-							width={35}
-							height={25}
+							width={21}
+							height={28}
 							fill="none"
 							xmlns="http://www.w3.org/2000/svg"
-							color="#101010"
 						>
 							<Path
-								stroke="#000"
-								strokeWidth={3}
-								strokeLinecap="round"
-								d="M2 7h22M1 6.586 6.586 1M7.071 12.657 1.414 7"
-							/>
-						</Svg>
-					) : (
-						<Svg
-							width={32}
-							height={20}
-							fill="none"
-							xmlns="http://www.w3.org/2000/svg"
-						>
-							<Path
-								d="M1 1h30M1 10h30M1 19h30"
-								stroke="#101010"
-								strokeWidth={2}
-								strokeLinecap="round"
+								d="M9.204 27.37C6.349 23.85 0 15.32 0 10.528 0 4.713 4.7 0 10.5 0 16.297 0 21 4.713 21 10.527c0 4.792-6.398 13.324-9.204 16.844a1.65 1.65 0 0 1-2.592 0ZM10.5 14.037c1.93 0 3.5-1.573 3.5-3.509a3.508 3.508 0 0 0-3.5-3.509c-1.93 0-3.5 1.574-3.5 3.51 0 1.935 1.57 3.508 3.5 3.508Z"
+								fill="#101010"
 							/>
 						</Svg>
 					)}
-				</TouchableOpacity>
-				{route.name === "Find" && (
-					<Svg
-						width={21}
-						height={28}
-						fill="none"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<Path
-							d="M9.204 27.37C6.349 23.85 0 15.32 0 10.528 0 4.713 4.7 0 10.5 0 16.297 0 21 4.713 21 10.527c0 4.792-6.398 13.324-9.204 16.844a1.65 1.65 0 0 1-2.592 0ZM10.5 14.037c1.93 0 3.5-1.573 3.5-3.509a3.508 3.508 0 0 0-3.5-3.509c-1.93 0-3.5 1.574-3.5 3.51 0 1.935 1.57 3.508 3.5 3.508Z"
-							fill="#101010"
+					<View style={styles.headings}>
+						<Text style={styles.title}>{title}</Text>
+						<Text style={styles.subtitle}>{subtitle}</Text>
+					</View>
+				</View>
+				{route.name === "Find" ? (
+					<View style={styles.filterWrapper}>
+						<TextInput
+							value={search}
+							onChangeText={setSearch}
+							style={styles.searchBar}
+							placeholder={mapbox[3]}
 						/>
-					</Svg>
-				)}
-				<View style={styles.headings}>
-					<Text style={styles.title}>{title}</Text>
-					<Text style={styles.subtitle}>{subtitle}</Text>
-				</View>
+						<Icon
+							onPress={() => {
+								setVisible(true);
+							}}
+							name="microphone"
+							style={{ marginLeft: 5 }}
+							size={30}
+							color="black"
+						/>
+						<Icon
+							onPress={() => {
+								if (search !== "") {
+									handleSearch();
+								}
+							}}
+							name="magnify"
+							style={{ marginLeft: 10 }}
+							size={30}
+							color="black"
+						/>
+					</View>
+				) : null}
+				{route.name === "Find" ? (
+					<View style={styles.filterButtonGroup}>
+						<TouchableOpacity
+							style={[
+								styles.filterButton,
+								{
+									backgroundColor: filter.relevance
+										? "#E3ECF7"
+										: "#fff",
+								},
+							]}
+							onPress={() => {
+								if (filter.relevance) {
+									setFilter({ ...filter, relevance: false });
+								} else {
+									setFilter({ ...filter, relevance: true });
+								}
+							}}
+						>
+							<Text
+								style={[
+									styles.filterButtonText,
+									{
+										color: filter.relevance
+											? "#2C81E0"
+											: "#7C7C7C",
+										marginRight: 3,
+									},
+								]}
+							>
+								{mapbox[2].relevance}
+							</Text>
+							{filter.relevance ? (
+								<Icon name="close" color="#2C81E0" size={15} />
+							) : null}
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={[
+								styles.filterButton,
+								{
+									backgroundColor: filter.open_now
+										? "#E3ECF7"
+										: "#fff",
+								},
+							]}
+							onPress={() => {
+								if (filter.open_now) {
+									setFilter({ ...filter, open_now: false });
+								} else {
+									setFilter({ ...filter, open_now: true });
+								}
+							}}
+						>
+							<Text
+								style={[
+									styles.filterButtonText,
+									{
+										color: filter.open_now
+											? "#2C81E0"
+											: "#7C7C7C",
+										marginRight: 3,
+									},
+								]}
+							>
+								{mapbox[2].open_now}
+							</Text>
+							{filter.open_now ? (
+								<Icon name="close" color="#2C81E0" size={15} />
+							) : null}
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={[
+								styles.filterButton,
+								{
+									backgroundColor: filter.distance
+										? "#E3ECF7"
+										: "#fff",
+								},
+							]}
+							onPress={() => {
+								if (filter.distance) {
+									setFilter({ ...filter, distance: false });
+								} else {
+									setFilter({ ...filter, distance: true });
+								}
+							}}
+						>
+							<Text
+								style={[
+									styles.filterButtonText,
+									{
+										color: filter.distance
+											? "#2C81E0"
+											: "#7C7C7C",
+										marginRight: 3,
+									},
+								]}
+							>
+								{mapbox[2].distance}
+							</Text>
+							{filter.distance ? (
+								<Icon name="close" color="#2C81E0" size={15} />
+							) : null}
+						</TouchableOpacity>
+					</View>
+				) : null}
 			</View>
-			{route.name === "Find" ? (
-				<View style={styles.filterWrapper}>
-					<TextInput
-						value={search}
-						onChangeText={setSearch}
-						style={styles.searchBar}
-						placeholder={mapbox[3]}
-					/>
-					<Icon
-						onPress={() => {
-							setVisible(true);
-						}}
-						name="microphone"
-						style={{ marginLeft: 5 }}
-						size={30}
-						color="black"
-					/>
-					<Icon
-						onPress={() => {
-							if (search !== "") {
-								handleSearch();
-							}
-						}}
-						name="magnify"
-						style={{ marginLeft: 10 }}
-						size={30}
-						color="black"
-					/>
-				</View>
-			) : null}
-			{route.name === "Find" ? (
-				<View style={styles.filterButtonGroup}>
-					<TouchableOpacity
-						style={[
-							styles.filterButton,
-							{
-								backgroundColor: filter.relevance
-									? "#E3ECF7"
-									: "#fff",
-							},
-						]}
-						onPress={() => {
-							if (filter.relevance) {
-								setFilter({ ...filter, relevance: false });
-							} else {
-								setFilter({ ...filter, relevance: true });
-							}
-						}}
-					>
-						<Text
-							style={[
-								styles.filterButtonText,
-								{
-									color: filter.relevance
-										? "#2C81E0"
-										: "#7C7C7C",
-									marginRight: 3,
-								},
-							]}
-						>
-							{mapbox[2].relevance}
-						</Text>
-						{filter.relevance ? (
-							<Icon name="close" color="#2C81E0" size={15} />
-						) : null}
-					</TouchableOpacity>
-					<TouchableOpacity
-						style={[
-							styles.filterButton,
-							{
-								backgroundColor: filter.open_now
-									? "#E3ECF7"
-									: "#fff",
-							},
-						]}
-						onPress={() => {
-							if (filter.open_now) {
-								setFilter({ ...filter, open_now: false });
-							} else {
-								setFilter({ ...filter, open_now: true });
-							}
-						}}
-					>
-						<Text
-							style={[
-								styles.filterButtonText,
-								{
-									color: filter.open_now
-										? "#2C81E0"
-										: "#7C7C7C",
-									marginRight: 3,
-								},
-							]}
-						>
-							{mapbox[2].open_now}
-						</Text>
-						{filter.open_now ? (
-							<Icon name="close" color="#2C81E0" size={15} />
-						) : null}
-					</TouchableOpacity>
-					<TouchableOpacity
-						style={[
-							styles.filterButton,
-							{
-								backgroundColor: filter.distance
-									? "#E3ECF7"
-									: "#fff",
-							},
-						]}
-						onPress={() => {
-							if (filter.distance) {
-								setFilter({ ...filter, distance: false });
-							} else {
-								setFilter({ ...filter, distance: true });
-							}
-						}}
-					>
-						<Text
-							style={[
-								styles.filterButtonText,
-								{
-									color: filter.distance
-										? "#2C81E0"
-										: "#7C7C7C",
-									marginRight: 3,
-								},
-							]}
-						>
-							{mapbox[2].distance}
-						</Text>
-						{filter.distance ? (
-							<Icon name="close" color="#2C81E0" size={15} />
-						) : null}
-					</TouchableOpacity>
-				</View>
-			) : null}
-		</View>
 		</KeyboardAvoidingView>
 	);
 };

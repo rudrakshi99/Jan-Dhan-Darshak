@@ -23,7 +23,8 @@
       "infoPlist" : {
         "UIBackgroundModes" : [
           "location",
-          "fetch"
+          "fetch",
+          "audio"
         ]
       }
     },

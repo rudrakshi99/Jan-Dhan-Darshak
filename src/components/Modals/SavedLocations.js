@@ -23,16 +23,18 @@ const SavedLocations = () => {
 
 	useEffect(() => {
 		const isLoggedIn = async () => {
-			const name = await SecureStore.getItemAsync('name');
-			if(!name) {
-				navigation.push('Login');
+			const name = await SecureStore.getItemAsync("name");
+			if (!name) {
+				navigation.push("Login");
 			}
-		}
+		};
 		isLoggedIn();
 		const getLocations = async () => {
 			setIsLoading(true);
 			try {
-				const accessToken = await SecureStore.getItemAsync("accessToken");;
+				const accessToken = await SecureStore.getItemAsync(
+					"accessToken"
+				);
 				const userId = await SecureStore.getItemAsync("userId");
 				const data = await getSavedLocations({
 					accessToken: accessToken,
@@ -57,13 +59,11 @@ const SavedLocations = () => {
 					setIsLoading(false);
 					console.log("Final Result", savedRes);
 				}
-
-				
 			} catch (err) {
 				console.log(err?.response?.data);
 			}
 		};
-		
+
 		// async function getSavedResults() {
 		// 	try {
 		// 		let promises = savedLocations.map((item) => {
@@ -92,7 +92,6 @@ const SavedLocations = () => {
 		() => {};
 	}, [focused]);
 
-
 	return (
 		<View style={styles.container}>
 			<HeaderCard
@@ -100,8 +99,9 @@ const SavedLocations = () => {
 				text="List of all your saved Financial Points"
 			/>
 			<View style={styles.divider}></View>
-			{
-				isLoading ? <Loader /> : (
+			{isLoading ? (
+				<Loader />
+			) : (
 				<ScrollView>
 					{results != [] ? (
 						results.map((item, i) => {
@@ -122,13 +122,11 @@ const SavedLocations = () => {
 						})
 					) : (
 						<View>
-							<Text className=''>No locations saved !</Text>
+							<Text className="">No locations saved !</Text>
 						</View>
 					)}
 				</ScrollView>
-				)
-			}
-			
+			)}
 		</View>
 	);
 };

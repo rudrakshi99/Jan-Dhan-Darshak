@@ -24,7 +24,7 @@ import { BASE_URL, API_KEY } from "@env";
 import PlaceCard from "../components/PlacesCard";
 import Loader from "../components/Loader";
 import { translations } from "../translations/translations";
-import * as SecureStore from 'expo-secure-store';
+import * as SecureStore from "expo-secure-store";
 const MapBox = () => {
 	const focused = useIsFocused();
 	const initialState = {
@@ -43,6 +43,8 @@ const MapBox = () => {
 	const [show, setShow] = useState(false);
 	const [type, setType] = useState(initialState);
 	const [results, setResults] = useState([]);
+	const [rand, setRand] = useState();
+
 	const [location, setLocation] = useState({
 		latitude: 0,
 		longitude: 0,
@@ -98,26 +100,31 @@ const MapBox = () => {
 	function handleList() {
 		setHorizontal((prev) => !prev);
 	}
-	const[lan,setLan]=useState('')
-    const [mapbox,setMapbox]=useState(translations['English'].homepage);
-    const [lanchange,setLanchange]=useState(false);
-	
-	
-    useEffect(()=>{{
-        const getLan = async () => {
-            const res=await SecureStore.getItemAsync('lan')
-            res==''?setLan('English'):setLan(res)
+	const [lan, setLan] = useState("");
+	const [mapbox, setMapbox] = useState(translations["English"].homepage);
+	const [lanchange, setLanchange] = useState(false);
 
-            setMapbox(translations[lan].homepage)
-			setLanchange(prev => !prev)
-			languageToggle();
-			
-        }
-        getLan();
-		
-    }},[])
+	function getRandomInt(min, max) {
+		min = Math.ceil(min);
+		max = Math.floor(max);
+		return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+
+	useEffect(() => {
+		{
+			const getLan = async () => {
+				const res = await SecureStore.getItemAsync("lan");
+				res == "" ? setLan("English") : setLan(res);
+
+				setMapbox(translations[lan].homepage);
+				setLanchange((prev) => !prev);
+				languageToggle();
+			};
+			getLan();
+		}
+	}, []);
 	// if(isLoading) return <Loader />
-    // else
+	// else
 	return (
 		<View style={style.container}>
 			<Header
@@ -138,7 +145,7 @@ const MapBox = () => {
 							styles.viewList,
 							{
 								bottom: horizontal
-									? 300
+									? 330
 									: Dimensions.get("screen").height / 1.8,
 							},
 						]}
@@ -158,7 +165,9 @@ const MapBox = () => {
 								fontWeight: "600",
 							}}
 						>
-							{horizontal ? `${mapbox[4].view_list}` : `${mapbox[4].hide_list}`}
+							{horizontal
+								? `${mapbox[4].view_list}`
+								: `${mapbox[4].hide_list}`}
 						</Text>
 					</TouchableOpacity>
 					<View
@@ -168,7 +177,6 @@ const MapBox = () => {
 								: styles.resultContainerVertical
 						}
 					>
-						
 						{results !== [] ? (
 							<FlatList
 								data={results}
@@ -180,16 +188,19 @@ const MapBox = () => {
 									horizontal
 										? styles.horizontalList
 										: styles.verticalList,
-									{ paddingVertical: 5 },
+									{ paddingVertical: type.atm ? 10 : 5 },
 								]}
 								renderItem={({ item, index }) => {
+									let ran = index % 6;
 									return (
 										<PlaceCard
 											key={index}
 											item={item}
-											type={type}
+											type_atm={type}
 											location={location}
 											horizontal={horizontal}
+											type={type}
+											rand={ran}
 										/>
 									);
 								}}
@@ -199,7 +210,9 @@ const MapBox = () => {
 						)}
 					</View>
 				</>
-			) : <Loader />}
+			) : (
+				<Loader />
+			)}
 			<View style={style.tabsContainer}>
 				<TouchableOpacity
 					onPress={() => {

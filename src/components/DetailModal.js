@@ -12,6 +12,7 @@ import {
 	Share,
 	Alert,
 	Linking,
+	Animated,
 } from "react-native";
 import * as SecureStore from "expo-secure-store";
 import { ArrowNarrowDownIcon } from "react-native-heroicons/outline";
@@ -26,25 +27,30 @@ import { translations } from "../translations/translations";
 const DetailModal = ({ show, setShow, item, type }) => {
 	const [index, setIndex] = useState(0);
 	const navigation = useNavigation();
-	const [lan,setLan]=useState('');
-    const [detailpage,setDetailpage]=useState(translations['English'].detail_page);
-    
-    useEffect(()=>{{
-        const getLan = async () => {
-            const res=await SecureStore.getItemAsync('lan')
-            if(res=='')
-            {setLan('English')}
-            setDetailpage(translations[lan].detail_page)
-        }
-        getLan();
-    }},[]) 
+	const [lan, setLan] = useState("");
+	const [detailpage, setDetailpage] = useState(
+		translations["English"].detail_page
+	);
+
+	useEffect(() => {
+		{
+			const getLan = async () => {
+				const res = await SecureStore.getItemAsync("lan");
+				if (res == "") {
+					setLan("English");
+				}
+				setDetailpage(translations[lan].detail_page);
+			};
+			getLan();
+		}
+	}, []);
 	const [routes] = useState([
 		{ key: "first", title: `${detailpage.overview}` },
 		{ key: "second", title: `${detailpage.review}` },
 	]);
 	const user = useSelector((state) => state.auth.user);
 	console.log(user);
-	
+
 	async function share(name) {
 		try {
 			const result = await Share.share({
@@ -81,18 +87,18 @@ const DetailModal = ({ show, setShow, item, type }) => {
 				User: userId,
 			});
 			if (result.success) {
-				flashMessage(result?.message, 'success');
+				flashMessage(result?.message, "success");
 				Alert.alert(result.message);
 			}
 			console.log(result);
 		} catch (err) {
 			console.log(err);
-			flashMessage(err?.response?.data, 'success');
+			flashMessage(err?.response?.data, "success");
 		}
 	}
 
 	function handleFeedback({ name, financial_type, location, place_id }) {
-		navigation.navigate("Feedback", {
+		navigation.navigate("BankFeedback", {
 			name: name,
 			financial_type: financial_type,
 			location: location,
@@ -214,7 +220,9 @@ const DetailModal = ({ show, setShow, item, type }) => {
 		<ScrollView style={{ flex: 1, backgroundColor: "#EAEAEA" }}>
 			<View style={styles.reviewContainer}>
 				<View>
-					<Text style={styles.reviewTitle}>{detailpage.user_review}</Text>
+					<Text style={styles.reviewTitle}>
+						{detailpage.user_review}
+					</Text>
 					<View style={styles.rating}>
 						<Text
 							style={{
@@ -315,6 +323,48 @@ const DetailModal = ({ show, setShow, item, type }) => {
 		second: SecondRoute,
 	});
 
+	// const renderTabBar = (props) => {
+	// 	const inputRange = routes.map((x, i) => i);
+	// 	return (
+	// 		<View style={styles.tabBar}>
+	// 			{props.navigationState.routes.map((route, i) => {
+	// 				const opacity = props.position.interpolate({
+	// 					inputRange,
+	// 					outputRange: inputRange.map((inputIndex) =>
+	// 						inputIndex === i ? 1 : 0.5
+	// 					),
+	// 				});
+	// 				{
+	// 					const w = inputRange.map((inputIndex) => {
+	// 						if (inputIndex === i) {
+	// 							return 2;
+	// 						}
+	// 						return 0;
+	// 					});
+	// 				}
+
+	// 				return (
+	// 					<View
+	// 						style={[
+	// 							styles.tabItem,
+	// 							{
+	// 								borderBottomWidth: w,
+	// 							},
+	// 						]}
+	// 						onPress={() => setIndex(i)}
+	// 					>
+	// 						<Animated.Text
+	// 							style={[{ opacity }, { fontSize: 16 }]}
+	// 						>
+	// 							{route.title}
+	// 						</Animated.Text>
+	// 					</View>
+	// 				);
+	// 			})}
+	// 		</View>
+	// 	);
+	// };
+
 	return (
 		<Modal
 			animationType="slide"
@@ -352,38 +402,91 @@ const DetailModal = ({ show, setShow, item, type }) => {
 								{/* <Text style={styles.id}>
 									Place ID : #{item?.place_id.toUpperCase().substr(0,12)}
 								</Text> */}
-								{type.atm === true && <View className='pt-2'>
-									<Text style={styles.id}>
-										<Text className='font-semibold'>Withdrawal Amount :</Text>
-										<Text>₹ {parseInt(Math.random() * 25000) + 10000}</Text>
-									</Text>
-									<Text style={styles.id}>
-									<Text className='font-semibold'>IFSC :</Text>
-									<Text>{parseInt(Math.random() * 999999) + 999999}</Text>
-									</Text>
-								</View>}
-								{type.bank === true && <View className='p-2'>
-									<Text style={styles.id}>
-										<Text className='font-semibold'>IFSC :</Text>
-										<Text>{parseInt(Math.random() * 999999) + 999999}</Text>
-									</Text>
-									<Text style={styles.id}>
-										<Text className='font-semibold'>RTGS : </Text>
-										{(parseInt(Math.random() * 10) < 5) ? <Text className='text-[#34994C]'>Available</Text> : <Text className='text-[#DB0E0E]'>Not Available</Text>}
-									</Text>
-									<Text style={styles.id}>
-										<Text className='font-semibold pr-2'>MICR : </Text>
-										{(parseInt(Math.random() * 10) < 5) ? <Text className='text-[#34994C]'>Available :</Text> :
-										<Text className='text-[#DB0E0E]'>Not Available</Text>}
-									</Text>
-								</View>}
+								{type.atm === true && (
+									<View className="pt-2">
+										<Text style={styles.id}>
+											<Text className="font-semibold">
+												Withdrawal Amount :
+											</Text>
+											<Text>
+												₹{" "}
+												{parseInt(
+													Math.random() * 25000
+												) + 10000}
+											</Text>
+										</Text>
+										<Text style={styles.id}>
+											<Text className="font-semibold">
+												IFSC :
+											</Text>
+											<Text>
+												{parseInt(
+													Math.random() * 999999
+												) + 999999}
+											</Text>
+										</Text>
+									</View>
+								)}
+								{type.bank === true && (
+									<View className="p-2">
+										<Text style={styles.id}>
+											<Text className="font-semibold">
+												IFSC :
+											</Text>
+											<Text>
+												{parseInt(
+													Math.random() * 999999
+												) + 999999}
+											</Text>
+										</Text>
+										<Text style={styles.id}>
+											<Text className="font-semibold">
+												RTGS :{" "}
+											</Text>
+											{parseInt(Math.random() * 10) <
+											5 ? (
+												<Text className="text-[#34994C]">
+													Available
+												</Text>
+											) : (
+												<Text className="text-[#DB0E0E]">
+													Not Available
+												</Text>
+											)}
+										</Text>
+										<Text style={styles.id}>
+											<Text className="font-semibold pr-2">
+												MICR :{" "}
+											</Text>
+											{parseInt(Math.random() * 10) <
+											5 ? (
+												<Text className="text-[#34994C]">
+													Available :
+												</Text>
+											) : (
+												<Text className="text-[#DB0E0E]">
+													Not Available
+												</Text>
+											)}
+										</Text>
+									</View>
+								)}
 							</View>
 							<Text
 								style={[
 									styles.openStatus,
 									item?.opening_hours?.open_now
-										? { color: "#34994C" }
-										: { color: "#DB0E0E" },
+										? { color: "rgba(52, 153, 76, 1)" }
+										: { color: "rgba(219, 14, 14, 1)" },
+									item?.opening_hours?.open_now
+										? {
+												backgroundColor:
+													"rgba(52, 153, 76, 0.4)",
+										  }
+										: {
+												backgroundColor:
+													"rgba(219, 14, 14, 0.4)",
+										  },
 								]}
 							>
 								{item?.opening_hours?.open_now
@@ -433,7 +536,9 @@ const DetailModal = ({ show, setShow, item, type }) => {
 										resizeMode="contain"
 									/>
 								</TouchableOpacity>
-								<Text style={styles.optionText}>{detailpage.call}</Text>
+								<Text style={styles.optionText}>
+									{detailpage.call}
+								</Text>
 							</View>
 							<View style={styles.buttonContainer}>
 								<TouchableOpacity
@@ -448,7 +553,9 @@ const DetailModal = ({ show, setShow, item, type }) => {
 										resizeMode="contain"
 									/>
 								</TouchableOpacity>
-								<Text style={styles.optionText}>{detailpage.share}</Text>
+								<Text style={styles.optionText}>
+									{detailpage.share}
+								</Text>
 							</View>
 							<View style={styles.buttonContainer}>
 								<TouchableOpacity
@@ -463,7 +570,9 @@ const DetailModal = ({ show, setShow, item, type }) => {
 										resizeMode="contain"
 									/>
 								</TouchableOpacity>
-								<Text style={styles.optionText}>{detailpage.save}</Text>
+								<Text style={styles.optionText}>
+									{detailpage.save}
+								</Text>
 							</View>
 						</View>
 					</View>
@@ -471,6 +580,7 @@ const DetailModal = ({ show, setShow, item, type }) => {
 					<TabView
 						navigationState={{ index, routes }}
 						renderScene={renderScene}
+						// renderTabBar={renderTabBar}
 						onIndexChange={setIndex}
 						initialLayout={{
 							width: Dimensions.get("window").width,
@@ -528,8 +638,8 @@ const styles = StyleSheet.create({
 	},
 	headContainer: {
 		flexDirection: "row",
-		justifyContent: "space-between",
-		alignItems: "center",
+		justifyContent: "flex-start",
+		alignItems: "flex-start",
 	},
 	detailContainer: {
 		backgroundColor: "#fff",
@@ -554,14 +664,27 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 	},
 	openStatus: {
-		fontSize: 18,
+		fontSize: 15,
 		fontWeight: "500",
+		paddingVertical: 4,
+		paddingHorizontal: 15,
+		borderRadius: 8,
 	},
 	buttonRow: {
 		flexDirection: "row",
 		justifyContent: "space-between",
 		alignItems: "center",
 		paddingVertical: 20,
+	},
+	tabBar: {
+		flexDirection: "row",
+		// paddingTop: 10,
+		elevation: 1,
+	},
+	tabItem: {
+		flex: 1,
+		alignItems: "center",
+		padding: 20,
 	},
 	optionVector: {
 		height: 24,
