@@ -22,7 +22,7 @@ class missingSuggestion(APIView):
             User = request.data["User"]
             suggestions = MissingSuggestions.objects.filter(User=User)
 
-            if suggestions.filter(created=datetime.datetime.now()).count() > 5:
+            if suggestions.filter(created_at=datetime.datetime.now()).count() > 5:
                 return Response(
                     response_payload(
                         success=False, msg="You can suggest only once in a day"
