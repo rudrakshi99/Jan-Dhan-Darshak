@@ -71,7 +71,7 @@ const MissingBankSuggestion = () => {
     useEffect(() => {
         
         async function getUserData(){
-       
+            
             setAccessToken(await SecureStore.getItemAsync('accessToken'));
             setUserId(await SecureStore.getItemAsync('userId'))
         }

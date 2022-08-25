@@ -1,10 +1,29 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React,{useEffect, useState} from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { ArrowNarrowLeftIcon } from "react-native-heroicons/outline";
+import { translations } from "../../translations/translations";
+import * as SecureStore from 'expo-secure-store';
 
 const Disclaimer = () => {
     const navigation = useNavigation();
+
+    const [lan,setLan]=useState('');
+    const [disclaimer,setDisclaimer]=useState(translations['English'].disclaimer);
+    const getLan=async()=>{
+        setLan(await SecureStore.getItemAsync('lan'));
+        setDisclaimer(translations[lan].disclaimer)
+    }
+    getLan();
+    useEffect(()=>{{
+        const getLan = async () => {
+            const res=await SecureStore.getItemAsync('lan')
+            if(res=='')
+            {setLan('English')}
+            setDisclaimer(translations[lan].disclaimer)
+        }
+        getLan();
+    }},[]) 
     return (
         <View>
             <View style={styles.container}>
@@ -12,12 +31,12 @@ const Disclaimer = () => {
                 <TouchableOpacity onPress={() => navigation.navigate('Find')}>
                     <ArrowNarrowLeftIcon style={styles.iconHeader} size={30} color="#101010" />
                 </TouchableOpacity>
-                <Text style={styles.heading}>Disclaimer</Text>
+                <Text style={styles.heading}>{disclaimer.title}</Text>
                 <Text></Text>
             </View>
 
             <ScrollView showsVerticalScrollIndicator ={false} showsHorizontalScrollIndicator={false} style={styles.textBox}>
-                <Text style={styles.para}>The Information contained in the mobile application is provided and maintained by various Scheduled commercial banks. No guarantee is given as to the accuracy or currency of any of the data. Therefore, in no event shall Department of Financial Services or its constituents be liable for any special, indirect, or consequential damages or any damages whatsoever resulting from loss of use, data, or profits, whether in an action of contract, negligance, or other action, arising out of or in connection with the use of the information herein provided. the website is desgned to served as a secondary representation of banking infrastructure, and secondary representation of Banking infrastructure, and is compiled from the Scheduled Commercial Banks which are the primary sources for the Scheduled Commercial banks which are the primary sources for this public information. Users of this website are hereby notified that these primary sources should be consulted for verification of the information presented here. And Department of Financial Services or its constituents and the software developer, NIC, assume no legal responsibility for the Information on the website.</Text>
+                <Text style={styles.para}>{disclaimer.content}</Text>
             </ScrollView>
 
             {/* <View style={styles.topBorder}>

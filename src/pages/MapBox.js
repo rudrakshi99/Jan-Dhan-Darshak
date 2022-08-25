@@ -23,7 +23,8 @@ import axios from "axios";
 import { BASE_URL, API_KEY } from "@env";
 import PlaceCard from "../components/PlacesCard";
 import Loader from "../components/Loader";
-
+import { translations } from "../translations/translations";
+import * as SecureStore from 'expo-secure-store';
 const MapBox = () => {
 	const focused = useIsFocused();
 	const initialState = {
@@ -97,15 +98,33 @@ const MapBox = () => {
 	function handleList() {
 		setHorizontal((prev) => !prev);
 	}
+	const[lan,setLan]=useState('')
+    const [mapbox,setMapbox]=useState(translations['English'].homepage);
+    const [lanchange,setLanchange]=useState(false);
+	
+	
+    useEffect(()=>{{
+        const getLan = async () => {
+            const res=await SecureStore.getItemAsync('lan')
+            res==''?setLan('English'):setLan(res)
 
+            setMapbox(translations[lan].homepage)
+			setLanchange(prev => !prev)
+			languageToggle();
+			
+        }
+        getLan();
+		
+    }},[])
 	// if(isLoading) return <Loader />
     // else
 	return (
 		<View style={style.container}>
 			<Header
-				title="Location"
+				lanChanged={lanchange}
+				title={mapbox[0].title}
 				setResults={setResults}
-				subtitle="Current Address of the User"
+				subtitle={mapbox[0].subtitle}
 				location={location}
 				type={generateString}
 				setFilter={setFilter}
@@ -139,7 +158,7 @@ const MapBox = () => {
 								fontWeight: "600",
 							}}
 						>
-							{`${horizontal ? "View" : "Hide"} List`}
+							{horizontal ? `${mapbox[4].view_list}` : `${mapbox[4].hide_list}`}
 						</Text>
 					</TouchableOpacity>
 					<View
@@ -201,7 +220,7 @@ const MapBox = () => {
 					<Text
 						style={!type.atm ? style.buttonText : styles.blueActive}
 					>
-						ATM
+						{mapbox[1].atm}
 					</Text>
 				</TouchableOpacity>
 				<TouchableOpacity
@@ -225,7 +244,7 @@ const MapBox = () => {
 							!type.bank ? style.buttonText : styles.blueActive
 						}
 					>
-						Branch
+						{mapbox[1].bank}
 					</Text>
 				</TouchableOpacity>
 				<TouchableOpacity
@@ -253,7 +272,7 @@ const MapBox = () => {
 								: styles.blueActive
 						}
 					>
-						Post Office
+						{mapbox[1].post_office}
 					</Text>
 				</TouchableOpacity>
 				<TouchableOpacity
@@ -274,7 +293,7 @@ const MapBox = () => {
 					<Text
 						style={!type.crc ? style.buttonText : styles.blueActive}
 					>
-						CSC
+						{mapbox[1].csc}
 					</Text>
 				</TouchableOpacity>
 				<TouchableOpacity
@@ -299,7 +318,7 @@ const MapBox = () => {
 								: styles.blueActive
 						}
 					>
-						Bank Mitra
+						{mapbox[1].bank_mitra}
 					</Text>
 				</TouchableOpacity>
 			</View>

@@ -15,6 +15,7 @@ import {
 } from "react-native-heroicons/outline";
 import VoiceToText from "../VoiceToText";
 import * as SecureStore from "expo-secure-store";
+import { flashMessage } from "../../lottie/flashMessage";
 
 const ChangeLanguage = () => {
 	const navigation = useNavigation();
@@ -40,6 +41,10 @@ const ChangeLanguage = () => {
 
 	async function handleSearch() {
 		await SecureStore.setItemAsync("lan", languageToken);
+		flashMessage('Language Changed Successfully! ', 'success');
+		setTimeout(() => {
+			navigation.push("Home");
+		} , 1000);
 	}
 
 	return (

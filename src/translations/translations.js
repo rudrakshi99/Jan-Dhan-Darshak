@@ -2,49 +2,49 @@ export const translations = {
     "English": {
         about:{title: "About Us",
         content: "The Jan Dhan Darshak mobile application provides an interface for citizen to view the Banking Infrastructures in India consisting of Bank Branches, ATMs and Bank Mitra locations. the data is collated by Department of Financial Services from Scheduled Commercial Banks both in Public and Private Sector.",
-    },
+        },
         disclaimer: {
             title: "Disclaimer",
             content: "The Information contained in the mobile application is provided and maintained by various Scheduled commercial banks. No guarantee is given as to the accuracy or currency of any of the data. Therefore, in no event shall Department of Financial Services or its constituents be liable for any special, indirect, or consequential damages or any damages whatsoever resulting from loss of use, data, or profits, whether in an action of contract, negligance, or other action, arising out of or in connection with the use of the information herein provided. the website is desgned to served as a secondary representation of banking infrastructure, and secondary representation of Banking infrastructure, and is compiled from the Scheduled Commercial Banks which are the primary sources for the Scheduled Commercial banks which are the primary sources for this public information. Users of this website are hereby notified that these primary sources should be consulted for verification of the information presented here. And Department of Financial Services or its constituents and the software developer, NIC, assume no legal responsibility for the Information on the website.",
         },
-        onboarding: {
-            first_page: {
+        onboarding: [
+            {
                 title: "Locate Financial Touch Points ",
                 description: "Locate nearby Financial Service Touch Points at a given location in India.",
             },
-            second_page: {
+           {
                 title: "Voice Dailing Feedback",
                 description: "Integrated Dialing Users’ Feedback goes directly to the concerned Bank.",
             },
-            third_page: {
+            {
                 title: "Track Suggestions Request",
                 description: "Track the status of all suggestions' requests in one place.",
             },
-        },
-        homepage: {
-            header: {
+        ],
+        homepage: [
+            {
                 title: "Location",
                 subtitle: "Current Address of the User ",
             },
-            footer: {
+            {
                 bank: "Bank",
                 atm: "ATM",
                 csc: "CSC",
                 post_office: "Post Office",
                 bank_mitra: "Bank Mitra",
             },
-            filters: {
+            {
                 relevance: "Relevance",
                 open_now: "Open Now",
                 distance: "Distance",
             },
-            search: "Search ATM near you",
-            buttons: {
+            "Search ATM near you",
+            {
                 directions: "Directions",
                 view_list: "View List",
                 hide_list: "Hide List",
             },
-        },
+        ],
         menu: {
             edit_profile: "Edit Profile",
             change_language: "Change Language",
@@ -94,30 +94,30 @@ export const translations = {
                 description: "सभी सुझावों के अनुरोधों की स्थिति को एक ही स्थान पर ट्रैक करें।",
             },
         },
-        homepage: {
-            header: {
+        homepage: [
+            {
                 title: "स्थान",
                 subtitle: "उपयोगकर्ता का वर्तमान पता",
             },
-            footer: {
+            {
                 bank: "बैंक",
                 atm: "एटीएम",
                 csc: "सीएससी",
                 post_office: "डाक बंगला",
                 bank_mitra: "बैंक मित्र",
             },
-            filters: {
+            {
                 relevance: "प्रासंगिकता",
                 open_now: "वर्तमान में खुला",
                 distance: "दूरी",
             },
-            search: "अपने आस-पास एटीएम खोजें",
-            buttons: {
+             "अपने आस-पास एटीएम खोजें",
+            {
                 directions: "दिशा-निर्देश",
                 view_list: "सूची देखें",
                 hide_list: "सूची छुपाएं",
             },
-        },
+        ],
         menu: {
             edit_profile: "प्रोफ़ाइल संपादित करें",
             change_language: "भाषा बदलो",

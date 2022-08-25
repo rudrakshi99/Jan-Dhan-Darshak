@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
 	View,
 	Text,
@@ -19,7 +19,8 @@ import { API_KEY, BASE_URL } from "@env";
 import { useFonts } from "expo-font";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import VoiceToText from "./VoiceToText";
-
+import { translations } from "../translations/translations";
+import * as SecureStore from 'expo-secure-store';
 const Header = ({
 	title,
 	subtitle,
@@ -28,6 +29,7 @@ const Header = ({
 	type,
 	setFilter,
 	filter,
+	lanChanged
 }) => {
 	const navigation = useNavigation();
 	const route = useRoute();
@@ -40,6 +42,8 @@ const Header = ({
 		InterLight: require("../assets/fonts/Inter-Light.otf"),
 	});
 	async function handleSearch() {
+
+		
 		try {
 			const { data } = await axios.get(
 				`${BASE_URL}maps/api/place/textsearch/json?query=${search}&location=${
@@ -55,6 +59,23 @@ const Header = ({
 			console.log(err);
 		}
 	}
+	const[lan,setLan]=useState('')
+    const [mapbox,setMapbox]=useState(translations['English'].homepage);
+   
+    useEffect(()=>{{
+        const getLan = async () => {
+            const res=await SecureStore.getItemAsync('lan')
+            if(res=='')
+            {setLan('English')}
+			else
+			{setLan(res)}
+
+            setMapbox(translations[lan].homepage)
+			
+        }
+        getLan();
+		
+    }},[lanChanged]) 
 	async function getTextFromVoice() {
 		try {
 			const response = await axios.post("", {
@@ -147,7 +168,7 @@ const Header = ({
 						value={search}
 						onChangeText={setSearch}
 						style={styles.searchBar}
-						placeholder="Search ATM near you"
+						placeholder={mapbox[3]}
 					/>
 					<Icon
 						onPress={() => {
@@ -201,7 +222,7 @@ const Header = ({
 								},
 							]}
 						>
-							Relevance
+							{mapbox[2].relevance}
 						</Text>
 						{filter.relevance ? (
 							<Icon name="close" color="#2C81E0" size={15} />
@@ -235,7 +256,7 @@ const Header = ({
 								},
 							]}
 						>
-							Open Now
+							{mapbox[2].open_now}
 						</Text>
 						{filter.open_now ? (
 							<Icon name="close" color="#2C81E0" size={15} />
@@ -269,7 +290,7 @@ const Header = ({
 								},
 							]}
 						>
-							Distance
+							{mapbox[2].distance}
 						</Text>
 						{filter.distance ? (
 							<Icon name="close" color="#2C81E0" size={15} />

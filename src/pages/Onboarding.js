@@ -1,5 +1,5 @@
 import ViewPager from "react-native-pager-view";
-import React, { useRef } from "react";
+import React, { useRef,useState } from "react";
 import { View, StyleSheet, Image, Dimensions, Text } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -35,6 +35,8 @@ function Onboarding() {
 		}
 		getFirstTime();
 	}, []);
+
+	
 	const pagerRef = useRef(null);
 	const navigation = useNavigation();
 

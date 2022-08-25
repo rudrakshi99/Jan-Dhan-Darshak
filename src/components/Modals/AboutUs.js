@@ -15,10 +15,11 @@ const About = () => {
     getLan();
     useEffect(()=>{{
         const getLan = async () => {
-            setLan(await SecureStore.getItemAsync('lan'));
+            const res=await SecureStore.getItemAsync('lan')
+            if(res=='')
+            {setLan('English')}
             setAbout(translations[lan].about)
         }
-        
         getLan();
     }},[]) 
     
@@ -71,6 +72,7 @@ const styles = StyleSheet.create({
     innerContainer: {
         display: 'flex',
         flexDirection: 'row',
+        marginTop:12,
         alignItems: 'center',
         justifyContent: 'space-between'
     },
