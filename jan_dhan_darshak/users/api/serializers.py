@@ -2,6 +2,7 @@ from datetime import datetime
 
 
 from django.contrib.auth import get_user_model
+from jan_dhan_darshak.users.models import VoiceToText
 from rest_framework import serializers
 
 from rest_framework.exceptions import AuthenticationFailed
@@ -50,3 +51,9 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["name", "email"]
+
+
+class VoiceToTextSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VoiceToText
+        fields = "__all__"

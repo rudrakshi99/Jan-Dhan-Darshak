@@ -1,7 +1,8 @@
+from pyexpat import model
 import uuid
 from random import randint
 from django.contrib.auth.models import AbstractUser
-from django.db.models import CharField, BooleanField, UUIDField
+from django.db.models import CharField, BooleanField, UUIDField, FileField, Model
 from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -55,3 +56,11 @@ class User(AbstractUser):
 
         """
         return reverse_lazy("users:detail", kwargs={"username": self.username})
+
+
+def voice_directory_path(instance, filename):
+    return f"speechtotext/{filename}"
+
+
+class VoiceToText(Model):
+    voice = FileField(upload_to=voice_directory_path, blank=True)

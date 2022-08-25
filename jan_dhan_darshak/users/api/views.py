@@ -9,6 +9,7 @@ from .serializers import (
     UserUpdateSerializer,
     VerifyOTPSerializer,
     UserSerializer,
+    VoiceToTextSerializer,
 )
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import AuthenticationFailed
@@ -185,15 +186,14 @@ class VoiceToText(APIView):
                 )
             )
         except Exception as e:
-            try:
-                wav_filename = "test.wav"
-                fs = FileSystemStorage()
-                filename = fs.save(myfile.name, myfile)
-                uploaded_file_url = fs.url(filename)
+            serializer = VoiceToTextSerializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            voice_to_text = serializer.create(serializer.validated_data)
 
-                track = AudioSegment.from_file(
-                    str(ROOT_DIR) + uploaded_file_url, format="m4a"
-                )
+            try:
+
+                wav_filename = "test.wav"
+                track = AudioSegment.from_file(voice_to_text.voice, format="m4a")
                 track.export(wav_filename, format="wav")
             except Exception as e:
                 return Response(
@@ -203,12 +203,11 @@ class VoiceToText(APIView):
                     ),
                     status=status.HTTP_400_BAD_REQUEST,
                 )
-
             r = sr.Recognizer()
             with sr.AudioFile("test.wav") as source:
                 audio_data = r.record(source)
                 text = r.recognize_google(audio_data)
-
+            
             return Response(
                 response_payload(
                     success=True,
@@ -218,6 +217,6 @@ class VoiceToText(APIView):
             )
         except:
             return Response(
-                response_payload(success=False, msg=str(e)),
+                response_payload(success=False, msg="Failed to convert voice to text"),
                 status=status.HTTP_400_BAD_REQUEST,
             )
