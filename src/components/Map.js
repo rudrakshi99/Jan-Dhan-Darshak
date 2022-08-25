@@ -28,7 +28,12 @@ const Map = ({ markers, missingBank }) => {
 			console.log(location);
 			location.coords.latitudeDelta = 0.04;
 			location.coords.longitudeDelta = 0.03;
-			setLocation(location.coords);
+			setLocation({
+				latitude: location.coords.latitude,
+				longitude: location.coords.longitude,
+				latitudeDelta: 0.03,
+				longitudeDelta: 0.04,
+			});
 		}
 		getLocation();
 	}, [focused]);

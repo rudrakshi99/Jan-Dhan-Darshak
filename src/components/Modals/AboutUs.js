@@ -1,19 +1,36 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React,{useEffect, useState} from "react";
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View,TextInput,Button } from "react-native";
 import { ArrowNarrowLeftIcon } from "react-native-heroicons/outline";
-
+import { translations } from "../../translations/translations";
+import * as SecureStore from 'expo-secure-store';
 const About = () => {
     const navigation = useNavigation();
-
+    const [lan,setLan]=useState('');
+    const [about,setAbout]=useState(translations['English'].about);
+    const getLan=async()=>{
+        setLan(await SecureStore.getItemAsync('lan'));
+        setAbout(translations[lan].about)
+    }
+    getLan();
+    useEffect(()=>{{
+        const getLan = async () => {
+            setLan(await SecureStore.getItemAsync('lan'));
+            setAbout(translations[lan].about)
+        }
+        
+        getLan();
+    }},[]) 
+    
     return (
         <ScrollView>
+            
             <View style={styles.container}>
                 <View style={styles.innerContainer}>
                     <TouchableOpacity onPress={() => navigation.navigate('Find')}>
                         <ArrowNarrowLeftIcon style={styles.iconHeader} size={30} color="#101010" />
                     </TouchableOpacity>
-                    <Text style={styles.heading}>About Us</Text>
+                    <Text style={styles.heading}>{about.title}</Text>
                     <Text></Text>
                 </View>
 
@@ -26,8 +43,9 @@ const About = () => {
                 </View>
 
                 <View style={styles.textBox}>
-                    <Text style={styles.para}>The Jan Dhan Darshak mobile application provides an interface for citizen to view the Banking Infrastructures in India consisting of Bank Branches, ATMs and Bank Mitra locations. the data is collated by Department of Financial Services from Scheduled Commercial Banks both in Public and Private Sector. </Text>
+                    <Text style={styles.para}>{about.content} </Text>
                 </View>
+                
 
                 {/* <View style={styles.topBorder}>
                     <TouchableOpacity style={styles.buttonBox}>

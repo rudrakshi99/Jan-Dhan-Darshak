@@ -24,6 +24,7 @@ import LoginScreen from "./src/components/Modals/Login";
 import Profile from "./src/pages/Profile";
 import LoginScreenViaPhone from "./src/components/Modals/LoginViaPhone";
 import FlashMessage from "react-native-flash-message";
+import {TranslatorProvider} from 'react-native-translator'
 
 const Stack = createNativeStackNavigator();
 
@@ -71,6 +72,7 @@ function App() {
 			.catch((err) => console.log(err));
 	}, []);
 	return (
+		<TranslatorProvider>
 		<TailwindProvider>
 			<Stack.Navigator>
 				{/* <Stack.Screen
@@ -139,6 +141,7 @@ function App() {
 			</Stack.Navigator>
 			<FlashMessage position="top" />
 		</TailwindProvider>
+		</TranslatorProvider>
 	);
 }
 

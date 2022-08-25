@@ -14,12 +14,14 @@ import {
 	SearchIcon,
 } from "react-native-heroicons/outline";
 import VoiceToText from "../VoiceToText";
+import * as SecureStore from "expo-secure-store";
 
 const ChangeLanguage = () => {
 	const navigation = useNavigation();
 	const [search, setSearch] = useState("");
 	const [listening, setListening] = useState(false);
 	const [currentLanguage, setCurrentLanguage] = useState([]);
+	const [languageToken,setLanguageToken]= useState('')
 	const languages = [
 		"Assamese",
 		"Bangla",
@@ -36,8 +38,8 @@ const ChangeLanguage = () => {
 		"Urdu",
 	];
 
-	function handleSearch() {
-		//
+	async function handleSearch() {
+		await SecureStore.setItemAsync("lan", languageToken);
 	}
 
 	return (
@@ -98,6 +100,7 @@ const ChangeLanguage = () => {
 					{languages.map((item, i) => {
 						return (
 							<TouchableOpacity
+								onPress={() => {setLanguageToken(item)}}
 								key={i}
 								style={[styles.languageBox, styles.borderColor]}
 							>
@@ -118,7 +121,7 @@ const ChangeLanguage = () => {
 			</ScrollView>
 
 			<View style={styles.buttonContainer}>
-				<TouchableOpacity style={styles.buttonBox}>
+				<TouchableOpacity style={styles.buttonBox} onPress={handleSearch}>
 					<Text style={styles.button}>Confirm Language</Text>
 				</TouchableOpacity>
 			</View>
