@@ -99,6 +99,7 @@ LOCAL_APPS = [
     "jan_dhan_darshak.missing_suggestions",
     "jan_dhan_darshak.financial_point",
     "jan_dhan_darshak.saved_locations",
+    "jan_dhan_darshak.bank",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
