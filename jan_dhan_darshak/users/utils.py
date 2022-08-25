@@ -80,3 +80,16 @@ class TwilioHandler:
             return False
         else:
             raise APIExceptionBadRequest("Error while sending the otp")
+
+
+def send_notification(msg, phone_number):
+    account_sid = TWILIO["ACCOUNT_SID"]
+    auth_token = TWILIO["AUTH_TOKEN"]
+    client = Client(account_sid, auth_token)
+    try:
+        message = client.messages.create(
+            body=msg, from_="+13182848686", to="+91" + phone_number
+        )
+        print(message.sid)
+    except Exception as e:
+        print(e)

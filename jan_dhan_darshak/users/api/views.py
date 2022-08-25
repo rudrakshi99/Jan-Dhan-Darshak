@@ -173,6 +173,37 @@ import traceback
 class VoiceToText(APIView):
     def post(self, request, **kwargs):
         myfile = request.FILES["voice"]
+        print("AAAA")
+        print(myfile)
+        serializer = VoiceToTextSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        voice_to_text = serializer.create(serializer.validated_data)
+
+        try:
+            wav_filename = "test.wav"
+            track = AudioSegment.from_file(voice_to_text.voice, format="m4a")
+            track.export(wav_filename, format="wav")
+        except Exception as e:
+            print(str(e) + f"Stacktrace: {traceback.format_exc()}")
+            return Response(
+                response_payload(
+                    success=False,
+                    msg=str(e) + f"Stacktrace: {traceback.format_exc()}",
+                ),
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        r = sr.Recognizer()
+        with sr.AudioFile("test.wav") as source:
+            audio_data = r.record(source)
+            text = r.recognize_google(audio_data)
+
+        return Response(
+            response_payload(
+                success=True,
+                data={"msg": text},
+                msg="Voice to text converted successfully!",
+            )
+        )
         try:
             r = sr.Recognizer()
             with sr.AudioFile(myfile) as source:
