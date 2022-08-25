@@ -9,12 +9,29 @@ import {
 	View,
 } from "react-native";
 import { ArrowNarrowLeftIcon } from "react-native-heroicons/outline";
-import { I18n } from "i18n-js";
-
+import { translations } from "../../translations/translations";
+import * as SecureStore from "expo-secure-store";
 const About = () => {
 	const navigation = useNavigation();
-	const i18n = new I18n();
-	i18n.locale = "hi";
+	const [lan, setLan] = useState("");
+	const [about, setAbout] = useState(translations["English"].about);
+	const getLan = async () => {
+		setLan(await SecureStore.getItemAsync("lan"));
+		setAbout(translations[lan].about);
+	};
+	getLan();
+	useEffect(() => {
+		{
+			const getLan = async () => {
+				const res = await SecureStore.getItemAsync("lan");
+				if (res == "") {
+					setLan("English");
+				}
+				setAbout(translations[lan].about);
+			};
+			getLan();
+		}
+	}, []);
 
 	return (
 		<ScrollView>
@@ -29,7 +46,7 @@ const About = () => {
 							color="#101010"
 						/>
 					</TouchableOpacity>
-					<Text style={styles.heading}>About Us</Text>
+					<Text style={styles.heading}>{about.title}</Text>
 					<Text></Text>
 				</View>
 
@@ -42,14 +59,7 @@ const About = () => {
 				</View>
 
 				<View style={styles.textBox}>
-					<Text style={styles.para}>
-						The Jan Dhan Darshak mobile application provides an
-						interface for citizen to view the Banking
-						Infrastructures in India consisting of Bank Branches,
-						ATMs and Bank Mitra locations. the data is collated by
-						Department of Financial Services from Scheduled
-						Commercial Banks both in Public and Private Sector.{" "}
-					</Text>
+					<Text style={styles.para}>{about.content} </Text>
 				</View>
 
 				{/* <View style={styles.topBorder}>
@@ -74,6 +84,7 @@ const styles = StyleSheet.create({
 	innerContainer: {
 		display: "flex",
 		flexDirection: "row",
+		marginTop: 12,
 		alignItems: "center",
 		justifyContent: "space-between",
 	},

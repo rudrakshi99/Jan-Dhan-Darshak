@@ -9,13 +9,15 @@ import AccordionItem from "../Accordion/AccordionItem";
 import { useNavigation } from "@react-navigation/native";
 import { FilterIcon } from "react-native-heroicons/solid";
 import { CheckBox,Button } from "@rneui/themed";
+import Loader from "../Loader";
 
 const TrackRequest = () => {
     const [accessToken,setAccessToken]=useState("");
     const [userId,setUserId]=useState("");
     const [data,setData]=useState([]);
-    const [loading ,setLoading]=useState(false);
     const navigation = useNavigation();
+    const [filteredData,setFilteredData]=useState([])
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
       const isLoggedIn = async () => {
@@ -25,77 +27,76 @@ const TrackRequest = () => {
         }
       }
       isLoggedIn();
-    }, []);
 
-    useEffect(() => {
+      try {
+        setIsLoading(true);
         async function getDetails(){
-        
-        setAccessToken(await SecureStore.getItemAsync('accessToken'));
-        setUserId(await SecureStore.getItemAsync('userId'));
-        GetTheList();
-        }
-        async function GetTheList(){
-            const body={User:parseInt(userId)};
-            const data = await SuggestionByUser(accessToken,body);
-            console.log(data,'data')
-            if(data?.success === true) {
-                setData(data)
-                setLoading(false)
+          setAccessToken(await SecureStore.getItemAsync('accessToken'));
+          setUserId(await SecureStore.getItemAsync('userId'));
+          // GetTheList();
+
+          const body={User:parseInt(await SecureStore.getItemAsync('userId'))};
+            const res = await SuggestionByUser(accessToken,body);
+            console.log(res.data,'data')
+            if(res?.success === true) {
+              setData(res.data)
+              setFilteredData(res.data);
+              console.log(data, 'data track');
+            } else {
+              console.log(res?.message);
             }
         }
+        // async function GetTheList(){
+        //     const body={User:parseInt(userId)};
+        //     const res = await SuggestionByUser(accessToken,body);
+        //     console.log(res.data,'data')
+        //     if(res?.success === true) {
+        //       setData(res.data)
+        //       setFilteredData(res.data);
+        //       console.log(data, 'data track');
+        //     } else {
+        //       console.log(res?.message);
+        //     }
+        // }
         getDetails();
+      } catch(err) {
+        console.log(err?.response?.data);
+      } finally {
+        setIsLoading(false);
+      }
         
     }, [])
-    // const data=[{'uid':1,'pointName':'JSS Academy of technical education','address':'address1','otherdetails':'content1lnkacsklnsalcasnnlkcsanncsansakclnasbckacksbjkasbckbbascbkbskjac','suggestion_status':'Pending'},
-    //   {'uid':2,'pointName':'title2','address':'address2','otherdetails':'content2clasnklnsancascnk','suggestion_status':'Rejected'},
-    //   {'uid':3,'pointName':'title3','address':'address3','otherdetails':'content3alscnnklanslknacslk','suggestion_status':'Pending'},
-    //   {'uid':4,'pointName':'title4','address':'address4','otherdetails':'content4alscnlnasklnlacsnl','suggestion_status':'Approved'},
-    //   {'uid':5,'pointName':'title5','address':'address5','otherdetails':'content5acnslnasclnlsacnlcaksnlsacnlcsallcsanncasl','suggestion_status':'Completed'},
-    //   {'uid':6,'pointName':'title5','address':'address5','otherdetails':'content5acnslnasclnlsacnlcaksnlsacnlcsallcsanncasl','suggestion_status':'Completed'},
-    //   {'uid':7,'pointName':'title5','address':'address5','otherdetails':'content5acnslnasclnlsacnlcaksnlsacnlcsallcsanncasl','suggestion_status':'Completed'},
-    //   {'uid':8,'pointName':'title5','address':'address5','otherdetails':'content5acnslnasclnlsacnlcaksnlsacnlcsallcsanncasl','suggestion_status':'Completed'},
-    //   {'uid':9,'pointName':'title2','address':'address2','otherdetails':'content2clasnklnsancascnk','suggestion_status':'Rejected'},
-    //   {'uid':10,'pointName':'title3','address':'address3','otherdetails':'content3alscnnklanslknacslk','suggestion_status':'Pending'},
-    //   {'uid':11,'pointName':'title4','address':'address4','otherdetails':'content4alscnlnasklnlacsnl','suggestion_status':'Approved'},
-    //   {'uid':12,'pointName':'title5','address':'address5','otherdetails':'content5acnslnasclnlsacnlcaksnlsacnlcsallcsanncasl','suggestion_status':'Completed'},
-    //   {'uid':13,'pointName':'title2','address':'address2','otherdetails':'content2clasnklnsancascnk','suggestion_status':'Rejected'},
-    //   {'uid':14,'pointName':'title3','address':'address3','otherdetails':'content3alscnnklanslknacslk','suggestion_status':'Pending'},
-    //   {'uid':15,'pointName':'title4','address':'address4','otherdetails':'content4alscnlnasklnlacsnl','suggestion_status':'Approved'},
-    // ]
 
-    
     const [toggleFilter,setToggleFilter]=useState(false)
     const [togglePending, setTogglePending] = useState(false)
     const [toggleAccepted, setToggleAccepted] = useState(false)
     const [toggleRejected, setToggleRejected] = useState(false)
     const [toggleCompleted, setToggleCompleted] = useState(false)
-    const [filteredData,setFilteredData]=useState(data)
+    
     const handleFilter=()=>{
+      setFilteredData(data);
       if(toggleAccepted===true){
-      let res = data.filter((item)=>item.suggestion_status=="Approved");
+      let res = data?.filter((item)=>item?.suggestion_status=="Approved");
       setFilteredData(res);
     }
       else if(toggleRejected===true){
-        let res = data.filter((item)=>item.suggestion_status=="Rejected");
+        let res = data?.filter((item)=>item?.suggestion_status=="Rejected");
       setFilteredData(res);
       }
       else if(togglePending===true){
-        let res = data.filter((item)=>item.suggestion_status=="Pending");
+        let res = data?.filter((item)=>item?.suggestion_status=="Pending");
       setFilteredData(res);
         }
       else if(toggleCompleted===true){
-      let res = data.filter((item)=>item.suggestion_status=="Completed");
+      let res = data?.filter((item)=>item?.suggestion_status=="Completed");
       setFilteredData(res);
       }
       else setFilteredData(data)
       setToggleFilter(!toggleFilter);
     }
+
     return (
     <View style={styles.container}>
-        {loading
-        ?
-        <View style={styles.loadView}><Text style={styles.loading}>Loading....</Text></View>
-        :
         <View>
         <HeaderCard
 				heading="Your Suggestions"
@@ -103,7 +104,8 @@ const TrackRequest = () => {
 			  />
         <ScrollView style={styles.listview}>
         
-       {filteredData.map(({ uid,address,otherdetails,pointName,suggestion_status }) => {
+
+       {isLoading ? <Loader /> : filteredData.map(({ uid,address,otherdetails,pointName,suggestion_status }) => {
             return (
               <AccordionItem key={uid} uid={uid} address={address} pointName={pointName} otherdetails={otherdetails} status={suggestion_status}/>
             );
@@ -125,7 +127,7 @@ const TrackRequest = () => {
               </View>
               <View style={styles.filterdivider}></View>
               <View style={styles.filteroptions}>
-              <Text>Pending  </Text>
+              <Text>Pending</Text>
                     <CheckBox
                     checkedColor={"#2C81E0"}
                     checked={togglePending}
@@ -208,7 +210,6 @@ const TrackRequest = () => {
           }
           
           </View>
-         } 
 
     </View>
     );

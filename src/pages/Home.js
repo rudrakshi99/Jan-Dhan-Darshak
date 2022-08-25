@@ -18,7 +18,6 @@ import Help from "../components/Modals/Help";
 import BankFeedback from "../components/Modals/BankFeedback";
 import * as SecureStore from "expo-secure-store";
 import Faq from "../components/Modals/Faq";
-
 const Drawer = createDrawerNavigator();
 
 const Home = ({ navigation }) => {
@@ -34,7 +33,7 @@ const Home = ({ navigation }) => {
 		console.log(await SecureStore.getItemAsync("userId"), "userId");
 	};
 	getToken();
-
+   
     return (
         <Drawer.Navigator
             drawerContent={(props) => <CustomMenu {...props} />}
@@ -63,7 +62,7 @@ const Home = ({ navigation }) => {
                 }}
             />
             <Drawer.Screen
-                name="Missing Bank Suggestion"
+                name="Missing Place Suggestion"
                 component={MissingBankSuggestion}
                 options={{
                     headerShown: false,

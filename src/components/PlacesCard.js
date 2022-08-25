@@ -17,7 +17,7 @@ import DetailModal from "./DetailModal";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 
-const PlaceCard = ({ item, location, horizontal, type, rand }) => {
+const PlaceCard = ({ item, location, horizontal, type, rand, type_atm }) => {
 	const [show, setShow] = useState(false);
 	const navigation = useNavigation();
 	const [data, setData] = useState([]);
@@ -121,7 +121,12 @@ const PlaceCard = ({ item, location, horizontal, type, rand }) => {
 			onPress={() => LaunchModal(item.place_id)}
 		>
 			{show ? (
-				<DetailModal item={data} show={show} setShow={setShow} />
+				<DetailModal
+					item={data}
+					type={type}
+					show={show}
+					setShow={setShow}
+				/>
 			) : null}
 			<View>
 				{type.atm ? (

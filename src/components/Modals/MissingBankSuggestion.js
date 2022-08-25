@@ -22,6 +22,8 @@ import { CheckCircleIcon } from "react-native-heroicons/outline";
 import { createSuggestion } from "../../https/suggestions";
 import * as SecureStore from "expo-secure-store";
 import MapView, { Marker } from "react-native-maps";
+import Loader from "../Loader";
+import { flashMessage } from "../../lottie/flashMessage";
 
 const MissingBankSuggestion = () => {
 	const [latlon, setLatlon] = useState({
@@ -35,272 +37,217 @@ const MissingBankSuggestion = () => {
 		latitudeDelta: 0.01,
 		longitudeDelta: 0.01,
 	});
+
 	const [confirmLocation, setConfirmLocation] = useState(false);
 	const [name, setName] = useState("");
 	const [details, setDetails] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
 
+	const [modalError, setModalError] = useState("");
 	const focused = useIsFocused();
 	const [modalVisible, setModalVisible] = useState(false);
 	const [address, setAddress] = useState(
 		"B-47 Sector C, Aliganj, Lucknow, Uttar Pradesh, India"
 	);
-	const [locationObj, setLocationObj] = useState({
-		latitude: 0.0,
-		longitude: 0.0,
-	});
 	const navigation = useNavigation();
 	const [userId, setUserId] = useState("");
 	const [accessToken, setAccessToken] = useState("");
-
 	async function getGeocodedAddress() {
-		const location = await Location.getCurrentPositionAsync({});
-		const { latitude, longitude } = location.coords;
-		setLocationObj({
-			latitude: latitude,
-			longitude: longitude,
-		});
-		const result = await axios.get(
-			`${BASE_URL}maps/api/geocode/json?latlng=${
-				locationObj.latitude + "," + locationObj.longitude
-			}&key=${API_KEY}`
-		);
-		console.log(result.data.results[0].formatted_address);
-		setAddress(result.data.results[0].formatted_address);
+		const res = await Location.getCurrentPositionAsync({});
+		const { latitude, longitude } = res.coords;
+
 		setLocation({
 			latitude: latitude,
 			longitude: longitude,
 			latitudeDelta: 0.03,
-			longitudeDelta: 0.04,
+			longitudeDelta: 0.03,
 		});
-		setLatlon(latitude, longitude);
-		console.log("Location -->", location);
+		setLatlon({ latitude: latitude, longitude: longitude });
+		const result = await axios.get(
+			`${BASE_URL}maps/api/geocode/json?latlng=${
+				latlon.latitude + "," + latlon.longitude
+			}&key=${API_KEY}`
+		);
+
+		console.log(result.data.results[0].formatted_address);
+		setAddress(result.data.results[0].formatted_address);
 	}
+
 	useEffect(() => {
-		const isLoggedIn = async () => {
-			const name = await SecureStore.getItemAsync("name");
-			if (!name) {
-				navigation.push("Login");
-			}
-		};
-		isLoggedIn();
 		async function getUserData() {
 			setAccessToken(await SecureStore.getItemAsync("accessToken"));
 			setUserId(await SecureStore.getItemAsync("userId"));
+			getGeocodedAddress();
 		}
-		getGeocodedAddress();
+
 		getUserData();
-	}, [focused]);
+	}, []);
 
 	const handleRegionChange = () => {
-		setLatlon({
-			latitude: location.latitude,
-			longitude: location.longitude,
+		setLocation({
+			latitude: latlon.latitude,
+			longitude: latlon.longitude,
+			latitudeDelta: 0.02,
+			longitudeDelta: 0.04,
 		});
+		// setLatlon({
+		//     latitude: location.latitude,
+		//     longitude: location.longitude,
+		// })
+		getGeocodedAddress();
 	};
+
 	const handleFormChange = async () => {
 		try {
+			setIsLoading(true);
+			const accessToken = await SecureStore.getItemAsync("accessToken");
+			const userId = await SecureStore.getItemAsync("userId");
 			console.log(userId, accessToken);
+
 			const data = await createSuggestion(accessToken, {
 				User: parseInt(userId),
 				pointName: name,
 				address: address,
 				otherdetails: details,
-				latitude: latlon.latitude,
-				longitude: latlon.longitude,
+				latitude: location.latitude,
+				longitude: location.longitude,
 			});
 			console.log(data, "data");
 			if (data?.success === true) {
 				setModalVisible(true);
+				// flashMessage(data.message, 'success');
+			} else {
+				// setModalError(data?.message);
+				// flashMessage(data.message, 'danger');
 			}
 		} catch (err) {
-			console.log(err?.response?.data);
+			// console.log(err?.response?.data);
+			// flashMessage(err?.response?.data, 'danger');
+		} finally {
+			setIsLoading(false);
 		}
 	};
-	return (
-		<View>
-			<View style={styles.centeredView}>
-				<Modal
-					animationType="slide"
-					transparent={true}
-					visible={modalVisible}
-					onRequestClose={() => {
-						Alert.alert("Modal has been closed.");
-						setModalVisible(!modalVisible);
-					}}
-				>
-					<View style={styles.centeredView}>
-						<View style={styles.modalView}>
-							<CheckCircleIcon color="#34994C" />
-							<Text style={styles.modalText}>Submitted</Text>
-							<Text style={styles.modalSubText}>
-								Thank you for filling out the Form.
-							</Text>
-							{/* <Text style={styles.trackID}>
+
+	if (isLoading) return <Loader />;
+	else
+		return (
+			<View>
+				<View style={styles.centeredView}>
+					<Modal
+						animationType="slide"
+						transparent={true}
+						visible={modalVisible}
+						onRequestClose={() => {
+							Alert.alert("Modal has been closed.");
+							setModalVisible(!modalVisible);
+						}}
+					>
+						<View style={styles.centeredView}>
+							<View style={styles.modalView}>
+								<CheckCircleIcon color="#34994C" />
+								<Text style={styles.modalText}>Submitted</Text>
+								<Text style={styles.modalSubText}>
+									Thank you for filling out the Form.
+								</Text>
+								{/* <Text style={styles.trackID}>
                                 Track ID: 4855682
                             </Text> */}
-							<View style={styles.modalButtons}>
-								<Pressable
-									style={[styles.button, styles.trackButton]}
-								>
-									<Text style={styles.trackstyle}>
-										Track Request
-									</Text>
-								</Pressable>
-								<Pressable
-									style={[styles.button, styles.buttonClose]}
-									onPress={() =>
-										setModalVisible(!modalVisible)
-									}
-								>
-									<Text style={styles.textStyle}>OK</Text>
-								</Pressable>
+								<View style={styles.modalButtons}>
+									<Pressable
+										onPress={() =>
+											navigation.navigate("Track Request")
+										}
+										style={[
+											styles.button,
+											styles.trackButton,
+										]}
+									>
+										<Text style={styles.trackstyle}>
+											Track Request
+										</Text>
+									</Pressable>
+									<Pressable
+										style={[
+											styles.button,
+											styles.buttonClose,
+										]}
+										onPress={() =>
+											setModalVisible(!modalVisible)
+										}
+									>
+										<Text style={styles.textStyle}>OK</Text>
+									</Pressable>
+								</View>
 							</View>
 						</View>
-					</View>
-				</Modal>
-			</View>
-			{!confirmLocation ? (
-				<View style={styles.container}>
-					<HeaderCard
-						heading="Suggestion"
-						text="Suggest Missing Bank or FInancial Points"
-					/>
-					<View style={styles.mapper}>
-						<View style={mapstyles.mappercontainer}>
-							<MapView
-								style={mapstyles.mapmark}
-								initialRegion={location}
-								showsUserLocation={true}
-								region={location}
-								showsMyLocationButton={true}
-								followsUserLocation={true}
-								showsCompass={true}
-								scrollEnabled={true}
-								zoomEnabled={true}
-								pitchEnabled={true}
-								rotateEnabled={true}
-								showsTraffic={true}
-								onRegionChangeComplete={handleRegionChange}
-							>
-								<Marker
-									draggable
-									coordinate={latlon}
-									title={"Hold and Drag Me"}
-									icon={
-										"https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png"
-									}
-									onDragEnd={(e) => {
-										setLatlon(e.nativeEvent.coordinate);
-										console.log(latlon);
-									}}
-								/>
-							</MapView>
-						</View>
-					</View>
-					<View style={styles.bottomBox}>
-						<View style={styles.locationBox}>
-							<Text style={styles.locationText}>
-								Select Location
-							</Text>
-							<Text style={styles.locationText}>Step 1/2</Text>
-						</View>
+					</Modal>
 
-						<View style={styles.locationBox}>
-							<Text style={styles.address}>{address}</Text>
-							<TouchableOpacity style={styles.changeBtn}>
-								<Text style={styles.changeText}>Change</Text>
-							</TouchableOpacity>
-						</View>
-
-						<TouchableOpacity
-							onPress={() => {
-								setConfirmLocation(!confirmLocation);
-							}}
-							style={styles.buttonBox}
-						>
-							<Text style={styles.button}>Confirm Location</Text>
-						</TouchableOpacity>
-					</View>
+					{/* {
+                    modalError && <Text>{modalError}</Text>
+                } */}
 				</View>
-			) : (
-				<ScrollView>
-					<View>
-						<View style={styles.mapper2}>
-							<MapView
-								style={mapstyles.mapmark}
-								initialRegion={location}
-								showsUserLocation={true}
-								region={location}
-								showsMyLocationButton={true}
-								followsUserLocation={true}
-								showsCompass={true}
-								scrollEnabled={true}
-								zoomEnabled={true}
-								pitchEnabled={true}
-								rotateEnabled={true}
-								showsTraffic={true}
-								onRegionChangeComplete={handleRegionChange}
-							>
-								<Marker
-									coordinate={latlon}
-									title={"Hold and Drag Me"}
-									icon={
-										"https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png"
-									}
-								/>
-							</MapView>
+				{!confirmLocation ? (
+					<View style={styles.container}>
+						<HeaderCard
+							heading="Suggestion"
+							text="Suggest Missing Bank or FInancial Points"
+						/>
+						<View style={styles.mapper}>
+							<View style={mapstyles.mappercontainer}>
+								<MapView
+									style={mapstyles.mapmark}
+									initialRegion={location}
+									showsUserLocation={true}
+									region={location}
+									showsMyLocationButton={true}
+									followsUserLocation={true}
+									showsCompass={true}
+									scrollEnabled={true}
+									zoomEnabled={true}
+									pitchEnabled={true}
+									rotateEnabled={true}
+									showsTraffic={true}
+									onRegionChangeComplete={handleRegionChange}
+								>
+									<Marker
+										draggable
+										coordinate={latlon}
+										title={"Hold and Drag Me"}
+										icon={
+											"https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png"
+										}
+										onDragEnd={async (e) => {
+											setLatlon(e.nativeEvent.coordinate);
+											getGeocodedAddress();
+										}}
+									/>
+								</MapView>
+							</View>
 						</View>
-						<View style={styles.missingform}>
-							<View style={styles.formTopText}>
-								<Text style={styles.missingformtext}>
-									Fill the Details
+						<View style={styles.bottomBox}>
+							<View style={styles.locationBox}>
+								<Text style={styles.locationText}>
+									Select Location
 								</Text>
-								<Text style={styles.missingformtext}>
-									Step 2/2
+								<Text style={styles.locationText}>
+									Step 1/2
 								</Text>
 							</View>
-							{/* <View style={styles.selectPoint}>
-								<TouchableOpacity
-									onPress={() => {
-										// setConfirmLocation(!confirmLocation);
-									}}
-								>
-									<Text style={styles.textSelectPoint}>
-										Select a Financial Point{" "}
-										<Text style={styles.downarrow}>⌄</Text>
+
+							<View style={styles.locationBox}>
+								<Text style={styles.address}>{address}</Text>
+								<TouchableOpacity style={styles.changeBtn}>
+									<Text style={styles.changeText}>
+										Change
 									</Text>
 								</TouchableOpacity>
-							</View> */}
-							<InputField
-								onChangeText={(e) => {
-									setName(e);
-								}}
-								inputname="Enter Name"
-								name="name"
-								placeholder="Full name of the location"
-							/>
-							<InputField
-								onChangeText={(e) => {
-									setAddress(e);
-								}}
-								inputname="Address"
-								name="address"
-								value={address}
-								placeholder="Address of the Financial Point"
-								disabled={false}
-							/>
-							<InputField
-								onChangeText={(e) => {
-									setDetails(e);
-								}}
-								multi={true}
-								inputname="Other Details (Optional)"
-								name="name"
-								placeholder="provide any additional information..."
-							/>
+							</View>
+
 							<TouchableOpacity
-								onPress={handleFormChange}
-								style={styles.formSubmit}
+								onPress={() => {
+									setConfirmLocation(!confirmLocation);
+								}}
+								style={styles.buttonBox}
 							>
 								<Text style={styles.button}>
 									Confirm Location
@@ -308,10 +255,98 @@ const MissingBankSuggestion = () => {
 							</TouchableOpacity>
 						</View>
 					</View>
-				</ScrollView>
-			)}
-		</View>
-	);
+				) : (
+					<ScrollView>
+						<View>
+							<View style={styles.mapper2}>
+								<MapView
+									style={mapstyles.mapmark}
+									initialRegion={location}
+									showsUserLocation={true}
+									region={location}
+									showsMyLocationButton={true}
+									followsUserLocation={true}
+									showsCompass={true}
+									scrollEnabled={true}
+									zoomEnabled={true}
+									pitchEnabled={true}
+									rotateEnabled={true}
+									showsTraffic={true}
+								>
+									<Marker
+										coordinate={latlon}
+										title={"Hold and Drag Me"}
+										icon={
+											"https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png"
+										}
+									/>
+								</MapView>
+							</View>
+							<View style={styles.missingform}>
+								<View style={styles.formTopText}>
+									<Text style={styles.missingformtext}>
+										Fill the Details
+									</Text>
+									<Text style={styles.missingformtext}>
+										Step 2/2
+									</Text>
+								</View>
+								<View style={styles.selectPoint}>
+									<TouchableOpacity
+										onPress={() => {
+											setConfirmLocation(
+												!confirmLocation
+											);
+										}}
+									>
+										<Text style={styles.textSelectPoint}>
+											Select a Financial Point{" "}
+											<Text style={styles.downarrow}>
+												⌄
+											</Text>
+										</Text>
+									</TouchableOpacity>
+								</View>
+								<InputField
+									onChangeText={(e) => {
+										setName(e);
+									}}
+									inputname="Enter Name"
+									name="name"
+									placeholder="Full name of the location"
+								/>
+								<InputField
+									onChangeText={(e) => {
+										setAddress(e);
+									}}
+									inputname="Address"
+									name="address"
+									value={address}
+									placeholder="Address of the Financial Point"
+								/>
+								<InputField
+									onChangeText={(e) => {
+										setDetails(e);
+									}}
+									multi={true}
+									inputname="Other Details (Optional)"
+									name="name"
+									placeholder="provide any additional information..."
+								/>
+								<TouchableOpacity
+									onPress={handleFormChange}
+									style={styles.formSubmit}
+								>
+									<Text style={styles.button}>
+										Submit Suggestion
+									</Text>
+								</TouchableOpacity>
+							</View>
+						</View>
+					</ScrollView>
+				)}
+			</View>
+		);
 };
 
 const styles = StyleSheet.create({

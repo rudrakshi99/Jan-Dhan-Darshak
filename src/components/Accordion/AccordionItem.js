@@ -6,6 +6,7 @@ import {
   CollapseHeader,
   CollapseBody,
 } from "accordion-collapse-react-native";
+
 const AccordionItem = ({ otherdetails,pointName,uid,address,status}) => {
     const [isActive, setIsActive] = useState(false);
   return (
@@ -15,7 +16,7 @@ const AccordionItem = ({ otherdetails,pointName,uid,address,status}) => {
             <View style={styles.AccordView}>
             <View style={styles.innerAccord}>
             {pointName.length>18?(<Text style={styles.pointname}>{`${pointName.slice(0,15)}...`}</Text>):(<Text style={styles.pointname}>{pointName}</Text>)}
-            <Text style={styles.trackid}>Track ID:{uid}</Text>
+            {!isActive && <Text style={styles.trackid}>Track ID:{uid.substr(0,12)}...</Text>}
             </View>
             <View style={styles.buttonarrow}>
             {status === 'Pending' ? <View style={{backgroundColor:"#FFD233",borderRadius:8,justifyContent:"center",height:32,width:100,alignItems:"center"}}><Text style={styles.statustext}>{status}</Text></View> : null}
@@ -31,10 +32,13 @@ const AccordionItem = ({ otherdetails,pointName,uid,address,status}) => {
       <CollapseBody>   
         <View style={styles.dropdownView}>
           <View style={styles.address}><Text style={styles.dropdetail}>Address:</Text><Text style={styles.dropdetailview}>{address}</Text></View>
-          <View style={styles.address}><Text style={styles.dropdetail}>Other Details:</Text><Text style={styles.dropdetailview}>{otherdetails}</Text></View>
+          <View style={styles.address}><Text style={styles.dropdetail}>Other Details:</Text><Text style={styles.dropdetailview} >{otherdetails}</Text></View>
+          <View style={styles.address}><Text style={styles.dropdetail}>Track ID:</Text><Text style={styles.dropdetailview}>{uid}</Text></View>
         </View>
       </CollapseBody>
     </Collapse>
+
+    <View style={styles.divider2}></View>
   </View>
   )
 }
@@ -42,11 +46,13 @@ const AccordionItem = ({ otherdetails,pointName,uid,address,status}) => {
 export default AccordionItem
 
 const styles = StyleSheet.create({
-
-
+  divider2: {
+		height: 0.3,
+		backgroundColor: "#8E8E8E",
+	},
     AccordView:{
         backgroundColor: "#FAFAFA",
-       padding:10,
+       padding:12,
         justifyItems: "center",
        display: "flex",
         flexDirection: "row",
@@ -96,20 +102,21 @@ const styles = StyleSheet.create({
         color: "#00ffb9",
         width: "100%",
         
-        padding:40,
+        
 
     },
     dropdetail:{
       color:"#626262",
         fontSize: 14,
-        
+        padding: 20
     },
     dropdetailview:{
       color:"#626262",
         fontSize: 14,
         flexShrink: 1,
-        paddingHorizontal:20,
-        
+        paddingVertical: 12,
+        paddingHorizontal: 12,
+        textAlign: "left"
     },
 
     address:{
