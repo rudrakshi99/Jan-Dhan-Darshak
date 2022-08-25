@@ -12,7 +12,6 @@ LogBox.ignoreLogs(["EventEmitter.removeListener"]);
 
 //Screens
 import Home from "./src/pages/Home";
-import Splash from "./src/pages/Splash";
 import Otp from "./src/components/Modals/Otp";
 import Directions from "./src/pages/Directions";
 import Navigation from "./src/pages/Navigation";
@@ -70,13 +69,6 @@ function App() {
 	return (
 		<TailwindProvider>
 			<Stack.Navigator>
-				{/* <Stack.Screen
-					name="Splash"
-					component={Splash}
-					options={{
-						headerShown: false,
-					}}
-				/> */}
 				<Stack.Screen
 					name="Home"
 					component={Home}

@@ -110,12 +110,12 @@ const ChangeLanguage = () => {
 								style={[styles.languageBox, styles.borderColor]}
 							>
 								<Text
-									style={[styles.language1, styles.colorBlue]}
+									style={languageToken !== item ? [styles.language1] : [styles.language1,styles.colorBlue]}
 								>
 									{item}
 								</Text>
 								<Text
-									style={[styles.language2, styles.colorBlue]}
+									style={languageToken !== item ? styles.language2 : [styles.language1,styles.colorBlue]}
 								>
 									{item}
 								</Text>
@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
 		paddingBottom: 2,
 	},
 	language2: {
-		fontSize: 15,
+		fontSize: 18,
 		fontWeight: "400",
 	},
 	topBorder: {
