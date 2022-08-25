@@ -74,7 +74,7 @@ const MissingBankSuggestion = () => {
     useEffect(() => {
         
         async function getUserData(){
-       
+            
             setAccessToken(await SecureStore.getItemAsync('accessToken'));
             setUserId(await SecureStore.getItemAsync('userId'))
             getGeocodedAddress();
@@ -92,24 +92,27 @@ const MissingBankSuggestion = () => {
         // })
         getGeocodedAddress();
     }
+
     const handleFormChange = async() => {
       
         try {
             setIsLoading(true);
+            const accessToken = await SecureStore.getItemAsync('accessToken');
+            const userId = await SecureStore.getItemAsync('userId');
             console.log(userId,accessToken)
 
             const data = await createSuggestion(accessToken, {User:parseInt(userId),pointName: name, address: address, otherdetails: details,latitude:location.latitude,longitude:location.longitude });
             console.log(data,'data')
             if(data?.success === true) {
                 setModalVisible(true);
-                flashMessage(data.message, 'success');
+                // flashMessage(data.message, 'success');
             } else {
-                setModalError(data?.message);
-                flashMessage(data.message, 'danger');
+                // setModalError(data?.message);
+                // flashMessage(data.message, 'danger');
             }
         } catch(err) {
-            console.log(err?.response?.data);
-            flashMessage(err?.response?.data, 'danger');
+            // console.log(err?.response?.data);
+            // flashMessage(err?.response?.data, 'danger');
         } finally {
             setIsLoading(false);
         }

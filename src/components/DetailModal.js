@@ -22,17 +22,29 @@ import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { flashMessage } from "../lottie/flashMessage";
-
+import { translations } from "../translations/translations";
 const DetailModal = ({ show, setShow, item, type }) => {
 	const [index, setIndex] = useState(0);
 	const navigation = useNavigation();
+	const [lan,setLan]=useState('');
+    const [detailpage,setDetailpage]=useState(translations['English'].detail_page);
+    
+    useEffect(()=>{{
+        const getLan = async () => {
+            const res=await SecureStore.getItemAsync('lan')
+            if(res=='')
+            {setLan('English')}
+            setDetailpage(translations[lan].detail_page)
+        }
+        getLan();
+    }},[]) 
 	const [routes] = useState([
-		{ key: "first", title: "Overview" },
-		{ key: "second", title: "Reviews" },
+		{ key: "first", title: `${detailpage.overview}` },
+		{ key: "second", title: `${detailpage.review}` },
 	]);
 	const user = useSelector((state) => state.auth.user);
 	console.log(user);
-
+	
 	async function share(name) {
 		try {
 			const result = await Share.share({
@@ -202,7 +214,7 @@ const DetailModal = ({ show, setShow, item, type }) => {
 		<ScrollView style={{ flex: 1, backgroundColor: "#EAEAEA" }}>
 			<View style={styles.reviewContainer}>
 				<View>
-					<Text style={styles.reviewTitle}>User Reviews</Text>
+					<Text style={styles.reviewTitle}>{detailpage.user_review}</Text>
 					<View style={styles.rating}>
 						<Text
 							style={{
@@ -225,7 +237,7 @@ const DetailModal = ({ show, setShow, item, type }) => {
 				}}
 			>
 				<Text style={{ fontSize: 18, fontWeight: "600" }}>
-					Top Reviews
+					{detailpage.top_review}
 				</Text>
 			</View>
 			<View style={{}}>
@@ -375,8 +387,8 @@ const DetailModal = ({ show, setShow, item, type }) => {
 								]}
 							>
 								{item?.opening_hours?.open_now
-									? "Open Now"
-									: "Closed Now"}
+									? `${detailpage.open_now}`
+									: `${detailpage.closed_now}`}
 							</Text>
 						</View>
 
@@ -401,7 +413,7 @@ const DetailModal = ({ show, setShow, item, type }) => {
 									/>
 								</TouchableOpacity>
 								<Text style={styles.optionText}>
-									Directions
+									{detailpage.directions}
 								</Text>
 							</View>
 							<View style={styles.buttonContainer}>
@@ -421,7 +433,7 @@ const DetailModal = ({ show, setShow, item, type }) => {
 										resizeMode="contain"
 									/>
 								</TouchableOpacity>
-								<Text style={styles.optionText}>Call</Text>
+								<Text style={styles.optionText}>{detailpage.call}</Text>
 							</View>
 							<View style={styles.buttonContainer}>
 								<TouchableOpacity
@@ -436,7 +448,7 @@ const DetailModal = ({ show, setShow, item, type }) => {
 										resizeMode="contain"
 									/>
 								</TouchableOpacity>
-								<Text style={styles.optionText}>Share</Text>
+								<Text style={styles.optionText}>{detailpage.share}</Text>
 							</View>
 							<View style={styles.buttonContainer}>
 								<TouchableOpacity
@@ -451,7 +463,7 @@ const DetailModal = ({ show, setShow, item, type }) => {
 										resizeMode="contain"
 									/>
 								</TouchableOpacity>
-								<Text style={styles.optionText}>Save</Text>
+								<Text style={styles.optionText}>{detailpage.save}</Text>
 							</View>
 						</View>
 					</View>
@@ -493,7 +505,7 @@ const DetailModal = ({ show, setShow, item, type }) => {
 								marginTop: 10,
 							}}
 						>
-							Feedback
+							{detailpage.feedback}
 						</Text>
 					</View>
 				</View>
