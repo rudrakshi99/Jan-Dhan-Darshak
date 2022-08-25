@@ -9,6 +9,7 @@ import {
 	Share,
 	Linking,
 	Alert,
+	Pressable,
 } from "react-native";
 import { API_KEY, BASE_URL } from "@env";
 import axios from "axios";
@@ -73,7 +74,7 @@ const PlaceCard = ({ item, location, horizontal }) => {
 		}
 	}
 	return (
-		<TouchableOpacity
+		<Pressable
 			style={[
 				{
 					marginHorizontal: 6,
@@ -203,7 +204,7 @@ const PlaceCard = ({ item, location, horizontal }) => {
 					</TouchableOpacity>
 				</View>
 			) : null}
-		</TouchableOpacity>
+		</Pressable>
 	);
 };
 

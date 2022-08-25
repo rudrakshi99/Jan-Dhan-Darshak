@@ -48,17 +48,40 @@ function VoiceToText({ visible, setVisible, setSearch }) {
 	const [uri, setUri] = useState();
 	const [message, setMessage] = React.useState("");
 
+	const recordingOptions = {
+		// android not currently in use, but parameters are required
+		android: {
+			extension: ".m4a",
+			outputFormat: Audio.RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_MPEG_4,
+			audioEncoder: Audio.RECORDING_OPTION_ANDROID_AUDIO_ENCODER_AAC,
+			sampleRate: 44100,
+			numberOfChannels: 2,
+			bitRate: 128000,
+		},
+		ios: {
+			extension: ".wav",
+			audioQuality: Audio.RECORDING_OPTION_IOS_AUDIO_QUALITY_HIGH,
+			sampleRate: 44100,
+			numberOfChannels: 1,
+			bitRate: 128000,
+			linearPCMBitDepth: 16,
+			linearPCMIsBigEndian: false,
+			linearPCMIsFloat: false,
+		},
+	};
+
 	async function getTextFromVoice(uri) {
 		try {
 			const file = await FileSystem.readAsStringAsync(uri);
+			console.log(file);
 			let form = new FormData();
 			console.log("Initial", form);
 			form.append("voice", file);
 			console.log(form);
-			const { data } = axios.post(
+			const { data } = await axios.post(
 				"https://jan-dhan-darshak.herokuapp.com/users/voice-to-text/",
 				{
-					voice: form,
+					file,
 				},
 				{
 					headers: {
@@ -81,9 +104,7 @@ function VoiceToText({ visible, setVisible, setSearch }) {
 				playsInSilentModeIOS: true,
 			});
 			console.log("Starting recording..");
-			await recording.prepareToRecordAsync(
-				Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
-			);
+			await recording.prepareToRecordAsync(recordingOptions);
 			await recording.startAsync();
 			console.log("Recording started");
 		} catch (err) {
@@ -98,7 +119,26 @@ function VoiceToText({ visible, setVisible, setSearch }) {
 		console.log(recording);
 		const uri = recording.getURI();
 		console.log("Recording stopped and stored at", uri);
-		getTextFromVoice(uri);
+		// getTextFromVoice(uri);
+		uploadAudio(uri);
+	}
+
+	async function uploadAudio(uri) {
+		try {
+			const response = await FileSystem.uploadAsync(
+				`https://jan-dhan-darshak.herokuapp.com/users/voice-to-text/`,
+				// "http://192.168.43.236:5000/speech-to-text",
+				uri,
+				{
+					fieldName: "voice",
+					httpMethod: "POST",
+					uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+				}
+			);
+			console.log(JSON.stringify(response, null, 4));
+		} catch (err) {
+			console.log(err);
+		}
 	}
 
 	React.useEffect(() => {
@@ -113,7 +153,7 @@ function VoiceToText({ visible, setVisible, setSearch }) {
 		if (visible) {
 			begin();
 		}
-	}, [focused]);
+	}, [visible, focused]);
 	return (
 		<Modal
 			animationType="slide"

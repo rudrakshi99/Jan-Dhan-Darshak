@@ -23,19 +23,18 @@ const SavedLocations = () => {
 
 	useEffect(() => {
 		const isLoggedIn = async () => {
-			const name = await SecureStore.getItemAsync('name');
-			if(!name) {
-				navigation.push('Login');
+			const name = await SecureStore.getItemAsync("name");
+			if (!name) {
+				navigation.push("Login");
 			}
-		}
+		};
 		isLoggedIn();
-	}, []);
-
-	useEffect(() => {
 		const getLocations = async () => {
 			setLoading(true);
 			try {
-				const accessToken = await SecureStore.getItemAsync("accessToken");;
+				const accessToken = await SecureStore.getItemAsync(
+					"accessToken"
+				);
 				const id = 15;
 				const data = await getSavedLocations({
 					accessToken: accessToken,
