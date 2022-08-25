@@ -23,12 +23,12 @@ import Navigation from "./src/pages/Navigation";
 import { useSelector } from "react-redux";
 import Onboarding from "./src/pages/Onboarding";
 import LoginScreen from "./src/components/Modals/Login";
-import Logout from "./src/components/Modals/Logout";
 import Profile from "./src/pages/Profile";
 import LoginScreenViaPhone from "./src/components/Modals/LoginViaPhone";
 import FlashMessage from "react-native-flash-message";
 
 import { translations } from "./translations";
+import BankFeedback from "./src/components/Modals/BankFeedback";
 
 const Stack = createNativeStackNavigator();
 
@@ -116,13 +116,6 @@ function App() {
 					}}
 				/>
 				<Stack.Screen
-					name="Logout"
-					component={Logout}
-					options={{
-						headerShown: false,
-					}}
-				/>
-				<Stack.Screen
 					name="Directions"
 					component={Directions}
 					options={{
@@ -139,6 +132,13 @@ function App() {
 				<Stack.Screen
 					name="Onboarding"
 					component={Onboarding}
+					options={{
+						headerShown: false,
+					}}
+				/>
+				<Stack.Screen
+					name="BankFeedback"
+					component={BankFeedback}
 					options={{
 						headerShown: false,
 					}}

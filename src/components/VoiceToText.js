@@ -15,6 +15,7 @@ import * as FileSystem from "expo-file-system";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Recording } from "expo-av/build/Audio";
 import { useIsFocused } from "@react-navigation/native";
+import { flashMessage } from "../lottie/flashMessage";
 
 // RecordingOptionsPresets.HIGH_QUALITY = {
 // 	isMeteringEnabled: true,
@@ -44,8 +45,7 @@ let recording = new Recording();
 function VoiceToText({ visible, setVisible, setSearch }) {
 	const animationRef = useRef(null);
 	const focused = useIsFocused();
-	const [recordings, setRecordings] = React.useState([]);
-	const [uri, setUri] = useState();
+	const [recordings] = React.useState([]);
 	const [message, setMessage] = React.useState("");
 
 	const recordingOptions = {
@@ -59,7 +59,7 @@ function VoiceToText({ visible, setVisible, setSearch }) {
 			bitRate: 128000,
 		},
 		ios: {
-			extension: ".wav",
+			extension: ".m4a",
 			audioQuality: Audio.RECORDING_OPTION_IOS_AUDIO_QUALITY_HIGH,
 			sampleRate: 44100,
 			numberOfChannels: 1,
@@ -69,31 +69,6 @@ function VoiceToText({ visible, setVisible, setSearch }) {
 			linearPCMIsFloat: false,
 		},
 	};
-
-	async function getTextFromVoice(uri) {
-		try {
-			const file = await FileSystem.readAsStringAsync(uri);
-			console.log(file);
-			let form = new FormData();
-			console.log("Initial", form);
-			form.append("voice", file);
-			console.log(form);
-			const { data } = await axios.post(
-				"https://jan-dhan-darshak.herokuapp.com/users/voice-to-text/",
-				{
-					file,
-				},
-				{
-					headers: {
-						"Content-Type": "multipart/form-data",
-					},
-				}
-			);
-			console.log(data);
-		} catch (err) {
-			console.log(err);
-		}
-	}
 
 	async function startRecording() {
 		try {
@@ -119,14 +94,14 @@ function VoiceToText({ visible, setVisible, setSearch }) {
 		console.log(recording);
 		const uri = recording.getURI();
 		console.log("Recording stopped and stored at", uri);
-		// getTextFromVoice(uri);
 		uploadAudio(uri);
+		await recording.prepareToRecordAsync(recordingOptions);
 	}
 
 	async function uploadAudio(uri) {
 		try {
 			const response = await FileSystem.uploadAsync(
-				`https://jan-dhan-darshak.herokuapp.com/users/voice-to-text/`,
+				`https://85df-112-196-62-4.in.ngrok.io/users/voice-to-text/`,
 				// "http://192.168.43.236:5000/speech-to-text",
 				uri,
 				{
@@ -135,7 +110,19 @@ function VoiceToText({ visible, setVisible, setSearch }) {
 					uploadType: FileSystem.FileSystemUploadType.MULTIPART,
 				}
 			);
-			console.log(JSON.stringify(response, null, 4));
+			const res = response.body;
+			if (!res) {
+				flashMessage("Server Issue, or Permission issue", "danger");
+			}
+			const parsed = JSON.parse(res);
+			if (!parsed) {
+				flashMessage("Server Issue", "danger");
+			}
+			console.log(parsed.data.msg);
+			if (parsed.data.msg == null) {
+				flashMessage("No results Found", "danger");
+			}
+			setSearch(parsed.data.msg);
 		} catch (err) {
 			console.log(err);
 		}

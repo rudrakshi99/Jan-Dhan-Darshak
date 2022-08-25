@@ -59,6 +59,13 @@ const MissingBankSuggestion = () => {
 			latitude: latitude,
 			longitude: longitude,
 		});
+		const result = await axios.get(
+			`${BASE_URL}maps/api/geocode/json?latlng=${
+				locationObj.latitude + "," + locationObj.longitude
+			}&key=${API_KEY}`
+		);
+		console.log(result.data.results[0].formatted_address);
+		setAddress(result.data.results[0].formatted_address);
 		setLocation({
 			latitude: latitude,
 			longitude: longitude,
@@ -67,15 +74,15 @@ const MissingBankSuggestion = () => {
 		});
 		setLatlon(latitude, longitude);
 		console.log("Location -->", location);
-		const result = await axios.get(
-			`${BASE_URL}maps/api/geocode/json?latlng=${
-				locationObj.latitude + "," + locationObj.longitude
-			}&key=${API_KEY}`
-		);
-		console.log(result.data.results[0].formatted_address);
-		setAddress(result.data.results[0].formatted_address);
 	}
 	useEffect(() => {
+		const isLoggedIn = async () => {
+			const name = await SecureStore.getItemAsync("name");
+			if (!name) {
+				navigation.push("Login");
+			}
+		};
+		isLoggedIn();
 		async function getUserData() {
 			setAccessToken(await SecureStore.getItemAsync("accessToken"));
 			setUserId(await SecureStore.getItemAsync("userId"));
@@ -98,8 +105,8 @@ const MissingBankSuggestion = () => {
 				pointName: name,
 				address: address,
 				otherdetails: details,
-				latitude: locationObj.latitude,
-				longitude: locationObj.longitude,
+				latitude: latlon.latitude,
+				longitude: latlon.longitude,
 			});
 			console.log(data, "data");
 			if (data?.success === true) {
@@ -252,10 +259,10 @@ const MissingBankSuggestion = () => {
 									Step 2/2
 								</Text>
 							</View>
-							<View style={styles.selectPoint}>
+							{/* <View style={styles.selectPoint}>
 								<TouchableOpacity
 									onPress={() => {
-										setConfirmLocation(!confirmLocation);
+										// setConfirmLocation(!confirmLocation);
 									}}
 								>
 									<Text style={styles.textSelectPoint}>
@@ -263,7 +270,7 @@ const MissingBankSuggestion = () => {
 										<Text style={styles.downarrow}>⌄</Text>
 									</Text>
 								</TouchableOpacity>
-							</View>
+							</View> */}
 							<InputField
 								onChangeText={(e) => {
 									setName(e);
@@ -280,6 +287,7 @@ const MissingBankSuggestion = () => {
 								name="address"
 								value={address}
 								placeholder="Address of the Financial Point"
+								disabled={false}
 							/>
 							<InputField
 								onChangeText={(e) => {

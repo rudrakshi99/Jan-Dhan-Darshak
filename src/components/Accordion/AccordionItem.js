@@ -109,11 +109,13 @@ const styles = StyleSheet.create({
         fontSize: 14,
         flexShrink: 1,
         paddingHorizontal:20,
+        
     },
 
     address:{
       display:"flex",
       flexDirection:"row",
       justifyContent:"space-between",
+      textAlign: "left"
     }
 })

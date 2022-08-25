@@ -15,11 +15,15 @@ import { API_KEY, BASE_URL } from "@env";
 import axios from "axios";
 import DetailModal from "./DetailModal";
 import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
 
-const PlaceCard = ({ item, location, horizontal }) => {
+const PlaceCard = ({ item, location, horizontal, type, rand }) => {
 	const [show, setShow] = useState(false);
 	const navigation = useNavigation();
 	const [data, setData] = useState([]);
+	const [colors, setColors] = useState([]);
+	const [label, setLabel] = useState("");
+
 	function getDistance(lat2, lon2) {
 		let lat1 = location.latitude;
 		let lon1 = location.longitude;
@@ -47,6 +51,32 @@ const PlaceCard = ({ item, location, horizontal }) => {
 		setData(result);
 		setShow(true);
 	}
+	const labelData = [
+		{
+			label: "orange",
+			color: ["rgba(252, 153, 5, 0.79)", "rgba(252, 153, 5, 0.4)"],
+		},
+		{
+			label: "green",
+			color: ["rgba(52, 153, 76, 0.79)", "rgba(52, 153, 76, 0.4)"],
+		},
+		{
+			label: "yellow",
+			color: ["rgba(255, 210, 51, 0.79)", "rgba(255, 210, 51, 0.4)"],
+		},
+		{
+			label: "pink",
+			color: ["rgba(255, 0, 168, 0.79)", "rgba(255, 0, 168, 0.4)"],
+		},
+		{
+			label: "white",
+			color: ["rgba(255, 255, 255, 0.79)", "rgba(255, 255, 255, 0.4)"],
+		},
+		{
+			label: "brown",
+			color: ["rgba(35, 9, 9, 0.79)", "rgba(35, 9, 9, 0.4)"],
+		},
+	];
 	async function handleCall(place_id) {
 		const result = await getPlaceDetail(place_id);
 		result.formatted_phone_number
@@ -80,11 +110,12 @@ const PlaceCard = ({ item, location, horizontal }) => {
 					marginHorizontal: 6,
 					backgroundColor: "#fff",
 					borderRadius: 10,
-					padding: 12,
 					elevation: 5,
 				},
 				{
 					borderRadius: horizontal ? 10 : 0,
+					paddingTop: !type.atm ? 20 : 0,
+					paddingBottom: type.atm ? 10 : 0,
 				},
 			]}
 			onPress={() => LaunchModal(item.place_id)}
@@ -92,66 +123,87 @@ const PlaceCard = ({ item, location, horizontal }) => {
 			{show ? (
 				<DetailModal item={data} show={show} setShow={setShow} />
 			) : null}
-			<View style={styles.resultItemContainer}>
-				{item.photos ? (
-					<Image
-						source={{
-							uri: `${BASE_URL}maps/api/place/photo?maxwidth=400&photo_reference=${item.photos[0]?.photo_reference}&key=${API_KEY}`,
-						}}
-						style={styles.resultItemImage}
-					/>
+			<View>
+				{type.atm ? (
+					<LinearGradient
+						// Button Linear Gradient
+						colors={labelData[rand].color}
+						style={styles.button}
+					>
+						<Text style={{ fontSize: 12 }}>
+							{labelData[rand].label} Label
+						</Text>
+					</LinearGradient>
 				) : (
-					<Image
-						source={require("../assets/images/not-found.jpg")}
-						style={styles.resultItemImage}
-					/>
+					<View></View>
 				)}
-				<View style={{ position: "absolute", top: 10, right: 10 }}>
-					<TouchableOpacity
-						onPress={() => {
-							share(item.name);
-						}}
-					>
+				<View style={[styles.resultItemContainer]}>
+					{item.photos ? (
 						<Image
-							source={require("../assets/icons/share_outlined.png")}
-							style={{
-								height: 30,
-								width: 30,
-								backgroundColor: "#fff",
+							source={{
+								uri: `${BASE_URL}maps/api/place/photo?maxwidth=400&photo_reference=${item.photos[0]?.photo_reference}&key=${API_KEY}`,
 							}}
-							resizeMode="contain"
+							resizeMode="cover"
+							style={styles.resultItemImage}
 						/>
-					</TouchableOpacity>
-				</View>
-				<View style={{ marginLeft: 15 }}>
-					<Text style={styles.name}>
-						{item.name.substring(0, 25)}...
-					</Text>
-					<Text style={styles.branch}>Branch name</Text>
-					<Text style={styles.distance}>
-						{getDistance(
-							item.geometry.location.lat,
-							item.geometry.location.lng
-						).toPrecision(2)}{" "}
-						KM Away
-					</Text>
-					<Text
-						style={[
-							styles.openStatus,
-							item.opening_hours?.open_now
-								? { color: "#34994C" }
-								: { color: "#DB0E0E" },
-						]}
-					>
-						{item.opening_hours?.open_now
-							? "Open Now"
-							: "Closed Now"}
-					</Text>
+					) : (
+						<Image
+							source={require("../assets/images/not-found.jpg")}
+							style={styles.resultItemImage}
+						/>
+					)}
+					<View style={{ position: "absolute", top: -19, right: 10 }}>
+						<TouchableOpacity
+							onPress={() => {
+								share(item.name);
+							}}
+						>
+							<Image
+								source={require("../assets/icons/share_outlined.png")}
+								style={{
+									height: 30,
+									width: 30,
+									backgroundColor: "#fff",
+								}}
+								resizeMode="contain"
+							/>
+						</TouchableOpacity>
+					</View>
+					<View style={{ marginLeft: 15 }}>
+						<Text style={styles.name}>
+							{item.name.substring(0, 25)}...
+						</Text>
+						<Text style={styles.branch}>Branch name</Text>
+						<Text style={styles.distance}>
+							{getDistance(
+								item.geometry.location.lat,
+								item.geometry.location.lng
+							).toPrecision(2)}{" "}
+							KM Away
+						</Text>
+						<Text
+							style={[
+								styles.openStatus,
+								item.opening_hours?.open_now
+									? { color: "#34994C" }
+									: { color: "#DB0E0E" },
+							]}
+						>
+							{item.opening_hours?.open_now
+								? "Open Now"
+								: "Closed Now"}
+						</Text>
+					</View>
 				</View>
 			</View>
 			{horizontal ? (
 				<View
-					style={{ backgroundColor: "#FFFFFF", flexDirection: "row" }}
+					style={{
+						backgroundColor: "#FFFFFF",
+						flexDirection: "row",
+						// paddingBottom: 10,
+						paddingHorizontal: 16,
+					}}
 				>
 					<TouchableOpacity
 						style={[styles.directionButton]}
@@ -195,7 +247,6 @@ const PlaceCard = ({ item, location, horizontal }) => {
 						<Image
 							source={require("../assets/icons/call.png")}
 							style={{
-								fontSize: 15,
 								width: 25,
 								height: 25,
 							}}
@@ -214,13 +265,16 @@ const styles = StyleSheet.create({
 		justifyContent: "flex-start",
 		alignItems: "center",
 		width: Dimensions.get("window").width / 1.4,
+		padding: 12,
+		paddingTop: 0,
+		marginTop: -1,
 	},
 	name: {
 		fontSize: 16,
 		fontWeight: "700",
 		color: "#000",
 		marginBottom: 3,
-		width: Dimensions.get("window").width / 2.5,
+		width: Dimensions.get("window").width / 2.7,
 	},
 	branch: {
 		fontSize: 14,
@@ -248,12 +302,22 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 20,
 		justifyContent: "center",
 		alignItems: "center",
-		marginTop: 10,
+		marginBottom: 10,
 	},
 	resultItemImage: {
-		height: 80,
-		width: 80,
+		height: 90,
+		width: 100,
 		borderRadius: 15,
+	},
+	button: {
+		paddingVertical: 8,
+		paddingHorizontal: 10,
+		borderTopRightRadius: 99,
+		borderBottomRightRadius: 99,
+		borderTopLeftRadius: 50,
+		width: 100,
+		zIndex: 10,
+		backgroundColor: "#FFFFFF",
 	},
 });
 

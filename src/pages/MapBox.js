@@ -22,6 +22,7 @@ import axios from "axios";
 
 import { BASE_URL, API_KEY } from "@env";
 import PlaceCard from "../components/PlacesCard";
+import Loader from "../components/Loader";
 
 const MapBox = () => {
 	const focused = useIsFocused();
@@ -41,10 +42,13 @@ const MapBox = () => {
 	const [show, setShow] = useState(false);
 	const [type, setType] = useState(initialState);
 	const [results, setResults] = useState([]);
+	const [rand, setRand] = useState();
+
 	const [location, setLocation] = useState({
 		latitude: 0,
 		longitude: 0,
 	});
+	const [isLoading, setIsLoading] = useState(false);
 	const [horizontal, setHorizontal] = useState(true);
 	function generateString() {
 		if (type.atm) return "atm";
@@ -64,6 +68,7 @@ const MapBox = () => {
 		}
 		async function getResults() {
 			try {
+				setIsLoading(true);
 				const location = await Location.getCurrentPositionAsync({});
 				const response = await axios.get(
 					`${BASE_URL}maps/api/place/nearbysearch/json?location=${
@@ -79,6 +84,8 @@ const MapBox = () => {
 				setResults(response.data.results);
 			} catch (err) {
 				console.log(err);
+			} finally {
+				setIsLoading(false);
 			}
 		}
 		getLocation();
@@ -93,6 +100,14 @@ const MapBox = () => {
 		setHorizontal((prev) => !prev);
 	}
 
+	function getRandomInt(min, max) {
+		min = Math.ceil(min);
+		max = Math.floor(max);
+		return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+
+	// if(isLoading) return <Loader />
+	// else
 	return (
 		<View style={style.container}>
 			<Header
@@ -104,70 +119,79 @@ const MapBox = () => {
 				setFilter={setFilter}
 				filter={filter}
 			/>
-			<Map markers={results} />
-			<TouchableOpacity
-				style={[
-					styles.viewList,
-					{
-						bottom: horizontal
-							? 300
-							: Dimensions.get("screen").height / 1.8,
-					},
-				]}
-				onPress={() => {
-					handleList();
-				}}
-			>
-				<Image
-					source={require("../assets/icons/dotted_hamburger.png")}
-					resizeMode="contain"
-					style={{ height: 20, width: 20 }}
-				/>
-				<Text
-					style={{
-						marginLeft: 6,
-						color: "#2C81E0",
-						fontWeight: "600",
-					}}
-				>
-					{`${horizontal ? "View" : "Hide"} List`}
-				</Text>
-			</TouchableOpacity>
-			<View
-				style={
-					horizontal
-						? styles.resultContainer
-						: styles.resultContainerVertical
-				}
-			>
-				{results !== [] ? (
-					<FlatList
-						data={results}
-						horizontal={horizontal}
-						// style={styles.resultContainer}
-						snapToAlignment="start"
-						snapToInterval={horizontal ? 100 : 0}
-						contentContainerStyle={[
-							horizontal
-								? styles.horizontalList
-								: styles.verticalList,
-							{ paddingVertical: 5 },
+			{!isLoading ? (
+				<>
+					<Map markers={results} />
+					<TouchableOpacity
+						style={[
+							styles.viewList,
+							{
+								bottom: horizontal
+									? 330
+									: Dimensions.get("screen").height / 1.8,
+							},
 						]}
-						renderItem={({ item, index }) => {
-							return (
-								<PlaceCard
-									key={index}
-									item={item}
-									location={location}
-									horizontal={horizontal}
-								/>
-							);
+						onPress={() => {
+							handleList();
 						}}
-					/>
-				) : (
-					<View></View>
-				)}
-			</View>
+					>
+						<Image
+							source={require("../assets/icons/dotted_hamburger.png")}
+							resizeMode="contain"
+							style={{ height: 20, width: 20 }}
+						/>
+						<Text
+							style={{
+								marginLeft: 6,
+								color: "#2C81E0",
+								fontWeight: "600",
+							}}
+						>
+							{`${horizontal ? "View" : "Hide"} List`}
+						</Text>
+					</TouchableOpacity>
+					<View
+						style={
+							horizontal
+								? styles.resultContainer
+								: styles.resultContainerVertical
+						}
+					>
+						{results !== [] ? (
+							<FlatList
+								data={results}
+								horizontal={horizontal}
+								// style={styles.resultContainer}
+								snapToAlignment="start"
+								snapToInterval={horizontal ? 100 : 0}
+								contentContainerStyle={[
+									horizontal
+										? styles.horizontalList
+										: styles.verticalList,
+									{ paddingVertical: type.atm ? 10 : 5 },
+								]}
+								renderItem={({ item, index }) => {
+									let ran = index % 6;
+									return (
+										<PlaceCard
+											key={index}
+											item={item}
+											location={location}
+											horizontal={horizontal}
+											type={type}
+											rand={ran}
+										/>
+									);
+								}}
+							/>
+						) : (
+							<View></View>
+						)}
+					</View>
+				</>
+			) : (
+				<Loader />
+			)}
 			<View style={style.tabsContainer}>
 				<TouchableOpacity
 					onPress={() => {

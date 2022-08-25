@@ -13,55 +13,55 @@ import { CheckBox,Button } from "@rneui/themed";
 const TrackRequest = () => {
     const [accessToken,setAccessToken]=useState("");
     const [userId,setUserId]=useState("");
-    const [suggestions,setSuggestions]=useState({});
+    const [data,setData]=useState([]);
     const [loading ,setLoading]=useState(false);
     const navigation = useNavigation();
 
-    // useEffect(() => {
-    //   const isLoggedIn = async () => {
-    //     const name = await SecureStore.getItemAsync('name');
-    //     if(!name) {
-    //       navigation.push('Login');
-    //     }
-    //   }
-    //   isLoggedIn();
-    // }, []);
+    useEffect(() => {
+      const isLoggedIn = async () => {
+        const name = await SecureStore.getItemAsync('name');
+        if(!name) {
+          navigation.push('Login');
+        }
+      }
+      isLoggedIn();
+    }, []);
 
-    // useEffect(() => {
-    //     async function getDetails(){
+    useEffect(() => {
+        async function getDetails(){
         
-    //     setAccessToken(await SecureStore.getItemAsync('accessToken'));
-    //     setUserId(await SecureStore.getItemAsync('userId'));
-    //     GetTheList();
-    //     }
-    //     async function GetTheList(){
-    //         const body={User:parseInt(userId)};
-    //         const data = await SuggestionByUser(accessToken,body);
-    //         console.log(data,'data')
-    //         if(data?.success === true) {
-    //             setSuggestions(data)
-    //             setLoading(false)
-    //         }
-    //     }
-    //     getDetails();
+        setAccessToken(await SecureStore.getItemAsync('accessToken'));
+        setUserId(await SecureStore.getItemAsync('userId'));
+        GetTheList();
+        }
+        async function GetTheList(){
+            const body={User:parseInt(userId)};
+            const data = await SuggestionByUser(accessToken,body);
+            console.log(data,'data')
+            if(data?.success === true) {
+                setData(data)
+                setLoading(false)
+            }
+        }
+        getDetails();
         
-    // }, [])
-    const data=[{'uid':1,'pointName':'JSS Academy of technical education','address':'address1','otherdetails':'content1lnkacsklnsalcasnnlkcsanncsansakclnasbckacksbjkasbckbbascbkbskjac','suggestion_status':'Pending'},
-      {'uid':2,'pointName':'title2','address':'address2','otherdetails':'content2clasnklnsancascnk','suggestion_status':'Rejected'},
-      {'uid':3,'pointName':'title3','address':'address3','otherdetails':'content3alscnnklanslknacslk','suggestion_status':'Pending'},
-      {'uid':4,'pointName':'title4','address':'address4','otherdetails':'content4alscnlnasklnlacsnl','suggestion_status':'Approved'},
-      {'uid':5,'pointName':'title5','address':'address5','otherdetails':'content5acnslnasclnlsacnlcaksnlsacnlcsallcsanncasl','suggestion_status':'Completed'},
-      {'uid':6,'pointName':'title5','address':'address5','otherdetails':'content5acnslnasclnlsacnlcaksnlsacnlcsallcsanncasl','suggestion_status':'Completed'},
-      {'uid':7,'pointName':'title5','address':'address5','otherdetails':'content5acnslnasclnlsacnlcaksnlsacnlcsallcsanncasl','suggestion_status':'Completed'},
-      {'uid':8,'pointName':'title5','address':'address5','otherdetails':'content5acnslnasclnlsacnlcaksnlsacnlcsallcsanncasl','suggestion_status':'Completed'},
-      {'uid':9,'pointName':'title2','address':'address2','otherdetails':'content2clasnklnsancascnk','suggestion_status':'Rejected'},
-      {'uid':10,'pointName':'title3','address':'address3','otherdetails':'content3alscnnklanslknacslk','suggestion_status':'Pending'},
-      {'uid':11,'pointName':'title4','address':'address4','otherdetails':'content4alscnlnasklnlacsnl','suggestion_status':'Approved'},
-      {'uid':12,'pointName':'title5','address':'address5','otherdetails':'content5acnslnasclnlsacnlcaksnlsacnlcsallcsanncasl','suggestion_status':'Completed'},
-      {'uid':13,'pointName':'title2','address':'address2','otherdetails':'content2clasnklnsancascnk','suggestion_status':'Rejected'},
-      {'uid':14,'pointName':'title3','address':'address3','otherdetails':'content3alscnnklanslknacslk','suggestion_status':'Pending'},
-      {'uid':15,'pointName':'title4','address':'address4','otherdetails':'content4alscnlnasklnlacsnl','suggestion_status':'Approved'},
-    ]
+    }, [])
+    // const data=[{'uid':1,'pointName':'JSS Academy of technical education','address':'address1','otherdetails':'content1lnkacsklnsalcasnnlkcsanncsansakclnasbckacksbjkasbckbbascbkbskjac','suggestion_status':'Pending'},
+    //   {'uid':2,'pointName':'title2','address':'address2','otherdetails':'content2clasnklnsancascnk','suggestion_status':'Rejected'},
+    //   {'uid':3,'pointName':'title3','address':'address3','otherdetails':'content3alscnnklanslknacslk','suggestion_status':'Pending'},
+    //   {'uid':4,'pointName':'title4','address':'address4','otherdetails':'content4alscnlnasklnlacsnl','suggestion_status':'Approved'},
+    //   {'uid':5,'pointName':'title5','address':'address5','otherdetails':'content5acnslnasclnlsacnlcaksnlsacnlcsallcsanncasl','suggestion_status':'Completed'},
+    //   {'uid':6,'pointName':'title5','address':'address5','otherdetails':'content5acnslnasclnlsacnlcaksnlsacnlcsallcsanncasl','suggestion_status':'Completed'},
+    //   {'uid':7,'pointName':'title5','address':'address5','otherdetails':'content5acnslnasclnlsacnlcaksnlsacnlcsallcsanncasl','suggestion_status':'Completed'},
+    //   {'uid':8,'pointName':'title5','address':'address5','otherdetails':'content5acnslnasclnlsacnlcaksnlsacnlcsallcsanncasl','suggestion_status':'Completed'},
+    //   {'uid':9,'pointName':'title2','address':'address2','otherdetails':'content2clasnklnsancascnk','suggestion_status':'Rejected'},
+    //   {'uid':10,'pointName':'title3','address':'address3','otherdetails':'content3alscnnklanslknacslk','suggestion_status':'Pending'},
+    //   {'uid':11,'pointName':'title4','address':'address4','otherdetails':'content4alscnlnasklnlacsnl','suggestion_status':'Approved'},
+    //   {'uid':12,'pointName':'title5','address':'address5','otherdetails':'content5acnslnasclnlsacnlcaksnlsacnlcsallcsanncasl','suggestion_status':'Completed'},
+    //   {'uid':13,'pointName':'title2','address':'address2','otherdetails':'content2clasnklnsancascnk','suggestion_status':'Rejected'},
+    //   {'uid':14,'pointName':'title3','address':'address3','otherdetails':'content3alscnnklanslknacslk','suggestion_status':'Pending'},
+    //   {'uid':15,'pointName':'title4','address':'address4','otherdetails':'content4alscnlnasklnlacsnl','suggestion_status':'Approved'},
+    // ]
 
     
     const [toggleFilter,setToggleFilter]=useState(false)
