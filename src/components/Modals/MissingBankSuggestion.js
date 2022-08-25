@@ -19,21 +19,20 @@ import { BASE_URL, API_KEY } from "@env";
 import InputField from "../inputComponents/InputField";
 import { useNavigation } from "@react-navigation/native";
 import {
-    
     CheckCircleIcon,
 } from "react-native-heroicons/outline";
 import { createSuggestion } from "../../https/suggestions";
 import * as SecureStore from "expo-secure-store";
 import MapView,{Marker} from "react-native-maps";
-
+import Loader from "../Loader";
+import { flashMessage } from "../../lottie/flashMessage";
 
 
 const MissingBankSuggestion = () => {
-    const[latlon,setLatlon]=useState({
+    const [ latlon, setLatlon] = useState({
         latitude: 28.614788,
 		longitude: 77.359662,
-      })
-	
+    })
 	
 	const [location, setLocation] = useState({
 		latitude: 28.614788,
@@ -41,70 +40,84 @@ const MissingBankSuggestion = () => {
 		latitudeDelta: 0.01,
 		longitudeDelta: 0.01,
 	});
+
     const [confirmLocation, setConfirmLocation] = useState(false);
     const [name, setName] = useState("");
     const [details, setDetails] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
-
+    const [modalError, setModalError] = useState('');
     const focused = useIsFocused();
     const [modalVisible, setModalVisible] = useState(false);
     const [address, setAddress] = useState(
         "B-47 Sector C, Aliganj, Lucknow, Uttar Pradesh, India"
     );
-    const [locationObj,setLocationObj]=useState({latitude:0.0000000,longitude:0.0000000})
     const navigation = useNavigation();
     const [userId,setUserId]=useState("")
     const [accessToken,setAccessToken]=useState("")
     async function getGeocodedAddress() {
-        const location = await Location.getCurrentPositionAsync({});
-        const { latitude, longitude } = location.coords;
+        const res = await Location.getCurrentPositionAsync({});
+        const { latitude, longitude } = res.coords;
         
-        setLocationObj({latitude:latitude,longitude:longitude});
+        setLocation({latitude:latitude,longitude:longitude,latitudeDelta:0.03,longitudeDelta:0.03})
+        setLatlon({latitude:latitude,longitude:longitude})
         const result = await axios.get(
             `${BASE_URL}maps/api/geocode/json?latlng=${
                 latlon.latitude + "," + latlon.longitude
             }&key=${API_KEY}`
         )
+        
         console.log(result.data.results[0].formatted_address);
         setAddress(result.data.results[0].formatted_address);
     }
+
     useEffect(() => {
         
         async function getUserData(){
        
             setAccessToken(await SecureStore.getItemAsync('accessToken'));
             setUserId(await SecureStore.getItemAsync('userId'))
+            getGeocodedAddress();
         }
         
         getUserData();
-    }, [focused]);
+    }, []);
     
     
     const handleRegionChange=()=>{
-        
-        setLatlon({
-            latitude: location.latitude,
-            longitude: location.longitude,
-        })
+        setLocation({latitude:latlon.latitude,longitude:latlon.longitude,latitudeDelta:0.02,longitudeDelta:0.04})
+        // setLatlon({
+        //     latitude: location.latitude,
+        //     longitude: location.longitude,
+        // })
         getGeocodedAddress();
     }
     const handleFormChange = async() => {
       
         try {
-           
-            
+            setIsLoading(true);
             console.log(userId,accessToken)
 
-            const data = await createSuggestion(accessToken, {User:parseInt(userId),pointName: name, address: address, otherdetails: details,latitude:locationObj.latitude,longitude:locationObj.longitude });
+            const data = await createSuggestion(accessToken, {User:parseInt(userId),pointName: name, address: address, otherdetails: details,latitude:location.latitude,longitude:location.longitude });
             console.log(data,'data')
             if(data?.success === true) {
                 setModalVisible(true);
+                flashMessage(data.message, 'success');
+            } else {
+                setModalError(data?.message);
+                flashMessage(data.message, 'danger');
             }
         } catch(err) {
             console.log(err?.response?.data);
+            flashMessage(err?.response?.data, 'danger');
+        } finally {
+            setIsLoading(false);
         }
         
     };
+
+    if(isLoading) return <Loader />
+    else
     return (
         <View>
             <View style={styles.centeredView}>
@@ -129,6 +142,7 @@ const MissingBankSuggestion = () => {
                             </Text> */}
                             <View style={styles.modalButtons}>
                                 <Pressable
+                                    onPress={() => navigation.navigate('Track Request')}
                                     style={[styles.button, styles.trackButton]}
                                 >
                                     <Text style={styles.trackstyle}>
@@ -147,6 +161,10 @@ const MissingBankSuggestion = () => {
                         </View>
                     </View>
                 </Modal>
+
+                {/* {
+                    modalError && <Text>{modalError}</Text>
+                } */}
             </View>
             {!confirmLocation ? (
                 <View style={styles.container}>
@@ -178,10 +196,9 @@ const MissingBankSuggestion = () => {
                             title={"Hold and Drag Me"}
                             icon={"https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png"}
                         
-                            onDragEnd={e => {
-                            
+                            onDragEnd={async (e) => {
                                 setLatlon(e.nativeEvent.coordinate);
-                                console.log(latlon);
+                                getGeocodedAddress();
                             }}
                             />
                             
@@ -232,7 +249,6 @@ const MissingBankSuggestion = () => {
                                     rotateEnabled={true}
                                     showsTraffic={true}
                                 
-                                    onRegionChangeComplete={handleRegionChange}
                                 >
                             <Marker
                             coordinate={latlon}
@@ -293,7 +309,7 @@ const MissingBankSuggestion = () => {
                             onPress={handleFormChange}
                             style={styles.formSubmit}
                         >
-                            <Text style={styles.button}>Confirm Location</Text>
+                            <Text style={styles.button}>Submit Suggestion</Text>
                         </TouchableOpacity>
                         
                     </View>

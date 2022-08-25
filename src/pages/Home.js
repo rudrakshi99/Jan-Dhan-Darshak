@@ -63,7 +63,7 @@ const Home = ({ navigation }) => {
                 }}
             />
             <Drawer.Screen
-                name="Missing Bank Suggestion"
+                name="Missing Place Suggestion"
                 component={MissingBankSuggestion}
                 options={{
                     headerShown: false,

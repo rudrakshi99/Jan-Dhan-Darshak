@@ -15,7 +15,7 @@ import axios from "axios";
 import DetailModal from "./DetailModal";
 import { useNavigation } from "@react-navigation/native";
 
-const PlaceCard = ({ item, location, horizontal }) => {
+const PlaceCard = ({ item, location, horizontal, type }) => {
 	const [show, setShow] = useState(false);
 	const navigation = useNavigation();
 	const [data, setData] = useState([]);
@@ -89,7 +89,7 @@ const PlaceCard = ({ item, location, horizontal }) => {
 			onPress={() => LaunchModal(item.place_id)}
 		>
 			{show ? (
-				<DetailModal item={data} show={show} setShow={setShow} />
+				<DetailModal item={data} type={type} show={show} setShow={setShow} />
 			) : null}
 			<View style={styles.resultItemContainer}>
 				{item.photos ? (

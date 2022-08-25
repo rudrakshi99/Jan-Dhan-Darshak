@@ -168,6 +168,7 @@ const MapBox = () => {
 										<PlaceCard
 											key={index}
 											item={item}
+											type={type}
 											location={location}
 											horizontal={horizontal}
 										/>

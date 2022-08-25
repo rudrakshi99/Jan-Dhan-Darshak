@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
 	lottie: {
 		height: 200,
 		width: 200,
+		zIndex: 50
 	},
 	container: {
 		flex: 1,

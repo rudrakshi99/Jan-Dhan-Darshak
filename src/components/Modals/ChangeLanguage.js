@@ -36,8 +36,8 @@ const ChangeLanguage = () => {
 		"Urdu",
 	];
 
-	function handleSearch() {
-		//
+	const handleSubmit = async () => {
+
 	}
 
 	return (
@@ -118,7 +118,7 @@ const ChangeLanguage = () => {
 			</ScrollView>
 
 			<View style={styles.buttonContainer}>
-				<TouchableOpacity style={styles.buttonBox}>
+				<TouchableOpacity onPress={() => handleSubmit()} style={styles.buttonBox}>
 					<Text style={styles.button}>Confirm Language</Text>
 				</TouchableOpacity>
 			</View>

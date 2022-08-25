@@ -23,7 +23,7 @@ import { useSelector } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { flashMessage } from "../lottie/flashMessage";
 
-const DetailModal = ({ show, setShow, item }) => {
+const DetailModal = ({ show, setShow, item, type }) => {
 	const [index, setIndex] = useState(0);
 	const navigation = useNavigation();
 	const [routes] = useState([
@@ -337,9 +337,34 @@ const DetailModal = ({ show, setShow, item }) => {
 						<View style={styles.headContainer}>
 							<View>
 								<Text style={styles.name}>{item?.name}</Text>
-								<Text style={styles.id}>
+								{/* <Text style={styles.id}>
 									Place ID : #{item?.place_id.toUpperCase().substr(0,12)}
-								</Text>
+								</Text> */}
+								{type.atm === true && <View className='pt-2'>
+									<Text style={styles.id}>
+										<Text className='font-semibold'>Withdrawal Amount :</Text>
+										<Text>₹ {parseInt(Math.random() * 25000) + 10000}</Text>
+									</Text>
+									<Text style={styles.id}>
+									<Text className='font-semibold'>IFSC :</Text>
+									<Text>{parseInt(Math.random() * 999999) + 999999}</Text>
+									</Text>
+								</View>}
+								{type.bank === true && <View className='p-2'>
+									<Text style={styles.id}>
+										<Text className='font-semibold'>IFSC :</Text>
+										<Text>{parseInt(Math.random() * 999999) + 999999}</Text>
+									</Text>
+									<Text style={styles.id}>
+										<Text className='font-semibold'>RTGS : </Text>
+										{(parseInt(Math.random() * 10) < 5) ? <Text className='text-[#34994C]'>Available</Text> : <Text className='text-[#DB0E0E]'>Not Available</Text>}
+									</Text>
+									<Text style={styles.id}>
+										<Text className='font-semibold pr-2'>MICR : </Text>
+										{(parseInt(Math.random() * 10) < 5) ? <Text className='text-[#34994C]'>Available :</Text> :
+										<Text className='text-[#DB0E0E]'>Not Available</Text>}
+									</Text>
+								</View>}
 							</View>
 							<Text
 								style={[
