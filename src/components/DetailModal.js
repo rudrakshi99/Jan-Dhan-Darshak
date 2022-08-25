@@ -20,7 +20,6 @@ import { BASE_URL, API_KEY } from "@env";
 import { TabView, SceneMap } from "react-native-tab-view";
 import { createSavedLocation } from "../https/Locations";
 import { useNavigation } from "@react-navigation/native";
-import { useSelector } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { flashMessage } from "../lottie/flashMessage";
 import { translations } from "../translations/translations";
@@ -48,8 +47,6 @@ const DetailModal = ({ show, setShow, item, type }) => {
 		{ key: "first", title: `${detailpage.overview}` },
 		{ key: "second", title: `${detailpage.review}` },
 	]);
-	const user = useSelector((state) => state.auth.user);
-	console.log(user);
 
 	async function share(name) {
 		try {

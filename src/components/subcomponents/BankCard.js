@@ -9,20 +9,18 @@ import {
 	Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { useSelector } from "react-redux";
 import { deleteSavedLocation } from "../../https/Locations";
 import * as SecureStore from "expo-secure-store";
-import { flashMessage } from '../../lottie/flashMessage'
+import { flashMessage } from "../../lottie/flashMessage";
 
 const BankCard = ({ imgUrl, name, branch, place_id }) => {
 	console.log("place Id :", place_id);
 	const [isLoading, setIsLoading] = useState(false);
-	const user = useSelector((state) => state.auth.user);
 
 	async function handleDelete() {
 		try {
 			setIsLoading(true);
-			const accessToken = await SecureStore.getItemAsync("accessToken");;
+			const accessToken = await SecureStore.getItemAsync("accessToken");
 			const userId = await SecureStore.getItemAsync("userId");
 			const data = await deleteSavedLocation({
 				accessToken: accessToken,
@@ -30,14 +28,14 @@ const BankCard = ({ imgUrl, name, branch, place_id }) => {
 				place_id: place_id,
 			});
 			if (data?.success === true) {
-				flashMessage(data?.message, 'success');
+				flashMessage(data?.message, "success");
 			}
 		} catch (err) {
 			console.log(err);
-			flashMessage(err?.response?.data, 'danger');
+			flashMessage(err?.response?.data, "danger");
 		} finally {
-            setIsLoading(false);
-        }
+			setIsLoading(false);
+		}
 	}
 	console.log(imgUrl, name, branch);
 	return (
@@ -87,7 +85,7 @@ const styles = StyleSheet.create({
 	},
 	rightBox: {
 		marginLeft: -10,
-		width: 200
+		width: 200,
 	},
 	name: {
 		fontSize: 17,

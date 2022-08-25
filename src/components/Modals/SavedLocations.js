@@ -6,7 +6,6 @@ import { getSavedLocations } from "../../https/Locations";
 import BankCard from "../subcomponents/BankCard";
 import HeaderCard from "../subcomponents/HeaderCard";
 import { BASE_URL, API_KEY } from "@env";
-import { useSelector } from "react-redux";
 import * as SecureStore from "expo-secure-store";
 import Loader from "../Loader";
 
@@ -17,7 +16,6 @@ const SavedLocations = () => {
 	const navigation = useNavigation();
 	const [savedLocations, setSavedLocations] = useState([]);
 	const [results, setResults] = useState([]);
-	const user = useSelector((state) => state.auth.user);
 	const [isLoading, setIsLoading] = useState(false);
 	let savedRes = [];
 

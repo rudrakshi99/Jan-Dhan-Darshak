@@ -2,12 +2,8 @@ import React from "react";
 import * as SecureStore from "expo-secure-store";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Provider } from "react-redux";
 import { TailwindProvider } from "tailwindcss-react-native";
 import { LogBox, Text, TextInput } from "react-native";
-import { useDispatch } from "react-redux";
-import { setAuth } from "./src/redux/slices/authSlice";
-import store from "./src/redux/store";
 import "react-native-gesture-handler";
 import * as Localization from "expo-localization";
 import { I18n } from "i18n-js";
@@ -20,7 +16,6 @@ import Splash from "./src/pages/Splash";
 import Otp from "./src/components/Modals/Otp";
 import Directions from "./src/pages/Directions";
 import Navigation from "./src/pages/Navigation";
-import { useSelector } from "react-redux";
 import Onboarding from "./src/pages/Onboarding";
 import LoginScreen from "./src/components/Modals/Login";
 import Profile from "./src/pages/Profile";
@@ -33,11 +28,8 @@ import BankFeedback from "./src/components/Modals/BankFeedback";
 const Stack = createNativeStackNavigator();
 
 function App() {
-	const dispatch = useDispatch();
 	const i18n = new I18n(translations);
 	i18n.locale = Localization.locale;
-	const user = useSelector((state) => state.auth.user);
-	console.log("User is : ", user);
 	React.useEffect(() => {
 		if (Text.defaultProps == null) Text.defaultProps = {};
 		Text.defaultProps.allowFontScaling = false;
@@ -62,8 +54,6 @@ function App() {
 				user.name = await SecureStore.getItemAsync("name");
 				user.phone_number = await SecureStore.getItemAsync("phone");
 				user.id = await SecureStore.getItemAsync("userId");
-				console.log("user from secure store --> ", user);
-				dispatch(setAuth({ user }));
 			} catch (err) {
 				console.log(err);
 			}
@@ -158,10 +148,8 @@ function App() {
 
 export default function AppWrapper() {
 	return (
-		<Provider store={store}>
-			<NavigationContainer>
-				<App />
-			</NavigationContainer>
-		</Provider>
+		<NavigationContainer>
+			<App />
+		</NavigationContainer>
 	);
 }
