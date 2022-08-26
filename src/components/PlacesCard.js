@@ -53,27 +53,27 @@ const PlaceCard = ({ item, location, horizontal, type, rand, type_atm }) => {
 	}
 	const labelData = [
 		{
-			label: "orange",
+			label: "Share Transactions",
 			color: ["rgba(252, 153, 5, 0.79)", "rgba(252, 153, 5, 0.4)"],
 		},
 		{
-			label: "green",
+			label: "Agricultural Purposes",
 			color: ["rgba(52, 153, 76, 0.79)", "rgba(52, 153, 76, 0.4)"],
 		},
 		{
-			label: "yellow",
+			label: "Ecommerce Transactions",
 			color: ["rgba(255, 210, 51, 0.79)", "rgba(255, 210, 51, 0.4)"],
 		},
 		{
-			label: "pink",
+			label: "Women Only",
 			color: ["rgba(255, 0, 168, 0.79)", "rgba(255, 0, 168, 0.4)"],
 		},
 		{
-			label: "white",
+			label: "TATA Group",
 			color: ["rgba(255, 255, 255, 0.79)", "rgba(255, 255, 255, 0.4)"],
 		},
 		{
-			label: "brown",
+			label: "Third Party",
 			color: ["rgba(35, 9, 9, 0.79)", "rgba(35, 9, 9, 0.4)"],
 		},
 	];
@@ -136,7 +136,7 @@ const PlaceCard = ({ item, location, horizontal, type, rand, type_atm }) => {
 						style={styles.button}
 					>
 						<Text style={{ fontSize: 12 }}>
-							{labelData[rand].label} Label
+							{labelData[rand].label}
 						</Text>
 					</LinearGradient>
 				) : (
@@ -320,7 +320,7 @@ const styles = StyleSheet.create({
 		borderTopRightRadius: 99,
 		borderBottomRightRadius: 99,
 		borderTopLeftRadius: 50,
-		width: 100,
+		width: 160,
 		zIndex: 10,
 		backgroundColor: "#FFFFFF",
 	},

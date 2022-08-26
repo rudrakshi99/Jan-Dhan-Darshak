@@ -84,6 +84,7 @@ function VoiceToText({ visible, setVisible, setSearch }) {
 			console.log("Recording started");
 		} catch (err) {
 			console.error("Failed to start recording", err);
+			flashMessage("Error while Recording, please retry", "danger");
 		}
 	}
 
@@ -95,13 +96,12 @@ function VoiceToText({ visible, setVisible, setSearch }) {
 		const uri = recording.getURI();
 		console.log("Recording stopped and stored at", uri);
 		uploadAudio(uri);
-		await recording.prepareToRecordAsync(recordingOptions);
 	}
 
 	async function uploadAudio(uri) {
 		try {
 			const response = await FileSystem.uploadAsync(
-				`https://85df-112-196-62-4.in.ngrok.io/users/voice-to-text/`,
+				`https://8757-210-89-61-4.in.ngrok.io/users/voice-to-text/`,
 				// "http://192.168.43.236:5000/speech-to-text",
 				uri,
 				{
