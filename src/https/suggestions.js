@@ -12,6 +12,7 @@ export const createSuggestion = async (accessToken,body ) => {
     console.log(data, 'create suggestions');
     return data;
 }
+
 export const SuggestionByUser = async (accessToken,body ) => {
     console.log(body,'suggestion')
     const config = {
@@ -25,3 +26,10 @@ export const SuggestionByUser = async (accessToken,body ) => {
     return data;
 }
 
+export const getDatesOfCalendar = async (code) => {
+    console.log(code,'calendar')
+    console.log(`/financialpoint/?state=${code}`, 'url');
+    const { data } = await api.get(`/financialpoint/?state=${code}`);
+    console.log(data, 'dates calendar');
+    return data;
+}

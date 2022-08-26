@@ -22,36 +22,24 @@ const ChangeLanguage = () => {
 	const [search, setSearch] = useState("");
 	const [listening, setListening] = useState(false);
 	const [currentLanguage, setCurrentLanguage] = useState([]);
-	const [languageToken,setLanguageToken]= useState('')
+	const [languageToken, setLanguageToken] = useState("");
 	const languages = [
-		"Assamese",
-		"Bangla",
 		"English",
-		"Gujarati",
 		"Hindi",
 		"Kannada",
-		"Malayalam",
-		"Marathi",
-		"Oriya",
 		"Punjabi",
 		"Tamil",
 		"Telugu",
 		"Urdu",
 	];
 
-	async function handleSearch() {
-		await SecureStore.setItemAsync("lan", languageToken);
-		flashMessage('Language Changed Successfully! ', 'success');
-		setTimeout(() => {
-			navigation.push("Home");
-		} , 1000);
-	}
+	async function handleSearch() {}
 
 	return (
 		<View style={styles.container}>
 			<VoiceToText visible={listening} setVisible={setListening} />
 			<View style={styles.innerContainer}>
-				<TouchableOpacity onPress={() => navigation.navigate('Find')}>
+				<TouchableOpacity onPress={() => navigation.navigate("Find")}>
 					<ArrowNarrowLeftIcon
 						style={styles.iconHeader}
 						size={30}
@@ -67,7 +55,7 @@ const ChangeLanguage = () => {
 				<Text></Text>
 			</View>
 
-			<View style={styles.filterWrapper}>
+			{/* <View style={styles.filterWrapper}>
 				<TextInput
 					value={search}
 					onChangeText={(val) => {
@@ -94,7 +82,7 @@ const ChangeLanguage = () => {
 						color="#8E8E8E"
 					/>
 				</TouchableOpacity>
-			</View>
+			</View> */}
 
 			<ScrollView
 				showsHorizontalScrollIndicator={false}
@@ -105,17 +93,43 @@ const ChangeLanguage = () => {
 					{languages.map((item, i) => {
 						return (
 							<TouchableOpacity
-								onPress={() => {setLanguageToken(item)}}
+								onPress={() => {
+									setLanguageToken(item);
+								}}
 								key={i}
-								style={[styles.languageBox, styles.borderColor]}
+								style={
+									languageToken !== item
+										? [
+												styles.languageBox,
+												styles.borderBlack,
+										  ]
+										: [
+												styles.languageBox,
+												styles.borderColor,
+										  ]
+								}
 							>
 								<Text
-									style={languageToken !== item ? [styles.language1] : [styles.language1,styles.colorBlue]}
+									style={
+										languageToken !== item
+											? styles.language1
+											: [
+													styles.language1,
+													styles.colorBlue,
+											  ]
+									}
 								>
 									{item}
 								</Text>
 								<Text
-									style={languageToken !== item ? styles.language2 : [styles.language1,styles.colorBlue]}
+									style={
+										languageToken !== item
+											? styles.language2
+											: [
+													styles.language1,
+													styles.colorBlue,
+											  ]
+									}
 								>
 									{item}
 								</Text>
@@ -126,7 +140,10 @@ const ChangeLanguage = () => {
 			</ScrollView>
 
 			<View style={styles.buttonContainer}>
-				<TouchableOpacity style={styles.buttonBox} onPress={handleSearch}>
+				<TouchableOpacity
+					style={styles.buttonBox}
+					onPress={handleSearch}
+				>
 					<Text style={styles.button}>Confirm Language</Text>
 				</TouchableOpacity>
 			</View>
@@ -148,12 +165,14 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "space-between",
+		marginBottom: 25,
 	},
 	headingBox: {
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "center",
 		flexDirection: "column",
+		marginTop: 30,
 	},
 	heading: {
 		fontSize: 26,

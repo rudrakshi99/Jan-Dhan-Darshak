@@ -3,6 +3,7 @@ import * as SecureStore from "expo-secure-store";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { TailwindProvider } from "tailwindcss-react-native";
+import { useNavigation } from "@react-navigation/native";
 import { LogBox, Text, TextInput } from "react-native";
 import "react-native-gesture-handler";
 import * as Localization from "expo-localization";
@@ -23,18 +24,26 @@ import FlashMessage from "react-native-flash-message";
 
 import { translations } from "./translations";
 import BankFeedback from "./src/components/Modals/BankFeedback";
+import BankFaqs from "./src/pages/BankFaq";
 
 const Stack = createNativeStackNavigator();
 
 function App() {
 	const i18n = new I18n(translations);
+	const navigation = useNavigation();
 	i18n.locale = Localization.locale;
 	React.useEffect(() => {
 		if (Text.defaultProps == null) Text.defaultProps = {};
 		Text.defaultProps.allowFontScaling = false;
 		if (TextInput.defaultProps == null) TextInput.defaultProps = {};
 		TextInput.defaultProps.allowFontScaling = false;
-
+		async function isFirstTime() {
+			const x = await SecureStore.getItemAsync("isFirstTime");
+			if (x == null) {
+				navigation.navigate("Onboarding");
+			}
+		}
+		isFirstTime();
 		async function checkAuth() {
 			try {
 				const token = await SecureStore.getItemAsync("accessToken");
@@ -128,6 +137,13 @@ function App() {
 				<Stack.Screen
 					name="Profile"
 					component={Profile}
+					options={{
+						headerShown: false,
+					}}
+				/>
+				<Stack.Screen
+					name="BankFaqs"
+					component={BankFaqs}
 					options={{
 						headerShown: false,
 					}}

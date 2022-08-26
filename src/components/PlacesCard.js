@@ -107,7 +107,7 @@ const PlaceCard = ({ item, location, horizontal, type, rand, type_atm }) => {
 		<Pressable
 			style={[
 				{
-					marginHorizontal: 6,
+					marginHorizontal: 10,
 					backgroundColor: "#fff",
 					borderRadius: 10,
 					elevation: 5,
@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		justifyContent: "flex-start",
 		alignItems: "center",
-		width: Dimensions.get("window").width / 1.4,
+		width: Dimensions.get("window").width / 1.2,
 		padding: 12,
 		paddingTop: 0,
 		marginTop: -1,
@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
 		fontWeight: "700",
 		color: "#000",
 		marginBottom: 3,
-		width: Dimensions.get("window").width / 2.7,
+		width: Dimensions.get("window").width / 2.5,
 	},
 	branch: {
 		fontSize: 14,

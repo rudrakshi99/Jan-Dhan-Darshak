@@ -23,13 +23,36 @@ import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { flashMessage } from "../lottie/flashMessage";
 import { translations } from "../translations/translations";
+import Icon1 from "react-native-vector-icons/FontAwesome5";
+import Icon2 from "react-native-vector-icons/MaterialIcons";
+import { Calendar } from 'react-native-calendars';
+import { getDatesOfCalendar } from "../https/suggestions";
+import { ArrowNarrowLeftIcon } from "react-native-heroicons/outline";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+
 const DetailModal = ({ show, setShow, item, type }) => {
 	const [index, setIndex] = useState(0);
 	const navigation = useNavigation();
+	const [modalVisible, setModalVisible] = useState(false);
+	const [modalReminder, setModalReminder] = useState(false);
 	const [lan, setLan] = useState("");
 	const [detailpage, setDetailpage] = useState(
 		translations["English"].detail_page
 	);
+	const [holidays, setHolidays] = useState({});
+	const [holidayList, setHolidayList] = useState([]);
+
+	const [isDatePickerVisible, setDatePickerVisibility] = useState(true);
+	const [time,setTime] = useState('Set Time');
+
+	const handleConfirm = (date) => {
+		date=date.toString();
+		const newDate=date.substring(date.indexOf(':')-2,date.lastIndexOf(':'));
+		console.log("A date has been picked: ", newDate);
+		setTime(newDate);
+		setDatePickerVisibility(false);
+		hideDatePicker();
+	};
 
 	useEffect(() => {
 		{
@@ -43,6 +66,22 @@ const DetailModal = ({ show, setShow, item, type }) => {
 			getLan();
 		}
 	}, []);
+
+	let markDates = {};
+	useEffect(() => {
+		const getDate = async () => {
+			const ans = await getDatesOfCalendar('PB');
+			if(ans?.success === true) {
+				setHolidayList(ans.data);
+				ans.data.map(item => (
+					markDates[item.holiday] = { selected: true, selectedColor: '#8e8e8e' }
+				))
+				setHolidays(markDates);
+			}
+		}
+		getDate();
+	}, []);
+	
 	const [routes] = useState([
 		{ key: "first", title: `${detailpage.overview}` },
 		{ key: "second", title: `${detailpage.review}` },
@@ -101,6 +140,13 @@ const DetailModal = ({ show, setShow, item, type }) => {
 			location: location,
 			place_id: place_id,
 		});
+	}
+
+	const handleReminder = async () => {
+		flashMessage('Reminder has been setted successfully', 'success');
+		setTimeout(() => {
+			navigation.push('Home');
+		}, 1000);
 	}
 
 	const FirstRoute = () => {
@@ -392,7 +438,7 @@ const DetailModal = ({ show, setShow, item, type }) => {
 					<Icon name="keyboard-backspace" size={25} color="black" />
 				</TouchableOpacity>
 				<View style={styles.detailContainer}>
-					<View style={[{ paddingHorizontal: 30 }]}>
+					<View style={[{ paddingHorizontal: 16 }]}>
 						<View style={styles.headContainer}>
 							<View>
 								<Text style={styles.name}>{item?.name}</Text>
@@ -490,6 +536,9 @@ const DetailModal = ({ show, setShow, item, type }) => {
 									? `${detailpage.open_now}`
 									: `${detailpage.closed_now}`}
 							</Text>
+
+							<TouchableOpacity onPress={() => setModalVisible(true)} className='mr-2'><Icon1 name="calendar" size={20} color="#2C81E0" /></TouchableOpacity>
+							<TouchableOpacity onPress={() => setModalReminder(true)}><Icon2 name="notifications" size={20} color="#2C81E0" /></TouchableOpacity>
 						</View>
 
 						<View style={styles.buttonRow}>
@@ -617,11 +666,134 @@ const DetailModal = ({ show, setShow, item, type }) => {
 					</View>
 				</View>
 			</View>
+
+			{
+                modalVisible ? (
+					
+                    <View style={styles.centeredView}>
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={modalVisible}
+						>
+							<View style={styles.centeredView1}>
+								<View className='flex-row items-center mt-3 mb-3'>
+									<TouchableOpacity onPress={() => setModalVisible(!modalVisible)} className='-ml-6'>
+										<ArrowNarrowLeftIcon size={30} color="#101010" />
+									</TouchableOpacity>
+									<Text className='text-[19px] font-semibold ml-12 text-[#101010]'>Bank Holidays Calendar</Text>
+									<Text></Text>
+								</View>
+								<View className='w-[100%]'>
+									<Calendar
+										markedDates={holidays}
+									/>
+								</View>
+
+								<Text className='text-[19px] font-semibold text-left mt-2 mb-2 text-[#413838]'>Holidays List</Text>
+								<ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
+									{
+										holidayList?.filter(item => !item.holiday_reason.includes('Sunday')).filter(item => !item.holiday_reason.includes('Saturday')).map(list => (
+											<View className='w-42 flex-row bg-[#fff] items-center space-x-6 space-y-2 mb-4'>
+												<Text className='text-left text-[#fff] bg-[#8E8E8E] rounded-3xl p-2.5 m-2'>{list.holiday.substring(list.holiday.lastIndexOf('-')+1, list.holiday.length)}</Text>
+												<Text className='text-[#8E8E8E] text-[16px]'>{list.holiday_reason}</Text>
+											</View>
+										))
+									}
+								</ScrollView>
+							</View>
+                        </Modal>
+                    </View>
+					
+                ) : null
+            }
+
+
+			{
+                modalReminder ? (
+					
+                    <View style={styles.centeredView}>
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={modalReminder}
+						>
+							<View style={styles.centeredView2}>
+								<View className='flex-row items-center mt-3 mb-3'>
+									<TouchableOpacity onPress={() => setModalReminder(!modalReminder)} className='-ml-20'>
+										<ArrowNarrowLeftIcon size={30} color="#101010" />
+									</TouchableOpacity>
+									<Text className='text-[19px] font-semibold ml-12 text-[#101010]'>Set Reminder</Text>
+									<Text></Text>
+								</View>
+								<View className='w-[100%]'>
+									<Calendar
+										onChange={(range) => console.log(range)}
+										startDate={new Date(2022, 3, 30)}
+  										endDate={new Date(2018, 4, 5)}
+										markedDates={holidays}
+									/>
+								</View>
+
+								<TouchableOpacity
+									onPress={() => setDatePickerVisibility(true)}
+									className=' mx-8 mt-6 p-3 w-72 rounded-lg flex-row items-center'
+								>
+									<View className='flex-1 text-center'>
+										<Text className='flex-1 border text-center text-[28px] text-[#2C81E0]'>{time}</Text>
+									</View>
+								</TouchableOpacity>
+								<TouchableOpacity
+									onPress={() => handleReminder()}
+									className='bg-[#2C81E0] mx-8 mt-6 p-3 w-72 rounded-lg flex-row items-center'
+								>
+									<Text className='flex-1 text-white font-bold text-lg text-center'>Save</Text>
+								</TouchableOpacity>
+								<ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
+									<DateTimePickerModal
+											isVisible={isDatePickerVisible}
+											mode="time"
+											onConfirm={handleConfirm}
+											onCancel={() => setDatePickerVisibility(false)}
+										/>
+								</ScrollView>
+								
+							</View>
+                        </Modal>
+                    </View>
+					
+                ) : null
+            }
+
 		</Modal>
 	);
 };
 
 const styles = StyleSheet.create({
+	centeredView: {
+        display: 'flex',
+        justifyContent: "center",
+        alignItems: "center",
+		top: 200,
+    },
+	centeredView1: {
+        backgroundColor: '#F9F9F9',
+        display: 'flex',
+		flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+		top: 100,
+		margin: 2
+    },
+	centeredView2: {
+        backgroundColor: '#F9F9F9',
+        display: 'flex',
+		flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+		top: 200,
+		margin: 2
+    },
 	container: {
 		width: Dimensions.get("window").width,
 		backgroundColor: "#fff",
@@ -654,7 +826,7 @@ const styles = StyleSheet.create({
 	name: {
 		fontSize: 20,
 		fontWeight: "700",
-		width: Dimensions.get("window").width / 2,
+		width: Dimensions.get("window").width / 2.1,
 	},
 	id: {
 		color: "#101010",
@@ -663,8 +835,9 @@ const styles = StyleSheet.create({
 	openStatus: {
 		fontSize: 15,
 		fontWeight: "500",
-		paddingVertical: 4,
-		paddingHorizontal: 15,
+		paddingVertical: 5,
+		paddingHorizontal: 10,
+		marginRight: 8,
 		borderRadius: 8,
 	},
 	buttonRow: {

@@ -12,6 +12,7 @@
   "dependencies": {
     "@expo-google-fonts/inter": "^0.2.2",
     "@react-native-community/clipboard": "^1.5.1",
+    "@react-native-community/datetimepicker": "6.1.2",
     "@react-native-community/geolocation": "^2.1.0",
     "@react-navigation/drawer": "^6.4.3",
     "@react-navigation/native": "^6.0.11",
@@ -46,6 +47,7 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-native": "^0.68.2",
+    "react-native-calendars": "^1.1288.2",
     "react-native-dotenv": "^3.3.1",
     "react-native-flash-message": "^0.3.1",
     "react-native-gesture-handler": "~2.2.1",
@@ -53,6 +55,7 @@
     "react-native-maps": "0.30.2",
     "react-native-maps-directions": "^1.9.0",
     "react-native-modal": "^13.0.1",
+    "react-native-modal-datetime-picker": "^13.1.2",
     "react-native-pager-view": "5.4.15",
     "react-native-phone-number-input": "^2.1.0",
     "react-native-picker-select": "^8.0.4",

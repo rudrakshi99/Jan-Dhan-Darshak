@@ -1,5 +1,5 @@
 import ViewPager from "react-native-pager-view";
-import React, { useRef,useState } from "react";
+import React, { useRef, useState } from "react";
 import { View, StyleSheet, Image, Dimensions, Text } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -36,7 +36,6 @@ function Onboarding() {
 		getFirstTime();
 	}, []);
 
-	
 	const pagerRef = useRef(null);
 	const navigation = useNavigation();
 
@@ -61,7 +60,7 @@ function Onboarding() {
 					justifyContent: "flex-end",
 					alignItems: "flex-end",
 					paddingHorizontal: 20,
-					marginTop: 20,
+					marginTop: 30,
 				}}
 			>
 				<TouchableOpacity
@@ -74,7 +73,7 @@ function Onboarding() {
 					<Text
 						style={{
 							color: "#2C81E0",
-							fontSize: 20,
+							fontSize: 16,
 							fontWeight: "600",
 						}}
 					>
