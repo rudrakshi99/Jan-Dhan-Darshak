@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
 		marginTop: 12,
 		alignItems: "center",
 		justifyContent: "space-between",
+		paddingTop: 30,
 	},
 	iconHeader: {},
 	heading: {

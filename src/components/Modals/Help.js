@@ -46,7 +46,7 @@ const Help = () => {
 				!rating
 			) {
 				setError("All fields are required !");
-				flashMessage('All fields are required !', 'danger');
+				flashMessage("All fields are required !", "danger");
 				return;
 			}
 			console.log(phone_number, " ", email, " ", message, " ", rating);
@@ -62,147 +62,152 @@ const Help = () => {
 			console.log(data, "response feedback");
 			if (data.success === true) {
 				setResponse(data.message);
-				flashMessage(data?.message, 'success');
+				flashMessage(data?.message, "success");
 			}
 		} catch (err) {
 			console.log(err?.response?.data);
 			setError(err?.response?.data);
-			flashMessage(err?.response?.data, 'danger');
+			flashMessage(err?.response?.data, "danger");
 		} finally {
-            setIsLoading(false);
-        }
+			setIsLoading(false);
+		}
 	};
 
-	if(isLoading) return <Loader />
-    else
-	return (
-		<View style={styles.container}>
-			<View>
-				<View style={styles.innerContainer}>
-					<TouchableOpacity onPress={() => navigation.navigate('Find')}>
-						<ArrowNarrowLeftIcon
-							style={styles.iconHeader}
-							size={30}
-							color="#101010"
-						/>
-					</TouchableOpacity>
-					<View style={styles.headingBox}>
-						<Text style={styles.heading}>Feedback</Text>
-						<Text style={styles.smallDesc}>
-							This will be shared with the Development Team
-						</Text>
-					</View>
-					<Text></Text>
-				</View>
-				<View style={styles.divider}></View>
-				{!response ? (
-					<ScrollView
-						style={styles.forms}
-						showsHorizontalScrollIndicator={false}
-						showsVerticalScrollIndicator={false}
-					>
-						<Text className='text-[16.5px] font-semibold text-[#e35944] ml-2 mt-2 mb-2'>{error}</Text>
-						<InputField
-							inputname="Phone number"
-							keyboardType="phone-pad"
-							help={true}
-							name={phone_number}
-							onChangeText={(e) => {
-								setPhone_number(e);
-							}}
-							placeholder="Phone number"
-						></InputField>
-						<InputField
-							inputname="Name"
-							help={true}
-							keyboardType="default"
-							name={name}
-							onChangeText={(e) => {
-								setName(e);
-							}}
-							placeholder="Name"
-						></InputField>
-						<InputField
-							inputname="Email"
-							help={true}
-							keyboardType="email-address"
-							name={email}
-							onChangeText={(e) => {
-								setEmail(e);
-							}}
-							placeholder="Email address"
-						></InputField>
-						<Text style={styles.inputLabel}>Topic</Text>
-						<View style={styles.borderGet}>
-							<RNPickerSelect
-								onValueChange={(value) => setTopic(value)}
-								items={[
-									{
-										label: "Content Issue",
-										value: "content_issue",
-									},
-									{
-										label: "Design Issue",
-										value: "design_issue",
-									},
-									{
-										label: "Server Issue",
-										value: "server_issue",
-									},
-									{ label: "Bug", value: "bug" },
-								]}
+	if (isLoading) return <Loader />;
+	else
+		return (
+			<View style={styles.container}>
+				<View style={{ paddingTop: 30 }}>
+					<View style={styles.innerContainer}>
+						<TouchableOpacity
+							onPress={() => navigation.navigate("Find")}
+						>
+							<ArrowNarrowLeftIcon
+								style={styles.iconHeader}
+								size={30}
+								color="#101010"
 							/>
+						</TouchableOpacity>
+						<View style={styles.headingBox}>
+							<Text style={styles.heading}>Feedback</Text>
+							<Text style={styles.smallDesc}>
+								This will be shared with the Development Team
+							</Text>
 						</View>
-						{rating <= 4 && (
-							<InputField
-								multi={true}
-								showMicro={false}
-								inputname="Message"
-								name={message}
-								onChangeText={(e) => {
-									setMessage(e);
-								}}
-								placeholder="Please write your feedback here..."
-							></InputField>
-						)}
-
-						<Text style={styles.inputLabel}>Rating</Text>
-						<AirbnbRating
-							onFinishRating={(rating) => ratingCompleted(rating)}
-							reviews={[
-								"Poor",
-								"Fine",
-								"Good",
-								"Very good",
-								"Excellent",
-							]}
-							defaultRating={5}
-							showRating={false}
-							size={36}
-						/>
-						<Text style={styles.marginGet}></Text>
-					</ScrollView>
-				) : (
-					<View style={styles.responseView}>
-						<Text style={styles.responseText}>{response}</Text>
+						<Text></Text>
 					</View>
-				)}
-				{!response && (
-					<TouchableOpacity
-						onPress={() => {
-							// logout();
-							handleSubmit();
-						}}
-						style={styles.buttonBox}
-					>
-						<Text style={styles.button}>Submit</Text>
-					</TouchableOpacity>
-				)}
-			</View>
-			{/* ) : null} */}
+					<View style={styles.divider}></View>
+					{!response ? (
+						<ScrollView
+							style={styles.forms}
+							showsHorizontalScrollIndicator={false}
+							showsVerticalScrollIndicator={false}
+						>
+							<Text className="text-[16.5px] font-semibold text-[#e35944] ml-2 mt-2 mb-2">
+								{error}
+							</Text>
+							<InputField
+								inputname="Phone number"
+								keyboardType="phone-pad"
+								help={true}
+								name={phone_number}
+								onChangeText={(e) => {
+									setPhone_number(e);
+								}}
+								placeholder="Phone number"
+							></InputField>
+							<InputField
+								inputname="Name"
+								help={true}
+								keyboardType="default"
+								name={name}
+								onChangeText={(e) => {
+									setName(e);
+								}}
+								placeholder="Name"
+							></InputField>
+							<InputField
+								inputname="Email"
+								help={true}
+								keyboardType="email-address"
+								name={email}
+								onChangeText={(e) => {
+									setEmail(e);
+								}}
+								placeholder="Email address"
+							></InputField>
+							<Text style={styles.inputLabel}>Topic</Text>
+							<View style={styles.borderGet}>
+								<RNPickerSelect
+									onValueChange={(value) => setTopic(value)}
+									items={[
+										{
+											label: "Content Issue",
+											value: "content_issue",
+										},
+										{
+											label: "Design Issue",
+											value: "design_issue",
+										},
+										{
+											label: "Server Issue",
+											value: "server_issue",
+										},
+										{ label: "Bug", value: "bug" },
+									]}
+								/>
+							</View>
+							{rating <= 4 && (
+								<InputField
+									multi={true}
+									showMicro={false}
+									inputname="Message"
+									name={message}
+									onChangeText={(e) => {
+										setMessage(e);
+									}}
+									placeholder="Please write your feedback here..."
+								></InputField>
+							)}
 
-		</View>
-	);
+							<Text style={styles.inputLabel}>Rating</Text>
+							<AirbnbRating
+								onFinishRating={(rating) =>
+									ratingCompleted(rating)
+								}
+								reviews={[
+									"Poor",
+									"Fine",
+									"Good",
+									"Very good",
+									"Excellent",
+								]}
+								defaultRating={5}
+								showRating={false}
+								size={36}
+							/>
+							<Text style={styles.marginGet}></Text>
+						</ScrollView>
+					) : (
+						<View style={styles.responseView}>
+							<Text style={styles.responseText}>{response}</Text>
+						</View>
+					)}
+					{!response && (
+						<TouchableOpacity
+							onPress={() => {
+								// logout();
+								handleSubmit();
+							}}
+							style={styles.buttonBox}
+						>
+							<Text style={styles.button}>Submit</Text>
+						</TouchableOpacity>
+					)}
+				</View>
+				{/* ) : null} */}
+			</View>
+		);
 };
 
 export default Help;
@@ -221,18 +226,21 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "space-between",
+		paddingTop: 30,
 	},
 	headingBox: {
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "center",
 		flexDirection: "column",
+		paddingTop: 30,
 	},
 	heading: {
 		fontSize: 26,
 		fontWeight: "600",
 		color: "#101010",
 		paddingBottom: 5,
+		marginTop: 30,
 	},
 	smallDesc: {
 		color: "#101010",
