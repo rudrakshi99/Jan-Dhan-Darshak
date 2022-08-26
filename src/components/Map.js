@@ -4,6 +4,7 @@ import { useIsFocused } from "@react-navigation/native";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { useRoute } from "@react-navigation/native";
+import { flashMessage } from "../lottie/flashMessage";
 
 const Map = ({ markers, missingBank }) => {
 	const route = useRoute();
@@ -21,7 +22,7 @@ const Map = ({ markers, missingBank }) => {
 			let { status } = await Location.requestForegroundPermissionsAsync();
 			if (status !== "granted") {
 				console.log("Permission to access location was denied");
-				setErrorMsg("Permission to access location was denied");
+				flashMessage("Permission to access location was denied", "danger");
 				return;
 			}
 			const location = await Location.getCurrentPositionAsync({});
@@ -34,8 +35,13 @@ const Map = ({ markers, missingBank }) => {
 				latitudeDelta: 0.03,
 				longitudeDelta: 0.04,
 			});
+			
 		}
 		getLocation();
+		return()=>{
+			setData([]);
+			setLocation({});
+		}
 	}, [focused]);
 	return (
 		<View
