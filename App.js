@@ -24,6 +24,7 @@ import FlashMessage from "react-native-flash-message";
 
 import { translations } from "./translations";
 import BankFeedback from "./src/components/Modals/BankFeedback";
+import BankFaqs from "./src/pages/BankFaq";
 
 const Stack = createNativeStackNavigator();
 
@@ -136,6 +137,13 @@ function App() {
 				<Stack.Screen
 					name="Profile"
 					component={Profile}
+					options={{
+						headerShown: false,
+					}}
+				/>
+				<Stack.Screen
+					name="BankFaqs"
+					component={BankFaqs}
 					options={{
 						headerShown: false,
 					}}
