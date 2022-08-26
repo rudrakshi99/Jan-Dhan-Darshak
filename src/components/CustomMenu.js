@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { View, Image, Dimensions, StyleSheet, Text, TouchableOpacity, Modal } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Icon1 from "react-native-vector-icons/MaterialIcons";
+import Icon2 from "react-native-vector-icons/Entypo";
 import {
     DrawerContentScrollView,
     DrawerItemList,
@@ -55,10 +56,16 @@ const CustomMenu = (props) => {
             </DrawerContentScrollView>
             <View className='h-1 bg-[#EAEAEA]'></View>
             {customer ? ( 
-                <TouchableOpacity onPress={() => setModalVisible(true)} className='flex-row items-center mb-4 mt-2 justify-end'>
-                    <Icon1 name="logout" size={12} color="#DB0E0E" />
-                    <Text className='text-right pl-[3px] pr-4 text-[12px] font-semibold text-[#DB0E0E]'>Logout</Text>
-                </TouchableOpacity>
+                <View className='flex-row items-center justify-between ml-4'>
+                    <TouchableOpacity onPress={() => navigation.navigate('SavePrivateInfo')} className='flex-row items-center mb-4 mt-2 justify-end'>
+                        <Icon2 name="lock" size={12} color="#34994C" />
+                        <Text className='text-right pl-[3px] pr-4 text-[12px] font-semibold text-[#34994C]'>Info Vault</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => setModalVisible(true)} className='flex-row items-center mb-4 mt-2 justify-end'>
+                        <Icon1 name="logout" size={12} color="#DB0E0E" />
+                        <Text className='text-right pl-[3px] pr-4 text-[12px] font-semibold text-[#DB0E0E]'>Logout</Text>
+                    </TouchableOpacity>
+                </View>
             ) : (
                 <TouchableOpacity onPress={() => navigation.navigate('Login')} className='flex-row items-center mb-4 mt-2 justify-end'>
                     <Icon1 name="login" size={12} color="#2C81E0" />

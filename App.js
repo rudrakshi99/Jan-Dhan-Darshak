@@ -27,6 +27,7 @@ import BankFeedback from "./src/components/Modals/BankFeedback";
 import BankFaqs from "./src/pages/BankFaq";
 import Bankform from "./src/components/Modals/Bankform";
 import ViewPDF from "./src/components/Modals/ViewPDF";
+import SavePrivateInfo from "./src/components/Modals/SavePrivateInfo";
 
 const Stack = createNativeStackNavigator();
 
@@ -160,6 +161,13 @@ function App() {
 				<Stack.Screen
 					name="ViewPDF"
 					component={ViewPDF}
+					options={{
+						headerShown: false,
+					}}
+				/>
+				<Stack.Screen
+					name="SavePrivateInfo"
+					component={SavePrivateInfo}
 					options={{
 						headerShown: false,
 					}}

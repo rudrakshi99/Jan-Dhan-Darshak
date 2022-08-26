@@ -73,7 +73,12 @@ const MissingBankSuggestion = () => {
 
 	useEffect(() => {
 		async function getUserData() {
-			setAccessToken(await SecureStore.getItemAsync("accessToken"));
+			const token = await SecureStore.getItemAsync("accessToken");
+			if(!token) {
+				navigation.navigate('Login');
+			}
+			setAccessToken(token);
+
 			setUserId(await SecureStore.getItemAsync("userId"));
 			getGeocodedAddress();
 		}
