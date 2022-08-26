@@ -1,3 +1,4 @@
+from jan_dhan_darshak.financial_point.utils import allsundays, get_saturdays
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from jan_dhan_darshak.core.utils import response_payload
 from rest_framework.views import APIView
@@ -8,8 +9,6 @@ from jan_dhan_darshak.financial_point.api.serializers import (
 )
 from jan_dhan_darshak.financial_point.models import FinancialPointHoliday
 from datetime import datetime
-
-
 
 
 class financial_point_holiday_view(APIView):
@@ -29,6 +28,19 @@ class financial_point_holiday_view(APIView):
                 }
                 response.append(detail)
 
+            for d in allsundays(2022):
+                detail = {
+                    "holiday": d.strftime("%Y-%m-%d"),
+                    "holiday_reason": "Sunday",
+                }
+                response.append(detail)
+
+            for d in get_saturdays(2022):
+                detail = {
+                    "holiday": d.strftime("%Y-%m-%d"),
+                    "holiday_reason": "Saturday",
+                }
+                response.append(detail)
             return Response(
                 response_payload(
                     success=True,
