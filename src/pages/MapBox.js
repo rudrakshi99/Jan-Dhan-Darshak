@@ -52,11 +52,11 @@ const MapBox = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [horizontal, setHorizontal] = useState(true);
 	function generateString() {
-		if (type.atm) return "atm";
+		if (type.postOffice) return "post%20office";
 		if (type.bank) return "bank";
 		if (type.crc) return "crc";
 		if (type.bankMitra) return "bank%20mitra";
-		else return "post%20office";
+		else return "atm";
 	}
 	console.log("Filter Object --> ", filter);
 	useEffect(() => {
@@ -120,6 +120,15 @@ const MapBox = () => {
 				setLanchange((prev) => !prev);
 				languageToggle();
 			};
+			if (
+				!type.atm ||
+				!type.bank ||
+				!type.bankMitra ||
+				!type.crc ||
+				!type.postOffice
+			) {
+				setType({ ...initialState, atm: true });
+			}
 			getLan();
 		}
 	}, []);

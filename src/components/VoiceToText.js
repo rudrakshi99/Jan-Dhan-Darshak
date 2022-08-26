@@ -84,6 +84,7 @@ function VoiceToText({ visible, setVisible, setSearch }) {
 			console.log("Recording started");
 		} catch (err) {
 			console.error("Failed to start recording", err);
+			flashMessage("Error while Recording, please retry", "danger");
 		}
 	}
 
@@ -95,7 +96,6 @@ function VoiceToText({ visible, setVisible, setSearch }) {
 		const uri = recording.getURI();
 		console.log("Recording stopped and stored at", uri);
 		uploadAudio(uri);
-		await recording.prepareToRecordAsync(recordingOptions);
 	}
 
 	async function uploadAudio(uri) {
