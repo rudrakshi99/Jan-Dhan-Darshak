@@ -37,6 +37,10 @@ urlpatterns = [
     path("feedback/", include("jan_dhan_darshak.feedback.urls", namespace="feedback")),
     path("bank/", include("jan_dhan_darshak.bank.urls", namespace="bank")),
     path(
+        "financialpoint/",
+        include("jan_dhan_darshak.financial_point.urls", namespace="financial_point"),
+    ),
+    path(
         "savedlocations/",
         include("jan_dhan_darshak.saved_locations.urls", namespace="saved_locations"),
     ),
