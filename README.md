@@ -103,6 +103,17 @@ $ expo build:ios
   </tr>
 </tbody></table>
 
+> Mentors
+
+| S.No. | Mentor Name | About | GitHub Username |
+| --------------- | --------------- | --------------- | --------------- |
+| 1. | Archit kaushik | SDE-2 [@amazon](https://github.com/amzn)  | [@architkshk](https://github.com/architkshk)  |
+| 2. | Ajeet Kumar | Product Designer [@juspay](https://github.com/juspay) | [@kumarajeet024](https://www.behance.net/kumarajeet024)  |
+
+<img src="https://avatars.githubusercontent.com/u/5001704?v=4" width=150px height=150px /></a> 
+<img src="https://user-images.githubusercontent.com/55245862/186837204-5c6b46bb-0aa6-431e-b6ae-9958217b4a19.jpeg" width=150px height=150px /></a>
+
+
 # License :memo:
 
 This project follows the [MIT License](https://choosealicense.com/licenses/mit/).
