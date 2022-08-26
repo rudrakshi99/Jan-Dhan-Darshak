@@ -68,8 +68,6 @@ const MissingBankSuggestion = () => {
 				latlon.latitude + "," + latlon.longitude
 			}&key=${API_KEY}`
 		);
-
-		console.log(result.data.results[0].formatted_address);
 		setAddress(result.data.results[0].formatted_address);
 	}
 
@@ -84,17 +82,30 @@ const MissingBankSuggestion = () => {
 	}, []);
 
 	const handleRegionChange = () => {
-		setLocation({
-			latitude: latlon.latitude,
-			longitude: latlon.longitude,
-			latitudeDelta: 0.02,
-			longitudeDelta: 0.04,
-		});
+		// setLocation({
+		// 	latitude: latlon.latitude,
+		// 	longitude: latlon.longitude,
+		// 	latitudeDelta: 0.02,
+		// 	longitudeDelta: 0.04,
+		// });
+		axios.get(
+			`${BASE_URL}maps/api/geocode/json?latlng=${
+				latlon.latitude + "," + latlon.longitude
+			}&key=${API_KEY}`)
+		.then((res) => {
+			console.log(res.data.results[0].formatted_address);
+			setAddress(res.data.results[0].formatted_address);
+		}).catch((err) => {
+			console.log(err);
+		})
+		
+
+
 		// setLatlon({
 		//     latitude: location.latitude,
 		//     longitude: location.longitude,
 		// })
-		getGeocodedAddress();
+		// getGeocodedAddress();
 	};
 
 	const handleFormChange = async () => {
@@ -218,7 +229,7 @@ const MissingBankSuggestion = () => {
 										}
 										onDragEnd={async (e) => {
 											setLatlon(e.nativeEvent.coordinate);
-											getGeocodedAddress();
+											handleRegionChange
 										}}
 									/>
 								</MapView>

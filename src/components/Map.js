@@ -34,8 +34,13 @@ const Map = ({ markers, missingBank }) => {
 				latitudeDelta: 0.03,
 				longitudeDelta: 0.04,
 			});
+			
 		}
 		getLocation();
+		return()=>{
+			setData([]);
+			setLocation({});
+		}
 	}, [focused]);
 	return (
 		<View
