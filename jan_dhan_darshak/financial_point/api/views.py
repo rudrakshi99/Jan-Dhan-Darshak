@@ -7,20 +7,32 @@ from jan_dhan_darshak.financial_point.api.serializers import (
     FinancialPointHolidaySerializer,
 )
 from jan_dhan_darshak.financial_point.models import FinancialPointHoliday
+from datetime import datetime
+
+
 
 
 class financial_point_holiday_view(APIView):
     def get(self, request):
         try:
-            state = request.GET.get("state")
-            financial_point_holiday = FinancialPointHoliday.objects.all()
-            serializer = FinancialPointHolidaySerializer(
-                financial_point_holiday, many=True
-            )
+            state = request.query_params.get("state")
+            financial_point_holiday = FinancialPointHoliday.objects.filter(state=state)
+            response = []
+
+            for holiday in financial_point_holiday:
+                holiday_date = holiday.holiday + " 00:00:00"
+                date_time_obj = datetime.strptime(holiday_date, "%d-%m-%Y %H:%M:%S")
+
+                detail = {
+                    "holiday": date_time_obj.strftime("%Y-%m-%d"),
+                    "holiday_reason": holiday.holiday_reason,
+                }
+                response.append(detail)
+
             return Response(
                 response_payload(
                     success=True,
-                    data=serializer.data,
+                    data=response,
                     msg="Here are you Holidays!",
                 ),
                 status=status.HTTP_200_OK,
