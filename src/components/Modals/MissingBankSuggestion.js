@@ -42,7 +42,7 @@ const MissingBankSuggestion = () => {
 	const [name, setName] = useState("");
 	const [details, setDetails] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
-
+	const [res, setRes] = useState(null);
 	const [modalError, setModalError] = useState("");
 	const focused = useIsFocused();
 	const [modalVisible, setModalVisible] = useState(false);
@@ -88,18 +88,19 @@ const MissingBankSuggestion = () => {
 		// 	latitudeDelta: 0.02,
 		// 	longitudeDelta: 0.04,
 		// });
-		axios.get(
-			`${BASE_URL}maps/api/geocode/json?latlng=${
-				latlon.latitude + "," + latlon.longitude
-			}&key=${API_KEY}`)
-		.then((res) => {
-			console.log(res.data.results[0].formatted_address);
-			setAddress(res.data.results[0].formatted_address);
-		}).catch((err) => {
-			console.log(err);
-		})
-		
-
+		axios
+			.get(
+				`${BASE_URL}maps/api/geocode/json?latlng=${
+					latlon.latitude + "," + latlon.longitude
+				}&key=${API_KEY}`
+			)
+			.then((res) => {
+				console.log(res.data.results[0].formatted_address);
+				setAddress(res.data.results[0].formatted_address);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 
 		// setLatlon({
 		//     latitude: location.latitude,
@@ -124,6 +125,7 @@ const MissingBankSuggestion = () => {
 				longitude: location.longitude,
 			});
 			console.log(data, "data");
+			setRes(data);
 			if (data?.success === true) {
 				setModalVisible(true);
 				// flashMessage(data.message, 'success');
@@ -160,9 +162,14 @@ const MissingBankSuggestion = () => {
 								<Text style={styles.modalSubText}>
 									Thank you for filling out the Form.
 								</Text>
-								{/* <Text style={styles.trackID}>
-                                Track ID: 4855682
-                            </Text> */}
+								{res !== null ? (
+									<Text style={styles.trackID}>
+										Track ID:{" "}
+										{res.data.uid
+											.substring(0, 8)
+											.toUpperCase()}
+									</Text>
+								) : null}
 								<View style={styles.modalButtons}>
 									<Pressable
 										onPress={() =>
@@ -229,7 +236,7 @@ const MissingBankSuggestion = () => {
 										}
 										onDragEnd={async (e) => {
 											setLatlon(e.nativeEvent.coordinate);
-											handleRegionChange
+											handleRegionChange;
 										}}
 									/>
 								</MapView>
@@ -430,6 +437,7 @@ const styles = StyleSheet.create({
 		fontSize: 17,
 		fontWeight: "600",
 		letterSpacing: 0.5,
+		paddingHorizontal: 20,
 	},
 	innerContainer: {
 		width: Dimensions.get("window").width,
@@ -485,6 +493,7 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 		marginTop: 22,
+		backgroundColor: "rgba(16, 16, 16, 0.8)",
 	},
 	modalView: {
 		margin: 20,
