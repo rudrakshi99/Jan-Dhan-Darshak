@@ -90,6 +90,7 @@ THIRD_PARTY_APPS = [
     "import_export",
     "django_filters",
     "drf_yasg",
+    "django_crontab",
 ]
 
 LOCAL_APPS = [
