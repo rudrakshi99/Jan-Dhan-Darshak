@@ -61,31 +61,7 @@ const SavedLocations = () => {
 				console.log(err?.response?.data);
 			}
 		};
-
-		// async function getSavedResults() {
-		// 	try {
-		// 		let promises = savedLocations.map((item) => {
-		// 			return axios
-		// 				.get(
-		// 					`${BASE_URL}maps/api/place/details/json?place_id=${item.place_id}&key=${API_KEY}`
-		// 				)
-		// 				.then((results) => {
-		// 					return results.data.result;
-		// 				});
-		// 		});
-		// 		Promise.all(promises).then(function (results) {
-		// 			setResults(results);
-		// 			console.log(results);
-		// 		});
-		// 		setIsLoading(false);
-		// 		console.log("Final Result", savedRes);
-		// 	} catch (err) {
-		// 		console.log(err);
-		// 		setIsLoading(false);
-		// 	}
-		// }
 		getLocations();
-		// getSavedResults();
 		setIsLoading(false);
 		() => {};
 	}, [focused]);
