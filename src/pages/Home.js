@@ -15,7 +15,6 @@ import SavedLocations from "../components/Modals/SavedLocations";
 import TrackRequest from "../components/Modals/TrackRequest";
 import MissingBankSuggestion from "../components/Modals/MissingBankSuggestion";
 import Help from "../components/Modals/Help";
-import BankFeedback from "../components/Modals/BankFeedback";
 import * as SecureStore from "expo-secure-store";
 import Faq from "../components/Modals/Faq";
 const Drawer = createDrawerNavigator();

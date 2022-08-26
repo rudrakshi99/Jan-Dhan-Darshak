@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
-import { getDatesOfCalendar } from "../../https/suggestions";
 import Accordion from "../subcomponents/Accordion";
 import HeaderCard from "../subcomponents/HeaderCard";
 
