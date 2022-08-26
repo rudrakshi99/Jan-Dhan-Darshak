@@ -35,8 +35,6 @@ def missing_suggestions_updating(sender, instance, **kwargs):
                     "Thank you for your suggestion.\n\n"
                     "Regards.\nTEAM JAN DHAN DARSHAK."
                 )
-            )   
-                )
 
                 send_notification(message, instance.User.phone_number)
 
