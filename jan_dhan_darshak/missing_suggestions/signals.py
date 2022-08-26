@@ -24,17 +24,22 @@ def missing_suggestions_updating(sender, instance, **kwargs):
     if instance.uid is None:
         pass
     else:
-        previous = MissingSuggestions.objects.get(uid=instance.uid)
-        if previous.suggestion_status != instance.suggestion_status:
-            print("FOUND")
+        try:
+            previous = MissingSuggestions.objects.get(uid=instance.uid)
+            if previous.suggestion_status != instance.suggestion_status:
+                print("FOUND")
 
-            message = (
-                f"\n\nHi {instance.User.name}, \n\n"
-                f"Your missing suggestion request for the track ID :{instance.uid} has been {instance.suggestion_status}.\n\n"
-                "Thank you for your suggestion.\n\n"
-                "Regards.\nTEAM JAN DHAN DARSHAK."
+                message = (
+                    f"\n\nHi {instance.User.name}, \n\n"
+                    f"Your missing suggestion request for the track ID :{instance.uid} has been {instance.suggestion_status}.\n\n"
+                    "Thank you for your suggestion.\n\n"
+                    "Regards.\nTEAM JAN DHAN DARSHAK."
+                )
             )   
+                )
 
-            send_notification(message, instance.User.phone_number)
+                send_notification(message, instance.User.phone_number)
 
-            print(f"MAIL SENT for user {instance.User.email}")
+                print(f"MAIL SENT for user {instance.User.email}")
+        except MissingSuggestions.DoesNotExist:
+            pass

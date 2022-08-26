@@ -386,3 +386,13 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = env.str("EMAIL_HOST_USER", None)
 EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD", None)
+
+import os
+
+CRONJOBS = [
+    (
+        "*/1 * * * *",
+        "jan_dhan_darshak.users.cron.cron_job",
+        ">> " + os.path.join(ROOT_DIR, "file.log"),
+    )
+]

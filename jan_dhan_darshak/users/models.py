@@ -2,7 +2,7 @@ from pyexpat import model
 import uuid
 from random import randint
 from django.contrib.auth.models import AbstractUser
-from django.db.models import CharField, BooleanField, UUIDField, FileField, Model
+from django.db.models import CharField, BooleanField, UUIDField, FileField, Model,ForeignKey,CASCADE,DateTimeField
 from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -64,3 +64,16 @@ def voice_directory_path(instance, filename):
 
 class VoiceToText(Model):
     voice = FileField(upload_to=voice_directory_path, blank=True)
+
+class UserNotification(Model):
+    user = ForeignKey(User, on_delete=CASCADE)
+    notification = CharField(max_length=255,blank=True)
+    is_completed = BooleanField(default=False)
+    set_date = DateTimeField(blank=True)
+    created_at = DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return self.user.name

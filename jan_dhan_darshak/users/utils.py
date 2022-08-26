@@ -90,6 +90,6 @@ def send_notification(msg, phone_number):
         message = client.messages.create(
             body=msg, from_="+13182848686", to="+91" + phone_number
         )
-        print(message.sid)
+        return message.sid
     except Exception as e:
         print(e)
