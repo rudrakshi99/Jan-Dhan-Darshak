@@ -32,3 +32,13 @@ class FinancialPoint(models.Model):
 
     def __str__(self):
         return self.financial_point_name
+
+
+class FinancialPointHoliday(models.Model):
+    state = models.CharField(max_length=10)
+    statedescr = models.CharField(max_length=200)
+    holiday = models.CharField(max_length=200)
+    holiday_reason = models.CharField(max_length=200)
+
+    def __str__(self) -> str:
+        return self.statedescr
