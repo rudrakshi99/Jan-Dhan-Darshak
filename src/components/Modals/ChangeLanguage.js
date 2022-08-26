@@ -107,10 +107,10 @@ const ChangeLanguage = () => {
 							<TouchableOpacity
 								onPress={() => {setLanguageToken(item)}}
 								key={i}
-								style={[styles.languageBox, styles.borderColor]}
+								style={languageToken !== item ? [styles.languageBox, styles.borderBlack] : [styles.languageBox, styles.borderColor]}
 							>
 								<Text
-									style={languageToken !== item ? [styles.language1] : [styles.language1,styles.colorBlue]}
+									style={languageToken !== item ? styles.language1 : [styles.language1,styles.colorBlue]}
 								>
 									{item}
 								</Text>

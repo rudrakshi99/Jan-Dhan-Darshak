@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
 	Image,
 	ScrollView,
@@ -11,6 +11,7 @@ import {
 import { ArrowNarrowLeftIcon } from "react-native-heroicons/outline";
 import { translations } from "../../translations/translations";
 import * as SecureStore from "expo-secure-store";
+
 const About = () => {
 	const navigation = useNavigation();
 	const [lan, setLan] = useState("");
