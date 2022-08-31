@@ -2,6 +2,7 @@ from datetime import datetime
 
 
 from django.contrib.auth import get_user_model
+from jan_dhan_darshak.users.models import UserNotification, VoiceToText
 from rest_framework import serializers
 
 from rest_framework.exceptions import AuthenticationFailed
@@ -50,3 +51,21 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["name", "email"]
+
+
+class VoiceToTextSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VoiceToText
+        fields = "__all__"
+
+
+class UserNotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserNotification
+        exclude = ["user"]
+        read_only_fields = ["created_at"]
+
+    def create(self, validated_data):
+        return UserNotification.objects.create(
+            user=self.context["request"].user, **validated_data
+        )

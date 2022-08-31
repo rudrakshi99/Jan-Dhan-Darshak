@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.contrib.auth import admin as auth_admin
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
+from jan_dhan_darshak.users.models import UserNotification, VoiceToText
 
 from jan_dhan_darshak.users.forms import UserAdminChangeForm, UserAdminCreationForm
 
@@ -32,3 +33,8 @@ class UserAdmin(auth_admin.UserAdmin):
     )
     list_display = ["username", "name", "is_superuser", "email"]
     search_fields = ["name"]
+
+
+# Register your models here.
+admin.site.register(VoiceToText)
+admin.site.register(UserNotification)

@@ -13,6 +13,7 @@ class FinancialPointFeedbackAdmin(admin.ModelAdmin):
         "unique_id_type",
         "unique_id",
         "created_at",
+        "audio_message",
     ]
     list_display_links = ["id", "financial_point_name"]
     list_filter = ["financial_type", "unique_id_type"]

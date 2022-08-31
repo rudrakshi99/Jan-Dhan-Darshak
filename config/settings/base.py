@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 APPS_DIR = ROOT_DIR / "jan_dhan_darshak"
 env = environ.Env()
 
-READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=False)
+READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=True)
 if READ_DOT_ENV_FILE:
     # OS environment variables take precedence over variables from .env
     env.read_env(str(ROOT_DIR / ".env"))
@@ -42,13 +42,13 @@ LOCALE_PATHS = [str(ROOT_DIR / "locale")]
 # DATABASES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
-# DATABASES = {"default": env.db("DATABASE_URL")}
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
+DATABASES = {"default": env.db("DATABASE_URL")}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
 
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 # https://docs.djangoproject.com/en/stable/ref/settings/#std:setting-DEFAULT_AUTO_FIELD
@@ -68,7 +68,7 @@ DJANGO_APPS = [
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
-    "django.contrib.sites",
+    # "django.contrib.sites",
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # "django.contrib.humanize", # Handy template tags
@@ -90,6 +90,7 @@ THIRD_PARTY_APPS = [
     "import_export",
     "django_filters",
     "drf_yasg",
+    "django_crontab",
 ]
 
 LOCAL_APPS = [
@@ -99,6 +100,7 @@ LOCAL_APPS = [
     "jan_dhan_darshak.missing_suggestions",
     "jan_dhan_darshak.financial_point",
     "jan_dhan_darshak.saved_locations",
+    "jan_dhan_darshak.bank",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -385,3 +387,13 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = env.str("EMAIL_HOST_USER", None)
 EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD", None)
+
+import os
+
+CRONJOBS = [
+    (
+        "*/1 * * * *",
+        "jan_dhan_darshak.users.cron.cron_job",
+        ">> " + os.path.join(ROOT_DIR, "file.log"),
+    )
+]

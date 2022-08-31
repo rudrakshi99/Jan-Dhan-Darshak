@@ -20,21 +20,15 @@ class missingSuggestion(APIView):
         try:
             data = request.data
             User = request.data["User"]
-            print(User)
             suggestions = MissingSuggestions.objects.filter(User=User)
 
-            if len(suggestions) > 0:
-                last_suggestion_created_at = suggestions[
-                    len(suggestions) - 1
-                ].created_at
-
-                if last_suggestion_created_at.date() == datetime.date.today():
-                    return Response(
-                        response_payload(
-                            success=False, msg="You can suggest only once in a day"
-                        ),
-                        status.HTTP_400_BAD_REQUEST,
-                    )
+            if suggestions.filter(created_at=datetime.datetime.now()).count() > 5:
+                return Response(
+                    response_payload(
+                        success=False, msg="You can suggest only once in a day"
+                    ),
+                    status.HTTP_400_BAD_REQUEST,
+                )
 
             serializer = MissingSuggestionsSerializer(data=data)
             if serializer.is_valid():

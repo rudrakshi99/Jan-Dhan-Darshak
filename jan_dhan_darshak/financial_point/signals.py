@@ -40,7 +40,7 @@ def financial_point(sender, instance, created, **kwargs):
             message = (
                 f"Hi {instance.username}. You have been registered to Jan Dhan Darshak.\n"
                 f"Your username is '{user.username}' and password is in format 'phonenumber_uniqueid'.\n"
-                "Please login to your account on 'https://jan-dhan-darshak.herokuapp.com/admin/' to get started.\n\n"
+                "Please login to your account on 'http://13.234.38.168/admin/' to get started.\n\n"
                 "Thank you.\nTEAM JAN DHAN DARSHAK."
             )
 
