@@ -13,8 +13,8 @@ User = get_user_model()
 from config.settings.base import TWILIO
 from twilio.rest import Client
 
-account_sid = "AC6212ba37af81187987d6fa0a594c4ed9"
-auth_token = "d3fe6ed24dc7e7a4771f6b54b6459790"
+account_sid = TWILIO["ACCOUNT_SID"]
+auth_token = TWILIO["AUTH_TOKEN"]
 client = Client(account_sid, auth_token)
 
 
