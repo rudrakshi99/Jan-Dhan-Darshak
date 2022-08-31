@@ -44,6 +44,7 @@ providers such as banks, post office, CSC, etc.
 6. Voice Interface Phone number of bank branches available in app.
 7. Integrated dialing Users’ feedback.
 8. In-app GPS Map to trace location.
+9. Bank details and ATM types.
 10. Display route map of the selected place from user location.
 11. Rating and feedback systems to ensure better customer experience.
 12. Share live location.
@@ -54,9 +55,9 @@ providers such as banks, post office, CSC, etc.
 
 ## Technology Stack to be used:
 
-<img src="https://img.shields.io/badge/python%20-%2314354C.svg?&style=for-the-badge&logo=python&logoColor=white"/> <img src="https://img.shields.io/badge/django%20-%23092E20.svg?&style=for-the-badge&logo=django&logoColor=white"/>  <img src="https://img.shields.io/badge/markdown-%23000000.svg?&style=for-the-badge&logo=markdown&logoColor=white"/><img src="https://img.shields.io/badge/github%20-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white"/> <img src="https://img.shields.io/badge/postgres-0B96B2?style=for-the-badge&logo=postgresql&logoColor=white"/> <img src="https://img.shields.io/badge/Heroku-430098?style=for-the-badge&logo=heroku&logoColor=white"/>
+<img src="https://img.shields.io/badge/python%20-%2314354C.svg?&style=for-the-badge&logo=python&logoColor=white"/> <img src="https://img.shields.io/badge/django%20-%23092E20.svg?&style=for-the-badge&logo=django&logoColor=white"/>  <img src="https://img.shields.io/badge/markdown-%23000000.svg?&style=for-the-badge&logo=markdown&logoColor=white"/><img src="https://img.shields.io/badge/github%20-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white"/> <img src="https://img.shields.io/badge/postgres-0B96B2?style=for-the-badge&logo=postgresql&logoColor=white"/> <img src="https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white"/>
 
-[![View in Swagger](http://jessemillar.github.io/view-in-swagger-button/button.svg)](https://jan-dhan-darshak.herokuapp.com/swagger/)
+[![View in Swagger](http://jessemillar.github.io/view-in-swagger-button/button.svg)](http://13.234.38.168/swagger/)
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://documenter.getpostman.com/view/14143990/VUqmuJrM)
 
 
@@ -65,7 +66,7 @@ providers such as banks, post office, CSC, etc.
 - **API Testing & Documentation**: Postman, Swagger
 - **Version Control**: Git and GitHub
 - **Database**: PostgreSQL
-- **Hosting**: Heroku
+- **Hosting**: AWS
 
 ### Getting Started
 ### Fork, clone locally & create a branch
@@ -245,6 +246,16 @@ python3 manage.py migrate
     <td align="center"><a href="https://github.com/suyashrastogi7"><img alt="" src="https://avatars.githubusercontent.com/suyashrastogi7" width="100px;"><br><sub><b>Suyash Rastogi </b></sub></a><br><a href="https://github.com/rudrakshi99/Jan-Dhan-Darshak/commits/master?author=suyashrastogi7" title="Code">💻</a></td>
   </tr>
 </tbody></table>
+
+> Mentors
+
+| S.No. | Mentor Name | About | GitHub Username |
+| --------------- | --------------- | --------------- | --------------- |
+| 1. | Archit kaushik | SDE-2 [@amazon](https://github.com/amzn)  | [@architkshk](https://github.com/architkshk)  |
+| 2. | Ajeet Kumar | Product Designer [@juspay](https://github.com/juspay) | [@kumarajeet024](https://www.behance.net/kumarajeet024)  |
+
+<img src="https://avatars.githubusercontent.com/u/5001704?v=4" width=150px height=150px /></a> 
+<img src="https://user-images.githubusercontent.com/55245862/186837204-5c6b46bb-0aa6-431e-b6ae-9958217b4a19.jpeg" width=150px height=150px /></a>
 
 # License :memo:
 
