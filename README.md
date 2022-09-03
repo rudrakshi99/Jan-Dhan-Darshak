@@ -1,3 +1,6 @@
+![JAN DHAN DARSHAK](https://user-images.githubusercontent.com/55245862/188284630-272e8009-52a6-465b-81be-75e69dc4945e.png)
+
+
 # Jan-Dhan-Darshak
 
 This application acts as a guide for the common people in locating a financial service touch point at a given location in the country.
