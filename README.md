@@ -47,6 +47,11 @@ providers such as banks, post office, CSC, etc.
 - **Database**: PostgreSQL
 - **Hosting**: AWS
 
+
+## Screenshots 📷
+![2](https://user-images.githubusercontent.com/55245862/188285249-0182b216-a33b-4127-97e7-bd1a570b6321.png)
+![3](https://user-images.githubusercontent.com/55245862/188285275-98756b4c-af51-43bb-93b5-48359f4c1706.png)
+
 ### How to Get Started?
 
 #### GitHub Repository Structure
