@@ -15,6 +15,9 @@ providers such as banks, post office, CSC, etc.
 > #### RS1079 (Ministry of Finance)
 > Upgradation of Jan-Dhan Darshak App
 
+## Workflow
+![SIH 2022 - TEAM S P A R K S  2 0](https://user-images.githubusercontent.com/55245862/191807002-76f54bce-2acf-4994-93b8-dd9ea8028dcb.jpg)
+
 ## Features
 
 1. Login/Sign Up.
